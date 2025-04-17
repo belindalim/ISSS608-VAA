@@ -200,12 +200,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#working-with-stat" id="toc-working-with-stat" class="nav-link" data-scroll-target="#working-with-stat"><strong>1.8.1 Working with <code>stat()</code></strong></a></li>
   <li><a href="#working-with-stat---the-geom-method" id="toc-working-with-stat---the-geom-method" class="nav-link" data-scroll-target="#working-with-stat---the-geom-method"><strong>1.8.3 Working with stat - the <code>geom()</code> method</strong></a></li>
   <li><a href="#adding-a-best-fit-curve-on-a-scatterplot" id="toc-adding-a-best-fit-curve-on-a-scatterplot" class="nav-link" data-scroll-target="#adding-a-best-fit-curve-on-a-scatterplot"><strong>1.8.4 Adding a best fit curve on a scatterplot?</strong></a></li>
-  <li><a href="#essential-grammatical-elements-in-ggplot2-facets" id="toc-essential-grammatical-elements-in-ggplot2-facets" class="nav-link" data-scroll-target="#essential-grammatical-elements-in-ggplot2-facets"><strong>1.9 Essential Grammatical Elements in ggplot2: Facets</strong></a>
+  <li><a href="#essential-grammatical-elements-in-ggplot2-facets" id="toc-essential-grammatical-elements-in-ggplot2-facets" class="nav-link" data-scroll-target="#essential-grammatical-elements-in-ggplot2-facets">1.9 Essential Grammatical Elements in ggplot2: Facets</a>
   <ul class="collapse">
   <li><a href="#working-with-facet_wrap" id="toc-working-with-facet_wrap" class="nav-link" data-scroll-target="#working-with-facet_wrap"><strong>1.9.1 Working with <code>facet_wrap()</code></strong></a></li>
   <li><a href="#facet_grid-function" id="toc-facet_grid-function" class="nav-link" data-scroll-target="#facet_grid-function"><strong>1.9.2 <code>facet_grid()</code> function</strong></a></li>
   </ul></li>
-  <li><a href="#essential-grammatical-elements-in-ggplot2-coordinates" id="toc-essential-grammatical-elements-in-ggplot2-coordinates" class="nav-link" data-scroll-target="#essential-grammatical-elements-in-ggplot2-coordinates"><strong>1.10 Essential Grammatical Elements in ggplot2: Coordinates</strong></a>
+  <li><a href="#essential-grammatical-elements-in-ggplot2-coordinates" id="toc-essential-grammatical-elements-in-ggplot2-coordinates" class="nav-link" data-scroll-target="#essential-grammatical-elements-in-ggplot2-coordinates">1.10 Essential Grammatical Elements in ggplot2: Coordinates</a>
   <ul class="collapse">
   <li><a href="#working-with-coordinate" id="toc-working-with-coordinate" class="nav-link" data-scroll-target="#working-with-coordinate"><strong>1.10.1 Working with Coordinate</strong></a></li>
   <li><a href="#changing-the-y--and-x-axis-range" id="toc-changing-the-y--and-x-axis-range" class="nav-link" data-scroll-target="#changing-the-y--and-x-axis-range"><strong>1.10.2 Changing the y- and x-axis range</strong></a></li>
@@ -214,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#essential-grammatical-elements-in-ggplot2-themes" id="toc-essential-grammatical-elements-in-ggplot2-themes" class="nav-link" data-scroll-target="#essential-grammatical-elements-in-ggplot2-themes"><strong>1.11 Essential Grammatical Elements in ggplot2: themes</strong></a>
   <ul class="collapse">
   <li><a href="#working-with-theme" id="toc-working-with-theme" class="nav-link" data-scroll-target="#working-with-theme"><strong>1.11.1 Working with theme</strong></a></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><strong>1.12 Reference</strong></a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">1.12 Reference</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -915,7 +915,7 @@ Note</strong></p>
 </div>
 </section>
 <section id="essential-grammatical-elements-in-ggplot2-facets" class="level2">
-<h2 class="anchored" data-anchor-id="essential-grammatical-elements-in-ggplot2-facets"><strong>1.9 Essential Grammatical Elements in ggplot2: Facets</strong></h2>
+<h2 class="anchored" data-anchor-id="essential-grammatical-elements-in-ggplot2-facets">1.9 Essential Grammatical Elements in ggplot2: Facets</h2>
 <p>Facetting generates small multiples (sometimes also called trellis plot), each displaying a different subset of the data. They are an alternative to aesthetics for displaying additional discrete variables. ggplot2 supports two types of factes, namely: <a href="https://ggplot2.tidyverse.org/reference/facet_grid.html"><code>facet_grid()</code></a> and <a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html"><code>facet_wrap</code></a>.</p>
 <section id="working-with-facet_wrap" class="level3">
 <h3 class="anchored" data-anchor-id="working-with-facet_wrap"><strong>1.9.1 Working with <code>facet_wrap()</code></strong></h3>
@@ -991,7 +991,7 @@ Note</strong></p>
 </section>
 </section>
 <section id="essential-grammatical-elements-in-ggplot2-coordinates" class="level2">
-<h2 class="anchored" data-anchor-id="essential-grammatical-elements-in-ggplot2-coordinates"><strong>1.10 Essential Grammatical Elements in ggplot2: Coordinates</strong></h2>
+<h2 class="anchored" data-anchor-id="essential-grammatical-elements-in-ggplot2-coordinates">1.10 Essential Grammatical Elements in ggplot2: Coordinates</h2>
 <p>The <em>Coordinates</em> functions map the position of objects onto the plane of the plot. There are a number of different possible coordinate systems to use, they are:</p>
 <p>- [`coord_cartesian()`](https://ggplot2.tidyverse.org/reference/coord_cartesian.html): the default cartesian coordinate systems, where you specify x and y values (e.g.&nbsp;allows you to zoom in or out). - [`coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html): a cartesian system with the x and y flipped. - [`coord_fixed()`](https://ggplot2.tidyverse.org/reference/coord_fixed.html): a cartesian system with a “fixed” aspect ratio (e.g.&nbsp;1.78 for a “widescreen” plot). - [`coord_quickmap()`](https://ggplot2.tidyverse.org/reference/coord_map.html): a coordinate system that approximates a good aspect ratio for maps.</p>
 <section id="working-with-coordinate" class="level3">
@@ -1126,7 +1126,7 @@ Note</strong></p>
 </div>
 </section>
 <section id="reference" class="level2">
-<h2 class="anchored" data-anchor-id="reference"><strong>1.12 Reference</strong></h2>
+<h2 class="anchored" data-anchor-id="reference">1.12 Reference</h2>
 <ul>
 <li><p>Hadley Wickham (2023) <a href="https://ggplot2-book.org/"><strong>ggplot2: Elegant Graphics for Data Analysis</strong></a>. Online 3rd edition.</p></li>
 <li><p>Winston Chang (2013) <a href="https://r-graphics.org/"><strong>R Graphics Cookbook 2nd edition</strong></a>. Online version.</p></li>
