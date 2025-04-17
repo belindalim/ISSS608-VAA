@@ -461,7 +461,7 @@ ggplot(data=exam_data,
   geom_boxplot()
 ```
 
-### 1.8.2 Working with stat - the stat_summary() method 
+### **1.8.2 Working with stat - the stat_summary() method** 
 
 The code chunk below adds mean values by using stat_summary() function and overriding the default geom.
 
