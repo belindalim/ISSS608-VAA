@@ -435,7 +435,7 @@ ggplot(exam_data, aes(x = CLASS, y = MATHS)) +
   ggtitle("Maths Scores by Gender: Boxplot + Mean + Jitter")
 ```
 
-# **1.8 Essential Grammatical Elements in ggplot2: stat**
+## **1.8 Essential Grammatical Elements in ggplot2: stat**
 
 The [Statistics functions](https://ggplot2.tidyverse.org/reference/index.html#stats) statistically transform data, usually as some form of summary. For example:
 
@@ -626,7 +626,7 @@ ggplot(data=exam_data,
                   ylim=c(0,100))
 ```
 
-# **1.11 Essential Grammatical Elements in ggplot2: themes**
+## **1.11 Essential Grammatical Elements in ggplot2: themes**
 
 Themes control elements of the graph not related to the data. For example:
 
