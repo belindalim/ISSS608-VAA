@@ -4,6 +4,7 @@ title: "About"
 
 About this site
 
-```{r}
-1 + 1
+Hi! Thanks for visiting my page. This page is created to document my journey in applying visual analytics as part of my coursework in SMU MITB. Hope you will find this page useful too!
+
+```{}
 ```
