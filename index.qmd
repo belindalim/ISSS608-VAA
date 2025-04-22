@@ -1,5 +1,61 @@
 ---
 title: "Belinda's ISSS608-VAA Journey"
 ---
+::: {.row style="display: flex; align-items: center; justify-content: center;"}
 
-Welcome to **ISSS608 Visual Analytics and Applications**. In this website, you will find my coursework prepared for this course.
+::: {.col-md-6 style="text-align: center;"}
+<img src="images/logo.png" style="width: 80%; max-width: 300px;" />
+:::
+
+::: {.col-md-6 style="text-align: left;"}
+Welcome to **ISSS608 Visual Analytics and Applications**.  
+In this website, you will find my coursework prepared for this course.
+:::
+
+:::
+
+## Recent Projects
+
+:::: {.grid}
+
+::: {.g-col-6}
+::: {.card}
+![](images/Handsonex1.png){width=100%}
+
+### Hands-on Exercises  
+A collection of exercises that apply data visualization techniques.  
+[View Hands-on Exercises](Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.qmd)
+:::
+:::
+
+::: {.g-col-6}
+::: {.card}
+![](images/Upcoming.png){width=50%}
+
+### In-class Exercises  
+Visual analytics done collaboratively during class sessions.  
+[View In-class Exercises](In-class_Ex/In-class_Ex01/In-class_Ex01.qmd)
+:::
+:::
+
+::: {.g-col-6}
+::: {.card}
+![](images/Upcoming.png){width=50%}
+
+### Take-home Exercises  
+Individual assignments applying visual analytics to real-world datasets.  
+[View Take-home Exercises](Take-home_Ex/Take-home_Ex01/Take-home_Ex01.qmd)
+:::
+:::
+
+::: {.g-col-6}
+::: {.card}
+![](images/Upcoming.png){width=50%}
+
+### Group Project  
+Group project involving  data storytelling.  
+[View Project](project/project-overview.qmd)
+:::
+:::
+
+::::

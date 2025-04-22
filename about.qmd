@@ -2,9 +2,20 @@
 title: "About"
 ---
 
-About this site
 
 Hi! Thanks for visiting my page. This page is created to document my journey in applying visual analytics as part of my coursework in SMU MITB. Hope you will find this page useful too!
 
-```         
-```
+
+## 🔗 Connect with Me
+
+::: {.row}
+
+::: {.col-auto}
+<img src="images/linkedin.png" style="width:100px;" />
+:::
+
+::: {.col}
+[Connect on LinkedIn](https://www.linkedin.com/in/belindalimks)
+:::
+
+:::

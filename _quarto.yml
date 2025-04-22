@@ -2,9 +2,9 @@ project:
   type: website
 
 website:
-  title: "ISSS608-VAA"
+  #title: "ISSS608-VAA"
   navbar:
-    logo: images/logo.png 
+    logo: images/Samoyed.png 
     left:
       - text: "Hands-on Exercise"
         menu:
@@ -38,5 +38,7 @@ render:
   - index.qmd
   - about.qmd
   - Hands-on_Ex/Hands-on_Ex01.qmd
+  
+  
 
 

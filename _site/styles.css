@@ -1,1 +1,36 @@
 /* css styles */
+
+.card {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+img[src*="Samoyed.png"] {
+  height: 100px !important;       /* Adjust to your desired height */
+  width: auto !important;
+  margin-right: 10px !important;
+  object-fit: contain;
+  max-height: none !important;
+  display: block !important;
+}
+
+/* 🧱 Let navbar and brand area expand to fit image */
+.navbar {
+  align-items: center;
+  min-height: 80px !important;   /* Match or exceed logo height */
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.navbar-brand {
+  max-height: none !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}

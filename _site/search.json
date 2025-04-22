@@ -95,13 +95,34 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site\nHi! Thanks for visiting my page. This page is created to document my journey in applying visual analytics as part of my coursework in SMU MITB. Hope you will find this page useful too!"
+    "text": "Hi! Thanks for visiting my page. This page is created to document my journey in applying visual analytics as part of my coursework in SMU MITB. Hope you will find this page useful too!"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Belinda’s ISSS608-VAA Journey",
     "section": "",
-    "text": "Welcome to ISSS608 Visual Analytics and Applications. In this website, you will find my coursework prepared for this course."
+    "text": "Welcome to ISSS608 Visual Analytics and Applications.\nIn this website, you will find my coursework prepared for this course."
+  },
+  {
+    "objectID": "index.html#welcome-to-isss608-visual-analytics-and-applications",
+    "href": "index.html#welcome-to-isss608-visual-analytics-and-applications",
+    "title": "Belinda’s ISSS608-VAA Journey",
+    "section": "👋 Welcome to ISSS608 Visual Analytics and Applications",
+    "text": "👋 Welcome to ISSS608 Visual Analytics and Applications\n\n\nIn this website, you will find my coursework prepared for this course.\n\n\n\n\n\nWelcome Image"
+  },
+  {
+    "objectID": "index.html#recent-projects",
+    "href": "index.html#recent-projects",
+    "title": "Belinda’s ISSS608-VAA Journey",
+    "section": "Recent Projects",
+    "text": "Recent Projects\n\n\n\n\n\nHands-on Exercises\nA collection of exercises that apply data visualization techniques.\nView Hands-on Exercises\n\n\n\n\n\n\n\nIn-class Exercises\nVisual analytics done collaboratively during class sessions.\nView In-class Exercises\n\n\n\n\n\n\n\nTake-home Exercises\nIndividual assignments applying visual analytics to real-world datasets.\nView Take-home Exercises\n\n\n\n\n\n\n\nGroup Project\nGroup project involving data storytelling.\nView Project"
+  },
+  {
+    "objectID": "about.html#connect-with-me",
+    "href": "about.html#connect-with-me",
+    "title": "About",
+    "section": "🔗 Connect with Me",
+    "text": "🔗 Connect with Me\n\n\n\n\n\nConnect on LinkedIn"
   }
 ]
