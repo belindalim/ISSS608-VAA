@@ -3,13 +3,15 @@ title: "Hands-on Exercise 1"
 author: "Belinda Lim"
 date: April 17, 2025
 date-modified: "last-modified"
+format:
+  html:
+    theme: flatly
+    toc: true
+    number-sections: true
+editor: source
 ---
 
 # 1. A Layered Grammar of Graphics: ggplot2 methods
-
-Published
-
-April 17, 2025
 
 ## **1.1 Learning Outcome**
 
@@ -57,19 +59,15 @@ It is part of the [**tidyverse**](https://www.tidyverse.org/) family of packages
 
 For more detail, visit [ggplot2 link](https://ggplot2.tidyverse.org/).
 
-### 1.3.1 R Graphics versus ggplot
+## 1.3.1 R Graphics versus ggplot {.tabset}
 
 First, let us compare how R Graphics, the core graphical functions of Base R and ggplot plot a simple histogram.
-
-### R Graphics VS ggplot {.tabset}
 
 ### R Graphics
 
 ```{r}
 hist(exam_data$MATHS)
 ```
-
-### ggplot2
 
 ```{r}
 ggplot(data=exam_data, aes(x = MATHS)) +
