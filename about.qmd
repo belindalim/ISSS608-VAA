@@ -8,14 +8,4 @@ Hi! Thanks for visiting my page. This page is created to document my journey in 
 
 ## 🔗 Connect with Me
 
-::: {.row}
-
-::: {.col-auto}
-<img src="images/linkedin.png" style="width:100px;" />
-:::
-
-::: {.col}
-[Connect on LinkedIn](https://www.linkedin.com/in/belindalimks)
-:::
-
-:::
+[![LinkedIn](https://img.shields.io/badge/-Connect%20on%20LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/belindalimks)
