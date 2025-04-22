@@ -7,6 +7,7 @@ format:
   html:
     theme: flatly
     toc: true
+    code-fold: true
 editor: source
 ---
 
@@ -54,6 +55,38 @@ The code chunk below imports exam_data.csv into R environment by using read_csv(
 exam_data <- read_csv("data/Exam_data.csv")
 ```
 
-### 2.3 Beyond ggplot2
+## 2.3 Beyond ggplot2 Annotation: ggrepel
 
-Annotation: ggrepel One of the challenge in plotting statistical graph is annotation, especially with large number of data points.
+One of the challenges in plotting statistical graphs is annotation, especially when there are many data points.
+
+::: {.panel-tabset}
+
+### The plot
+
+```{r, echo=FALSE, message=FALSE}
+ggplot(data = exam_data,
+       aes(x = MATHS, y = ENGLISH)) +
+  geom_point() +
+  geom_smooth(method = lm, linewidth = 0.5) +
+  geom_label(aes(label = ID),
+             hjust = 0.5,
+             vjust = -0.5) +
+  coord_cartesian(xlim = c(0, 100),
+                  ylim = c(0, 100)) +
+  ggtitle("English scores versus Maths scores for Primary 3")
+```
+
+### The code
+```{r, eval=FALSE}
+ggplot(data = exam_data, aes(x = MATHS, y = ENGLISH)) +
+  geom_point() +
+  geom_smooth(method = lm, linewidth = 0.5) +
+  geom_label(aes(label = ID), hjust = 0.5, vjust = -0.5) +
+  coord_cartesian(xlim = c(0, 100), ylim = c(0, 100)) +
+  ggtitle("English scores versus Maths scores for Primary 3")
+```
+:::
+
+ggrepel is an extension of ggplot2 package which provides geoms for ggplot2 to repel overlapping text as in our examples on the right.
+
+We simply replace geom_text() by geom_text_repel() and geom_label() by geom_label_repel.
