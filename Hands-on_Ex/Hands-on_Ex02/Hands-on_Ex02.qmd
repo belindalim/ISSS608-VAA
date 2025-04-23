@@ -60,7 +60,7 @@ There are a total of seven attributes in the exam_data tibble data frame. Four o
 
 -   The continuous attributes are: MATHS, ENGLISH and SCIENCE.
 
-## 2.3 Beyond ggplot2 Annotation: ggrepel
+## **2.3 Beyond ggplot2 Annotation: ggrepel**
 
 One of the challenges in plotting statistical graphs is annotation, especially when there are many data points.
 
