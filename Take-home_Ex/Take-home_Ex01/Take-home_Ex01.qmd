@@ -1,4 +1,11 @@
 ---
 title: "Take-home_Ex01"
 format: html
+date: April 17, 2025
+date-modified: "last-modified"
+editor: source
+execute:
+  eval: true
+  echo: true
+  warning: false
 ---
