@@ -216,8 +216,6 @@ ggplot(data=exam_data,
 ```
 :::
 
-Refer to this [link](https://ggplot2.tidyverse.org/reference/index.html#themes) to learn more about ggplot2 `Themes`
-
 ### **2.4.1 Working with ggtheme package**
 
 [**ggthemes**](https://cran.r-project.org/web/packages/ggthemes/index.html) provides [‘ggplot2’ themes](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/) that replicate the look of plots by Edward Tufte, Stephen Few, [Fivethirtyeight](https://fivethirtyeight.com/), [The Economist](https://www.economist.com/graphic-detail), ‘Stata’, ‘Excel’, and [The Wall Street Journal](https://www.pinterest.com/wsjgraphics/wsj-graphics/), among others.
@@ -472,12 +470,36 @@ p1 + p2
 ### The plot
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p1 <- p1 +
+  ggtitle(str_wrap("Distribution of Maths scores", width = 30)) +
+  theme_grey()
+
+p2 <- p2 +
+  ggtitle(str_wrap("Distribution of English scores", width = 30)) +
+  theme_grey()
+
+p3 <- p3 +
+  ggtitle(str_wrap("English scores versus Maths scores for all students", width = 35)) +
+  theme_grey()
+
 (p1 / p2) | p3
 ```
 
 ### The code
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
+p1 <- p1 +
+  ggtitle(str_wrap("Distribution of Maths scores", width = 30)) +
+  theme_grey()
+
+p2 <- p2 +
+  ggtitle(str_wrap("Distribution of English scores", width = 30)) +
+  theme_grey()
+
+p3 <- p3 +
+  ggtitle(str_wrap("English scores versus Maths scores for all students", width = 35)) +
+  theme_grey()
+
 (p1 / p2) | p3
 ```
 :::
@@ -488,12 +510,21 @@ Another variant
 ### The plot
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+p3 <- p3 +
+  ggtitle(str_wrap("English scores versus Maths scores for all students", width = 60)) +
+  theme_grey()
+
 (p1 | p2) / p3
 ```
 
 ### The code
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
+p3 <- p3 +
+  ggtitle(str_wrap("English scores versus Maths scores for all students", width = 60)) +
+  theme_grey()
+
 (p1 | p2) / p3
 ```
 :::
@@ -508,7 +539,7 @@ Example applied from Plot Assembly:
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 p4 <- ggplot(exam_data) +
   geom_point(aes(x = MATHS, y = ENGLISH, colour = SCIENCE)) +
-  ggtitle("Plot 4: Science vs English vs Maths")
+  ggtitle("Science vs English vs Maths")
 
 p4
 ```
@@ -552,6 +583,19 @@ Beside providing functions to place plots next to each other based on the provid
 ### The plot
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+p2 <- p2 +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 8),
+    axis.title.x = element_blank(),       
+    axis.title.y = element_text(size = 6), 
+    axis.text = element_text(size = 6),
+    axis.ticks = element_blank(),
+    panel.background = element_rect(fill = "white", color = NA), 
+    plot.background = element_rect(fill = "white", color = NA)   
+  )
+
 p3 + inset_element(p2, 
                    left = 0.02, 
                    bottom = 0.7, 
@@ -561,7 +605,19 @@ p3 + inset_element(p2,
 
 ### The code
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, message = FALSE}
+p2 <- p2 +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 8),
+    axis.title.x = element_blank(),       
+    axis.title.y = element_text(size = 6), 
+    axis.text = element_text(size = 6),
+    axis.ticks = element_blank(),
+    panel.background = element_rect(fill = "white", color = NA), 
+    plot.background = element_rect(fill = "white", color = NA)   
+  )
+
 p3 + inset_element(p2, 
                    left = 0.02, 
                    bottom = 0.7, 
@@ -580,7 +636,7 @@ Figure below is created by combining patchwork and theme_economist() of ggthemes
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 p1 <- p1 +
-  ggtitle(str_wrap("Distribution of Maths scores", width = 25)) +
+  ggtitle(str_wrap("Distribution of Maths scores", width = 30)) +
   theme_economist() +
   theme(
     plot.margin = margin(t = 10, b = 10),
@@ -588,7 +644,7 @@ p1 <- p1 +
   )
 
 p2 <- p2 +
-  ggtitle(str_wrap("Distribution of English scores", width = 25)) +
+  ggtitle(str_wrap("Distribution of English scores", width = 30)) +
   theme_economist() +
   theme(
     plot.margin = margin(t = 10, b = 10),
@@ -611,7 +667,7 @@ patchwork
 
 ```{r, eval=FALSE}
 p1 <- p1 +
-  ggtitle(str_wrap("Distribution of Maths scores", width = 25)) +
+  ggtitle(str_wrap("Distribution of Maths scores", width = 30)) +
   theme_economist() +
   theme(
     plot.margin = margin(t = 10, b = 10),
@@ -619,7 +675,7 @@ p1 <- p1 +
   )
 
 p2 <- p2 +
-  ggtitle(str_wrap("Distribution of English scores", width = 25)) +
+  ggtitle(str_wrap("Distribution of English scores", width = 30)) +
   theme_economist() +
   theme(
     plot.margin = margin(t = 10, b = 10),
