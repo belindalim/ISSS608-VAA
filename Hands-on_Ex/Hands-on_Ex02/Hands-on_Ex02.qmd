@@ -8,6 +8,11 @@ format:
     theme: flatly
     toc: true
 editor: source
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
 # **2. Beyond ggplot2 Fundamentals**
