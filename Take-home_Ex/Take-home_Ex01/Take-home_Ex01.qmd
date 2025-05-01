@@ -38,6 +38,8 @@ It is assumed that you already have [**pacman**](https://cran.r-project.org/web
 pacman::p_load(tidyverse, sf, readr, ggplot2, viridis, plotly)
 ```
 
+We import Demographic_data.csv into R environment by using [*read_csv()*](https://readr.tidyverse.org/reference/read_delim.html) function of [**readr**](https://readr.tidyverse.org/) package. **readr** is one of the tidyverse package.
+
 ```{r}
 pop_data <- read_csv("data/Demographic_data.csv", , show_col_types = FALSE)
 ```
@@ -78,7 +80,6 @@ pop_65plus <- pop_data %>%
   group_by(PA) %>%
   summarise(Pop65Plus = sum(Pop, na.rm = TRUE))
 
-
 pop_summary <- left_join(pop_total, pop_65plus, by = "PA") %>%
   mutate(
     Pop65Plus = replace_na(Pop65Plus, 0),
@@ -89,22 +90,23 @@ pop_summary <- left_join(pop_total, pop_65plus, by = "PA") %>%
 
 We download the Singapore's map shapefile from [URA's Master Plan 2014 Planning Area Boundary](https://data.gov.sg/collections/1701/view).
 
-```{r}
+```{r, message=FALSE}
 sg_map <- st_read("data/Map/MP14_PLNG_AREA_WEB_PL.shp")
+```
 
+Format and Join the computed percentage of Population aged 65 and above by Planning Areas to the map.
+```{r}
 sg_map <- sg_map %>%
   mutate(PA = toupper(trimws(PLN_AREA_N)))
 
 pop_summary <- pop_summary %>%
   mutate(PA = toupper(trimws(PA)))
-```
-Join the computed percentage of Population aged 65 and above by Planning Areas to the map.
-```{r}
+
 sg_map_joined <- sg_map %>%
   left_join(pop_summary, by = "PA")
 ```
 
-
+Creating the plot
 ```{r}
 p <- ggplot(sg_map_joined) +
   geom_sf(aes(
@@ -112,14 +114,14 @@ p <- ggplot(sg_map_joined) +
     text = paste0("Planning Area: ", PA, "\nAge 65+ Population: ", PctOver65, "%")
   ), color = "white", linewidth = 0.3) +
   scale_fill_gradient(
-    low = "#fff5eb",   # very light orange
-    high = "#d94801",  # rich burnt orange
+    low = "#ffe0b2",   # brighter light orange
+    high = "#b30000",  # strong dark red-orange
     na.value = "grey90") +
   labs(
     title = "Residents Aged 65+ by Planning Area (2024)",
     fill = "% Aged 65+"
   ) +
-  theme_void()  # ⬅️ Cleanest option for maps
+  theme_void() + theme(panel.border = element_blank()) 
 
 ggplotly(p, tooltip = "text")
 
