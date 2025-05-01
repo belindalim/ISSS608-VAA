@@ -20,7 +20,7 @@ According to [World Health Organisation](https://www.who.int/data/gho/indicator-
 
 Economically productive population is defined as the population between 15 and 64 years of age, for the same country, territory, or geographic area, at the same specific point in time.
 
-With this definition, we aim to conduct an exploratory data analysis on the demographic structures and distribution of Singapore in 2024, focusing on the three groups of population, namely
+With this definition, we aim to conduct an exploratory data analysis on the demographic structures and distribution of Singapore in 2024, focusing on the three groups of population, to understand their characteristics for better policy making.
 
 # **2 Data and Data Pre-processing**
 
@@ -37,7 +37,7 @@ It is assumed that you already have [**pacman**](https://cran.r-project.org/web
 :::
 
 ```{r}
-pacman::p_load(tidyverse, patchwork, sf, readr, ggplot2, viridis, plotly)
+pacman::p_load(tidyverse, patchwork, scales, sf, readr, ggplot2, viridis, plotly)
 ```
 
 We import Demographic_data.csv into R environment by using [*read_csv()*](https://readr.tidyverse.org/reference/read_delim.html) function of [**readr**](https://readr.tidyverse.org/) package. **readr** is one of the tidyverse package.
@@ -59,7 +59,7 @@ pop_data <- pop_data %>%
 
 # **3 Exploratory Data Analysis and Insights**
 
-## **3.1 Age Pyramid**
+## **3.1 Singapore Population Age Pyramid and Life Expectancy**
 
 ### 3.1.1 Data preparation and Visualisation
 
@@ -85,7 +85,7 @@ age_pyramid <- pop_data %>%
 
 The Age Pyramid data is plotted:
 
-:::: panel-tabset
+::::: panel-tabset
 ### The plot
 
 ```{r, echo=FALSE}
@@ -145,7 +145,7 @@ life_expectancy <- pop_data %>%
   mutate(Proportion = Population / sum(Population))
 ```
 
-::: panel-tabset
+:::: panel-tabset
 ### The plot
 
 ```{r, echo=FALSE}
@@ -163,6 +163,7 @@ life_expectancy_plot <- ggplot(life_expectancy, aes(x = AgeGroup, y = Proportion
 ```
 
 ### The code
+
 ```{r, echo=FALSE}
 life_expectancy_plot <- ggplot(life_expectancy, aes(x = AgeGroup, y = Proportion, fill = Sex)) +
   geom_bar(stat = "identity", position = "dodge") +
@@ -179,35 +180,57 @@ life_expectancy_plot <- ggplot(life_expectancy, aes(x = AgeGroup, y = Proportion
 The 2 plots are combined using the code below.
 
 ```{r}
+legend <- cowplot::get_legend(
+  pyramid_plot + theme(legend.position = "bottom")
+)
+
+# Wrap legend as a patchwork element
+legend_patch <- wrap_elements(full = legend)
+
+# Title as a patchwork plot (can use plot_annotation + blank)
+title_patch <- plot_annotation(
+  title = "Age Pyramid and Life Expectancy Comparison",
+  theme = theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"))
+)
+
+# Combine everything
 combined_plot <- pyramid_plot + life_expectancy_plot +
   plot_layout(ncol = 2, widths = c(1, 2), guides = "collect") +
-  plot_annotation(title = "Age Pyramid and Life Expectancy Comparison",
-                  theme = theme(plot.title = element_text(hjust = 0.5, size = 14))) & 
-  theme(legend.position = "bottom", legend.box = "horizontal")  # applies to both plots
+  plot_annotation(
+    title = "Age Pyramid and Life Expectancy Comparison",
+    theme = theme(
+      plot.title = element_text(hjust = 0.5, size = 14, face = "bold")
+    )
+  ) & 
+  theme(
+    legend.position = "bottom",
+    legend.box = "horizontal",
+    legend.justification = "center",
+    legend.box.just = "center",
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 9)
+  )
+
 combined_plot
 ```
 
 ### 3.1.2 Insights
-From the age pyramid
 
+Singapore's population age pyramid can be described as a [constrictive pyramid](https://populationeducation.org/what-are-different-types-population-pyramids/), which is typical for countries with higher levels of social and economic developments. There are low birth and mortality rates, contributing to an ageing population. The largest population groups belong to ages 30-64, and this results in a reduced economically productive population over time.
 
-## **3.2 Percentage of Population aged 65 and above by Planning Areas**
+When we examine the population's life expectancy, we see that females have longer life expectancy than males especially from age 70 onwards. However, the life expectancy of females and males both show sharp decline from age 65 onwards, which suggest higher mortality rates for these groups.
 
-According to [World Health Organisation](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/1119), economically dependent population is defined as the sum of the population under 15 years of age plus the population 65 years of age and over, for a given country, territory, or geographic area, at a specific point in time.
+With ageing population, it is important to focus on preventive healthcare measures for a healthier population. This enables a later retirement age for older Singaporeans to contribute economically. Given the lower life expectancy of males, more studies can be done to understand their morbidity causes to improve their lifespan.
 
-Economically productive population is defined as the population between 15 and 64 years of age, for the same country, territory, or geographic area, at the same specific point in time.
+## **3.2 Population demographics by Planning Areas**
 
-With this definition, we will examine
+There are [55 Planning Areas](https://eservice.ura.gov.sg/maps/?service=MP#) (PA) designated by URA where each planning area is served by a town centre and several neighbourhood commercial/shopping centres. Each area is supported by smaller subzones (SZ), which are usually centred on a focal point such as neighbourhood centre or activity node.
 
-we will create and sum up the population numbers based on the above definition
+Using data visualisation, we can identify the top 10 PA with the highest percentage of population aged 65 and above.
 
--   Those Age_DR \< 15 are "Dependent_0_14"
+### 3.1.1 Data preparation and Visualisation
 
--   Those Age_DR \>= 65 are "Dependent_65_plus"
-
--   Those Age_DR \>= 15 & Age_DR \<= 64 are "Productive"
-
-The following codes compute the raw data prior to plotting:
+The following codes are used to:
 
 -   Compute Total population per Planning Area
 
@@ -234,6 +257,68 @@ pop_summary <- left_join(pop_total, pop_65plus, by = "PA") %>%
   )
 ```
 
+```{r}
+plot_data <- pop_summary %>%
+  arrange(desc(Pop65Plus)) %>%
+  slice_head(n = 20) %>%
+  mutate(
+    PA = factor(PA, levels = rev(PA)),  # reversed so top is highest
+    LabelPop = format(Pop65Plus, big.mark = ","),
+    LabelPct = paste0(round(PctOver65, 1), "%")
+  )
+
+# Step 2: Compute medians
+median_pop <- median(plot_data$Pop65Plus, na.rm = TRUE)
+median_pct <- median(plot_data$PctOver65, na.rm = TRUE)
+
+# Step 3: Population chart
+pop_plot <- ggplot(plot_data, aes(x = Pop65Plus, y = PA)) +
+  geom_col(fill = "#006400")+
+  geom_text(aes(label = LabelPop), hjust = -0.2, size = 2.8) +
+  geom_vline(xintercept = median_pop, color = "red", linetype = "dashed", linewidth = 0.8) +
+annotate("text", x = median_pop, y = 21.2, label = "Median", color = "red", size = 3, vjust = 1) +
+  labs(title = "Total Population Aged 65+", x = "Population", y = NULL) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    axis.text.y = element_text(size = 10),
+    plot.margin = margin(5, 30, 5, 5)  # add right margin space
+  ) +
+  scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.2)))
+
+# Step 4: Percentage chart
+pct_plot <- ggplot(plot_data, aes(x = PctOver65, y = PA)) +
+  geom_col(fill = "#b6e2d3") +
+  geom_text(aes(label = LabelPct), hjust = -0.2, size = 2.8) +
+  geom_vline(xintercept = median_pct, color = "red", linetype = "dashed", linewidth = 0.8) +
+ annotate("text", x = median_pct, y = 21.2, label = "Median", color = "red", size = 3, vjust = 1)+
+  labs(title = "Percentage Population Aged 65+", x = "% Aged 65+", y = NULL) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    plot.margin = margin(5, 5, 5, 5)  # optional
+  ) +
+  scale_x_continuous(labels = scales::label_percent(scale = 1), expand = expansion(mult = c(0, 0.2)))
+
+# Step 5: Combine with patchwork
+final_chart <- pop_plot + pct_plot +
+  plot_layout(ncol = 2, widths = c(1.1, 1)) +
+  plot_annotation(
+    title = "Elderly Population and Proportion by Top 20 Planning Area",
+    theme = theme(
+      plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+      plot.subtitle = element_text(hjust = 0.5, size = 11)
+    )
+  )
+
+# Step 6: Show plot
+final_chart
+```
+
+### 3.1.3 Extra visualisation beyond the scope of Take-Home Exercise
+
 We download the Singapore's map shapefile from [URA's Master Plan 2014 Planning Area Boundary](https://data.gov.sg/collections/1701/view).
 
 ```{r, message=FALSE}
@@ -255,29 +340,31 @@ sg_map_joined <- sg_map %>%
 
 Creating the plot
 
--   <div>
+::: panel-tabset
+### The plot
 
-    ```{r}
-    p <- ggplot(sg_map_joined) +
-      geom_sf(aes(
-        fill = PctOver65,
-        text = paste0("Planning Area: ", PA, "\nAge 65+ Population: ", PctOver65, "%")
-      ), color = "white", linewidth = 0.3) +
-      scale_fill_gradient(
-        low = "#ffe0b2",   # brighter light orange
-        high = "#b30000",  # strong dark red-orange
-        na.value = "grey90") +
-      labs(
-        title = "Residents Aged 65+ by Planning Area (2024)",
-        fill = "% Aged 65+"
-      ) +
-      theme_void() + theme(panel.border = element_blank()) 
+31b8e172-b470-440e-83d8-e6b185028602:dAB5AHAAZQA6AE8AUQBCAGoAQQBHAEkAQQBOAHcAQQA1AEEARwBVAEEATgBnAEIAagBBAEMAMABBAE8AQQBBADQAQQBEAGcAQQBaAEEAQQB0AEEARABRAEEAWQBRAEEAdwBBAEcAVQBBAEwAUQBBADUAQQBHAE0AQQBPAFEAQgBpAEEAQwAwAEEAWgBnAEIAbQBBAEQAWQBBAE4AdwBCAGoAQQBHAFEAQQBOAEEAQQB3AEEARABRAEEAWgBRAEEAMgBBAEQAQQBBAAoAcABvAHMAaQB0AGkAbwBuADoATQBRAEEAMwBBAEQAQQBBAE4AZwBBAHgAQQBBAD0APQAKAHAAcgBlAGYAaQB4ADoACgBzAG8AdQByAGMAZQA6AFkAQQBCAGcAQQBHAEEAQQBlAHcAQgA3AEEASABJAEEATABBAEEAZwBBAEcAVQBBAFkAdwBCAG8AQQBHADgAQQBJAEEAQQA5AEEAQwBBAEEAUgBnAEIAQgBBAEUAdwBBAFUAdwBCAEYAQQBIADAAQQBmAFEAQQBLAEEASABBAEEASQBBAEEAOABBAEMAMABBAEkAQQBCAG4AQQBHAGMAQQBjAEEAQgBzAEEARwA4AEEAZABBAEEAbwBBAEgATQBBAFoAdwBCAGYAQQBHADAAQQBZAFEAQgB3AEEARgA4AEEAYQBnAEIAdgBBAEcAawBBAGIAZwBCAGwAQQBHAFEAQQBLAFEAQQBnAEEAQwBzAEEAQwBnAEEAZwBBAEMAQQBBAFoAdwBCAGwAQQBHADgAQQBiAFEAQgBmAEEASABNAEEAWgBnAEEAbwBBAEcARQBBAFoAUQBCAHoAQQBDAGcAQQBDAGcAQQBnAEEAQwBBAEEASQBBAEEAZwBBAEcAWQBBAGEAUQBCAHMAQQBHAHcAQQBJAEEAQQA5AEEAQwBBAEEAVQBBAEIAagBBAEgAUQBBAFQAdwBCADIAQQBHAFUAQQBjAGcAQQAyAEEARABVAEEATABBAEEASwBBAEMAQQBBAEkAQQBBAGcAQQBDAEEAQQBkAEEAQgBsAEEASABnAEEAZABBAEEAZwBBAEQAMABBAEkAQQBCAHcAQQBHAEUAQQBjAHcAQgAwAEEARwBVAEEATQBBAEEAbwBBAEMASQBBAFUAQQBCAHMAQQBHAEUAQQBiAGcAQgB1AEEARwBrAEEAYgBnAEIAbgBBAEMAQQBBAFEAUQBCAHkAQQBHAFUAQQBZAFEAQQA2AEEAQwBBAEEASQBnAEEAcwBBAEMAQQBBAFUAQQBCAEIAQQBDAHcAQQBJAEEAQQBpAEEARgB3AEEAYgBnAEIAQgBBAEcAYwBBAFoAUQBBAGcAQQBEAFkAQQBOAFEAQQByAEEAQwBBAEEAVQBBAEIAdgBBAEgAQQBBAGQAUQBCAHMAQQBHAEUAQQBkAEEAQgBwAEEARwA4AEEAYgBnAEEANgBBAEMAQQBBAEkAZwBBAHMAQQBDAEEAQQBVAEEAQgBqAEEASABRAEEAVAB3AEIAMgBBAEcAVQBBAGMAZwBBADIAQQBEAFUAQQBMAEEAQQBnAEEAQwBJAEEASgBRAEEAaQBBAEMAawBBAEMAZwBBAGcAQQBDAEEAQQBLAFEAQQBzAEEAQwBBAEEAWQB3AEIAdgBBAEcAdwBBAGIAdwBCAHkAQQBDAEEAQQBQAFEAQQBnAEEAQwBJAEEAZAB3AEIAbwBBAEcAawBBAGQAQQBCAGwAQQBDAEkAQQBMAEEAQQBnAEEARwB3AEEAYQBRAEIAdQBBAEcAVQBBAGQAdwBCAHAAQQBHAFEAQQBkAEEAQgBvAEEAQwBBAEEAUABRAEEAZwBBAEQAQQBBAEwAZwBBAHoAQQBDAGsAQQBJAEEAQQByAEEAQQBvAEEASQBBAEEAZwBBAEgATQBBAFkAdwBCAGgAQQBHAHcAQQBaAFEAQgBmAEEARwBZAEEAYQBRAEIAcwBBAEcAdwBBAFgAdwBCAG4AQQBIAEkAQQBZAFEAQgBrAEEARwBrAEEAWgBRAEIAdQBBAEgAUQBBAEsAQQBBAEsAQQBDAEEAQQBJAEEAQQBnAEEAQwBBAEEAYgBBAEIAdgBBAEgAYwBBAEkAQQBBADkAQQBDAEEAQQBJAGcAQQBqAEEARwBZAEEAWgBnAEIAbABBAEQAQQBBAFkAZwBBAHkAQQBDAEkAQQBMAEEAQQBnAEEAQwBBAEEASQBBAEEAagBBAEMAQQBBAFkAZwBCAHkAQQBHAGsAQQBaAHcAQgBvAEEASABRAEEAWgBRAEIAeQBBAEMAQQBBAGIAQQBCAHAAQQBHAGMAQQBhAEEAQgAwAEEAQwBBAEEAYgB3AEIAeQBBAEcARQBBAGIAZwBCAG4AQQBHAFUAQQBDAGcAQQBnAEEAQwBBAEEASQBBAEEAZwBBAEcAZwBBAGEAUQBCAG4AQQBHAGcAQQBJAEEAQQA5AEEAQwBBAEEASQBnAEEAagBBAEcASQBBAE0AdwBBAHcAQQBEAEEAQQBNAEEAQQB3AEEAQwBJAEEATABBAEEAZwBBAEMAQQBBAEkAdwBBAGcAQQBIAE0AQQBkAEEAQgB5AEEARwA4AEEAYgBnAEIAbgBBAEMAQQBBAFoAQQBCAGgAQQBIAEkAQQBhAHcAQQBnAEEASABJAEEAWgBRAEIAawBBAEMAMABBAGIAdwBCAHkAQQBHAEUAQQBiAGcAQgBuAEEARwBVAEEAQwBnAEEAZwBBAEMAQQBBAEkAQQBBAGcAQQBHADQAQQBZAFEAQQB1AEEASABZAEEAWQBRAEIAcwBBAEgAVQBBAFoAUQBBAGcAQQBEADAAQQBJAEEAQQBpAEEARwBjAEEAYwBnAEIAbABBAEgAawBBAE8AUQBBAHcAQQBDAEkAQQBLAFEAQQBnAEEAQwBzAEEAQwBnAEEAZwBBAEMAQQBBAGIAQQBCAGgAQQBHAEkAQQBjAHcAQQBvAEEAQQBvAEEASQBBAEEAZwBBAEMAQQBBAEkAQQBCADAAQQBHAGsAQQBkAEEAQgBzAEEARwBVAEEASQBBAEEAOQBBAEMAQQBBAEkAZwBCAFMAQQBHAFUAQQBjAHcAQgBwAEEARwBRAEEAWgBRAEIAdQBBAEgAUQBBAGMAdwBBAGcAQQBFAEUAQQBaAHcAQgBsAEEARwBRAEEASQBBAEEAMgBBAEQAVQBBAEsAdwBBAGcAQQBHAEkAQQBlAFEAQQBnAEEARgBBAEEAYgBBAEIAaABBAEcANABBAGIAZwBCAHAAQQBHADQAQQBaAHcAQQBnAEEARQBFAEEAYwBnAEIAbABBAEcARQBBAEkAQQBBAG8AQQBEAEkAQQBNAEEAQQB5AEEARABRAEEASwBRAEEAaQBBAEMAdwBBAEMAZwBBAGcAQQBDAEEAQQBJAEEAQQBnAEEARwBZAEEAYQBRAEIAcwBBAEcAdwBBAEkAQQBBADkAQQBDAEEAQQBJAGcAQQBsAEEAQwBBAEEAUQBRAEIAbgBBAEcAVQBBAFoAQQBBAGcAQQBEAFkAQQBOAFEAQQByAEEAQwBJAEEAQwBnAEEAZwBBAEMAQQBBAEsAUQBBAGcAQQBDAHMAQQBDAGcAQQBnAEEAQwBBAEEAZABBAEIAbwBBAEcAVQBBAGIAUQBCAGwAQQBGADgAQQBkAGcAQgB2AEEARwBrAEEAWgBBAEEAbwBBAEMAawBBAEkAQQBBAHIAQQBDAEEAQQBkAEEAQgBvAEEARwBVAEEAYgBRAEIAbABBAEMAZwBBAGMAQQBCAGgAQQBHADQAQQBaAFEAQgBzAEEAQwA0AEEAWQBnAEIAdgBBAEgASQBBAFoAQQBCAGwAQQBIAEkAQQBJAEEAQQA5AEEAQwBBAEEAWgBRAEIAcwBBAEcAVQBBAGIAUQBCAGwAQQBHADQAQQBkAEEAQgBmAEEARwBJAEEAYgBBAEIAaABBAEcANABBAGEAdwBBAG8AQQBDAGsAQQBLAFEAQQBnAEEAQQBvAEEAQwBnAEIAbgBBAEcAYwBBAGMAQQBCAHMAQQBHADgAQQBkAEEAQgBzAEEASABrAEEASwBBAEIAdwBBAEMAdwBBAEkAQQBCADAAQQBHADgAQQBiAHcAQgBzAEEASABRAEEAYQBRAEIAdwBBAEMAQQBBAFAAUQBBAGcAQQBDAEkAQQBkAEEAQgBsAEEASABnAEEAZABBAEEAaQBBAEMAawBBAEMAZwBBAEsAQQBHAEEAQQBZAEEAQgBnAEEAQQA9AD0ACgBzAHUAZgBmAGkAeAA6AA==:31b8e172-b470-440e-83d8-e6b185028602 \### The code
 
-    ggplotly(p, tooltip = "text")
+```{r, eval=FALSE}
+p <- ggplot(sg_map_joined) +
+  geom_sf(aes(
+    fill = PctOver65,
+    text = paste0("Planning Area: ", PA, "\nAge 65+ Population: ", PctOver65, "%")
+  ), color = "white", linewidth = 0.3) +
+  scale_fill_gradient(
+    low = "#ffe0b2",   # brighter light orange
+    high = "#b30000",  # strong dark red-orange
+    na.value = "grey90") +
+  labs(
+    title = "Residents Aged 65+ by Planning Area (2024)",
+    fill = "% Aged 65+"
+  ) +
+  theme_void() + theme(panel.border = element_blank()) 
 
-    ```
+ggplotly(p, tooltip = "text")
 
-    </div>
+```
+:::
 
 ## **3.3 Insights 1**
 
@@ -361,5 +448,7 @@ ggplot(pop_wide_DR, aes(x = DependencyRatio, y = reorder(PA, DependencyRatio), f
 # **5 References**
 
 ## **4.1 XXXX**
-:::
 ::::
+:::::
+
+:::::
