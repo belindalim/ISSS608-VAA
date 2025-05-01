@@ -1,7 +1,8 @@
 ---
-title: "Take-home_Ex01"
+title: "Take-home Exercise 1: Demographic structures and distribution of Singapore in 2024"
 format: html
-date: April 17, 2025
+author: "Belinda Lim"
+date: May 1, 2025
 date-modified: "last-modified"
 editor: source
 execute:
@@ -10,3 +11,126 @@ execute:
   warning: false
   freeze: true
 ---
+
+# **1 Introduction**
+
+## **1.1 Overview**
+
+## **1.2 Objectives**
+
+The objective is to conduct an exploratory data analysis on the demographic structures and distribution of Singapore in 2024.
+
+# **2 Data and Data Pre-processing**
+
+## **2.1 Data Source**
+
+The data for Singapore Residents by Planning Area / Subzone, Single Year of Age and Sex, June 2024 are downloaded from [Department of Statistics, Singapore (DOS)](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data). The dataset comprise 6 variables and 60,424 records.
+
+## **2.2 Loading data and libraries**
+
+::: callout-note
+### Note
+
+It is assumed that you already have [**pacman**](https://cran.r-project.org/web/packages/pacman/index.html) package installed. If not, please go ahead install pacman first. The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.
+:::
+
+```{r}
+pacman::p_load(tidyverse, sf, readr, ggplot2, viridis, plotly)
+```
+
+```{r}
+pop_data <- read_csv("data/Demographic_data.csv", , show_col_types = FALSE)
+```
+
+Under Age, there is also a category "90_and_Over". For data visualisation, the category is converted to the numeric number "90" instead. The following codes will convert and ensure that all figures under "Age" and "Pop" are numeric.
+
+```{r}
+pop_data <- pop_data %>%
+  mutate(
+    Age = if_else(Age == "90_and_Over", "90", Age), 
+    Age = as.numeric(Age),                           
+    Pop = as.numeric(Pop)                            
+  )
+```
+
+# **3 Exploratory Data Analysis and Insights**
+
+## **3.1 Insights 1**
+
+## **3.2 Population aged 65 and above by Planning Areas**
+
+The following codes compute the raw data prior to plotting:
+
+-   Compute Total population per Planning Area
+
+-   Compute Total Population aged 65 and above by Planning Areas
+
+-   Merge both data and compute percentage of Population aged 65 and above by Planning Areas
+
+```{r}
+
+pop_total <- pop_data %>%
+  group_by(PA) %>%
+  summarise(TotalPop = sum(Pop, na.rm = TRUE))
+
+pop_65plus <- pop_data %>%
+  filter(Age >= 65) %>%
+  group_by(PA) %>%
+  summarise(Pop65Plus = sum(Pop, na.rm = TRUE))
+
+
+pop_summary <- left_join(pop_total, pop_65plus, by = "PA") %>%
+  mutate(
+    Pop65Plus = replace_na(Pop65Plus, 0),
+    PctOver65 = Pop65Plus / TotalPop * 100,
+    PctOver65 = ifelse(is.nan(PctOver65), NA, round(PctOver65, 1))
+  )
+```
+
+We download the Singapore's map shapefile from [URA's Master Plan 2014 Planning Area Boundary](https://data.gov.sg/collections/1701/view).
+
+```{r}
+sg_map <- st_read("data/Map/MP14_PLNG_AREA_WEB_PL.shp")
+
+sg_map <- sg_map %>%
+  mutate(PA = toupper(trimws(PLN_AREA_N)))
+
+pop_summary <- pop_summary %>%
+  mutate(PA = toupper(trimws(PA)))
+```
+Join the computed percentage of Population aged 65 and above by Planning Areas to the map.
+```{r}
+sg_map_joined <- sg_map %>%
+  left_join(pop_summary, by = "PA")
+```
+
+
+```{r}
+p <- ggplot(sg_map_joined) +
+  geom_sf(aes(
+    fill = PctOver65,
+    text = paste0("Planning Area: ", PA, "\nAge 65+ Population: ", PctOver65, "%")
+  ), color = "white", linewidth = 0.3) +
+  scale_fill_gradient(
+    low = "#fff5eb",   # very light orange
+    high = "#d94801",  # rich burnt orange
+    na.value = "grey90") +
+  labs(
+    title = "Residents Aged 65+ by Planning Area (2024)",
+    fill = "% Aged 65+"
+  ) +
+  theme_void()  # ⬅️ Cleanest option for maps
+
+ggplotly(p, tooltip = "text")
+
+```
+
+## **3.3 Insights 1**
+
+# **4 Conclusion**
+
+## **4.1 XXXX**
+
+# **5 References**
+
+## **4.1 XXXX**
