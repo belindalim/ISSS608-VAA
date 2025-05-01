@@ -85,7 +85,7 @@ age_pyramid <- pop_data %>%
 
 The Age Pyramid data is plotted:
 
-::::: panel-tabset
+::: panel-tabset
 ### The plot
 
 ```{r, echo=FALSE}
@@ -117,6 +117,7 @@ pyramid_plot <- ggplot(age_pyramid, aes(x = Population, y = AgeGroup, fill = Sex
   theme(legend.position="bottom") +
   theme(plot.title = element_text(hjust = 0.5))  
 ```
+:::
 
 To compare the life expectancy of males and female for each age group, it is recommended to compute proportions for comparison by age groups due to the different total population numbers in each age group. This helps to standardise the data for equitable comparisons of life expectancy between males and females.
 

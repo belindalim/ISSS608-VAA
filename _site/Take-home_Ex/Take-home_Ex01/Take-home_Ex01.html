@@ -326,12 +326,12 @@ Note
 </div>
 <p>The Age Pyramid data is plotted:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">The code</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">The code</a></li></ul>
 <div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Age Pyramid</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pyramid_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(age_pyramid, <span class="fu">aes</span>(<span class="at">x =</span> Population, <span class="at">y =</span> AgeGroup, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
@@ -344,6 +344,9 @@ Note
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>) <span class="sc">+</span></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </div>
 <p>To compare the life expectancy of males and female for each age group, it is recommended to compute proportions for comparison by age groups due to the different total population numbers in each age group. This helps to standardise the data for equitable comparisons of life expectancy between males and females.</p>
 <p>The formula used for males and females respectively is as follows:</p>
@@ -395,12 +398,12 @@ Note
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Proportion =</span> Population <span class="sc">/</span> <span class="fu">sum</span>(Population))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">The code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">3.1.2 Insights</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false">3.1.1 Data preparation and Visualisation</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-5" role="tab" aria-controls="tabset-2-5" aria-selected="false">3.1.3 Extra visualisation beyond the scope of Take-Home Exercise</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">The code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">3.1.2 Insights</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false">3.1.1 Data preparation and Visualisation</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-5" role="tab" aria-controls="tabset-3-5" aria-selected="false">3.1.3 Extra visualisation beyond the scope of Take-Home Exercise</a></li></ul>
 <div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <p>The 2 plots are combined using the code below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>legend <span class="ot">&lt;-</span> cowplot<span class="sc">::</span><span class="fu">get_legend</span>(</span>
@@ -444,7 +447,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
 <p>Singapore’s population age pyramid can be described as a <a href="https://populationeducation.org/what-are-different-types-population-pyramids/">constrictive pyramid</a>, which is typical for countries with higher levels of social and economic developments. There are low birth and mortality rates, contributing to an ageing population. The largest population groups belong to ages 30-64, and this results in a reduced economically productive population over time.</p>
 <p>When we examine the population’s life expectancy, we see that females have longer life expectancy than males especially from age 70 onwards. However, the life expectancy of females and males both show sharp decline from age 65 onwards, which suggest higher mortality rates for these groups.</p>
 <p>With ageing population, it is important to focus on preventive healthcare measures for a healthier population. This enables a later retirement age for older Singaporeans to contribute economically. Given the lower life expectancy of males, more studies can be done to understand their morbidity causes to improve their lifespan.</p>
@@ -454,7 +457,7 @@ Note
 <p>Using data visualisation, we can identify the top 10 PA with the highest percentage of population aged 65 and above.</p>
 </section>
 </div>
-<div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
+<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
 <p>The following codes are used to:</p>
 <ul>
 <li><p>Compute Total population per Planning Area</p></li>
@@ -545,7 +548,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-2-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-5-tab">
+<div id="tabset-3-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-5-tab">
 <p>We download the Singapore’s map shapefile from <a href="https://data.gov.sg/collections/1701/view">URA’s Master Plan 2014 Planning Area Boundary</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sg_map <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/Map/MP14_PLNG_AREA_WEB_PL.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -573,9 +576,9 @@ Projected CRS: SVY21</code></pre>
 </div>
 <p>Creating the plot</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">The plot</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">The plot</a></li></ul>
 <div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <p>31b8e172-b470-440e-83d8-e6b185028602:dAB5AHAAZQA6AE8AUQBCAGoAQQBHAEkAQQBOAHcAQQA1AEEARwBVAEEATgBnAEIAagBBAEMAMABBAE8AQQBBADQAQQBEAGcAQQBaAEEAQQB0AEEARABRAEEAWQBRAEEAdwBBAEcAVQBBAEwAUQBBADUAQQBHAE0AQQBPAFEAQgBpAEEAQwAwAEEAWgBnAEIAbQBBAEQAWQBBAE4AdwBCAGoAQQBHAFEAQQBOAEEAQQB3AEEARABRAEEAWgBRAEEAMgBBAEQAQQBBAAoAcABvAHMAaQB0AGkAbwBuADoATQBRAEEAMwBBAEQAQQBBAE4AZwBBAHgAQQBBAD0APQAKAHAAcgBlAGYAaQB4ADoACgBzAG8AdQByAGMAZQA6AFkAQQBCAGcAQQBHAEEAQQBlAHcAQgA3AEEASABJAEEATABBAEEAZwBBAEcAVQBBAFkAdwBCAG8AQQBHADgAQQBJAEEAQQA5AEEAQwBBAEEAUgBnAEIAQgBBAEUAdwBBAFUAdwBCAEYAQQBIADAAQQBmAFEAQQBLAEEASABBAEEASQBBAEEAOABBAEMAMABBAEkAQQBCAG4AQQBHAGMAQQBjAEEAQgBzAEEARwA4AEEAZABBAEEAbwBBAEgATQBBAFoAdwBCAGYAQQBHADAAQQBZAFEAQgB3AEEARgA4AEEAYQBnAEIAdgBBAEcAawBBAGIAZwBCAGwAQQBHAFEAQQBLAFEAQQBnAEEAQwBzAEEAQwBnAEEAZwBBAEMAQQBBAFoAdwBCAGwAQQBHADgAQQBiAFEAQgBmAEEASABNAEEAWgBnAEEAbwBBAEcARQBBAFoAUQBCAHoAQQBDAGcAQQBDAGcAQQBnAEEAQwBBAEEASQBBAEEAZwBBAEcAWQBBAGEAUQBCAHMAQQBHAHcAQQBJAEEAQQA5AEEAQwBBAEEAVQBBAEIAagBBAEgAUQBBAFQAdwBCADIAQQBHAFUAQQBjAGcAQQAyAEEARABVAEEATABBAEEASwBBAEMAQQBBAEkAQQBBAGcAQQBDAEEAQQBkAEEAQgBsAEEASABnAEEAZABBAEEAZwBBAEQAMABBAEkAQQBCAHcAQQBHAEUAQQBjAHcAQgAwAEEARwBVAEEATQBBAEEAbwBBAEMASQBBAFUAQQBCAHMAQQBHAEUAQQBiAGcAQgB1AEEARwBrAEEAYgBnAEIAbgBBAEMAQQBBAFEAUQBCAHkAQQBHAFUAQQBZAFEAQQA2AEEAQwBBAEEASQBnAEEAcwBBAEMAQQBBAFUAQQBCAEIAQQBDAHcAQQBJAEEAQQBpAEEARgB3AEEAYgBnAEIAQgBBAEcAYwBBAFoAUQBBAGcAQQBEAFkAQQBOAFEAQQByAEEAQwBBAEEAVQBBAEIAdgBBAEgAQQBBAGQAUQBCAHMAQQBHAEUAQQBkAEEAQgBwAEEARwA4AEEAYgBnAEEANgBBAEMAQQBBAEkAZwBBAHMAQQBDAEEAQQBVAEEAQgBqAEEASABRAEEAVAB3AEIAMgBBAEcAVQBBAGMAZwBBADIAQQBEAFUAQQBMAEEAQQBnAEEAQwBJAEEASgBRAEEAaQBBAEMAawBBAEMAZwBBAGcAQQBDAEEAQQBLAFEAQQBzAEEAQwBBAEEAWQB3AEIAdgBBAEcAdwBBAGIAdwBCAHkAQQBDAEEAQQBQAFEAQQBnAEEAQwBJAEEAZAB3AEIAbwBBAEcAawBBAGQAQQBCAGwAQQBDAEkAQQBMAEEAQQBnAEEARwB3AEEAYQBRAEIAdQBBAEcAVQBBAGQAdwBCAHAAQQBHAFEAQQBkAEEAQgBvAEEAQwBBAEEAUABRAEEAZwBBAEQAQQBBAEwAZwBBAHoAQQBDAGsAQQBJAEEAQQByAEEAQQBvAEEASQBBAEEAZwBBAEgATQBBAFkAdwBCAGgAQQBHAHcAQQBaAFEAQgBmAEEARwBZAEEAYQBRAEIAcwBBAEcAdwBBAFgAdwBCAG4AQQBIAEkAQQBZAFEAQgBrAEEARwBrAEEAWgBRAEIAdQBBAEgAUQBBAEsAQQBBAEsAQQBDAEEAQQBJAEEAQQBnAEEAQwBBAEEAYgBBAEIAdgBBAEgAYwBBAEkAQQBBADkAQQBDAEEAQQBJAGcAQQBqAEEARwBZAEEAWgBnAEIAbABBAEQAQQBBAFkAZwBBAHkAQQBDAEkAQQBMAEEAQQBnAEEAQwBBAEEASQBBAEEAagBBAEMAQQBBAFkAZwBCAHkAQQBHAGsAQQBaAHcAQgBvAEEASABRAEEAWgBRAEIAeQBBAEMAQQBBAGIAQQBCAHAAQQBHAGMAQQBhAEEAQgAwAEEAQwBBAEEAYgB3AEIAeQBBAEcARQBBAGIAZwBCAG4AQQBHAFUAQQBDAGcAQQBnAEEAQwBBAEEASQBBAEEAZwBBAEcAZwBBAGEAUQBCAG4AQQBHAGcAQQBJAEEAQQA5AEEAQwBBAEEASQBnAEEAagBBAEcASQBBAE0AdwBBAHcAQQBEAEEAQQBNAEEAQQB3AEEAQwBJAEEATABBAEEAZwBBAEMAQQBBAEkAdwBBAGcAQQBIAE0AQQBkAEEAQgB5AEEARwA4AEEAYgBnAEIAbgBBAEMAQQBBAFoAQQBCAGgAQQBIAEkAQQBhAHcAQQBnAEEASABJAEEAWgBRAEIAawBBAEMAMABBAGIAdwBCAHkAQQBHAEUAQQBiAGcAQgBuAEEARwBVAEEAQwBnAEEAZwBBAEMAQQBBAEkAQQBBAGcAQQBHADQAQQBZAFEAQQB1AEEASABZAEEAWQBRAEIAcwBBAEgAVQBBAFoAUQBBAGcAQQBEADAAQQBJAEEAQQBpAEEARwBjAEEAYwBnAEIAbABBAEgAawBBAE8AUQBBAHcAQQBDAEkAQQBLAFEAQQBnAEEAQwBzAEEAQwBnAEEAZwBBAEMAQQBBAGIAQQBCAGgAQQBHAEkAQQBjAHcAQQBvAEEAQQBvAEEASQBBAEEAZwBBAEMAQQBBAEkAQQBCADAAQQBHAGsAQQBkAEEAQgBzAEEARwBVAEEASQBBAEEAOQBBAEMAQQBBAEkAZwBCAFMAQQBHAFUAQQBjAHcAQgBwAEEARwBRAEEAWgBRAEIAdQBBAEgAUQBBAGMAdwBBAGcAQQBFAEUAQQBaAHcAQgBsAEEARwBRAEEASQBBAEEAMgBBAEQAVQBBAEsAdwBBAGcAQQBHAEkAQQBlAFEAQQBnAEEARgBBAEEAYgBBAEIAaABBAEcANABBAGIAZwBCAHAAQQBHADQAQQBaAHcAQQBnAEEARQBFAEEAYwBnAEIAbABBAEcARQBBAEkAQQBBAG8AQQBEAEkAQQBNAEEAQQB5AEEARABRAEEASwBRAEEAaQBBAEMAdwBBAEMAZwBBAGcAQQBDAEEAQQBJAEEAQQBnAEEARwBZAEEAYQBRAEIAcwBBAEcAdwBBAEkAQQBBADkAQQBDAEEAQQBJAGcAQQBsAEEAQwBBAEEAUQBRAEIAbgBBAEcAVQBBAFoAQQBBAGcAQQBEAFkAQQBOAFEAQQByAEEAQwBJAEEAQwBnAEEAZwBBAEMAQQBBAEsAUQBBAGcAQQBDAHMAQQBDAGcAQQBnAEEAQwBBAEEAZABBAEIAbwBBAEcAVQBBAGIAUQBCAGwAQQBGADgAQQBkAGcAQgB2AEEARwBrAEEAWgBBAEEAbwBBAEMAawBBAEkAQQBBAHIAQQBDAEEAQQBkAEEAQgBvAEEARwBVAEEAYgBRAEIAbABBAEMAZwBBAGMAQQBCAGgAQQBHADQAQQBaAFEAQgBzAEEAQwA0AEEAWQBnAEIAdgBBAEgASQBBAFoAQQBCAGwAQQBIAEkAQQBJAEEAQQA5AEEAQwBBAEEAWgBRAEIAcwBBAEcAVQBBAGIAUQBCAGwAQQBHADQAQQBkAEEAQgBmAEEARwBJAEEAYgBBAEIAaABBAEcANABBAGEAdwBBAG8AQQBDAGsAQQBLAFEAQQBnAEEAQQBvAEEAQwBnAEIAbgBBAEcAYwBBAGMAQQBCAHMAQQBHADgAQQBkAEEAQgBzAEEASABrAEEASwBBAEIAdwBBAEMAdwBBAEkAQQBCADAAQQBHADgAQQBiAHcAQgBzAEEASABRAEEAYQBRAEIAdwBBAEMAQQBBAFAAUQBBAGcAQQBDAEkAQQBkAEEAQgBsAEEASABnAEEAZABBAEEAaQBBAEMAawBBAEMAZwBBAEsAQQBHAEEAQQBZAEEAQgBnAEEAQQA9AD0ACgBzAHUAZgBmAGkAeAA6AA==:31b8e172-b470-440e-83d8-e6b185028602 ### The code</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sg_map_joined) <span class="sc">+</span></span>
@@ -685,9 +688,7 @@ Projected CRS: SVY21</code></pre>
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
+<p>:::::</p>
 <p>:::::</p>
 
 
