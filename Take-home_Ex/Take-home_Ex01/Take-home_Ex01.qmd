@@ -146,7 +146,7 @@ life_expectancy <- pop_data %>%
   mutate(Proportion = Population / sum(Population))
 ```
 
-:::: panel-tabset
+::: panel-tabset
 ### The plot
 
 ```{r, echo=FALSE}
@@ -177,6 +177,7 @@ life_expectancy_plot <- ggplot(life_expectancy, aes(x = AgeGroup, y = Proportion
     legend.position = "bottom"
   )
 ```
+:::
 
 The 2 plots are combined using the code below.
 
@@ -258,7 +259,10 @@ pop_summary <- left_join(pop_total, pop_65plus, by = "PA") %>%
   )
 ```
 
-```{r}
+
+::: panel-tabset
+### The plot
+```{r, echol = FALSE}
 plot_data <- pop_summary %>%
   arrange(desc(Pop65Plus)) %>%
   slice_head(n = 20) %>%
@@ -317,6 +321,75 @@ final_chart <- pop_plot + pct_plot +
 # Step 6: Show plot
 final_chart
 ```
+
+### The code
+```{r, eval=FALSE}
+plot_data <- pop_summary %>%
+  arrange(desc(Pop65Plus)) %>%
+  slice_head(n = 20) %>%
+  mutate(
+    PA = factor(PA, levels = rev(PA)),  # reversed so top is highest
+    LabelPop = format(Pop65Plus, big.mark = ","),
+    LabelPct = paste0(round(PctOver65, 1), "%")
+  )
+
+# Step 2: Compute medians
+median_pop <- median(plot_data$Pop65Plus, na.rm = TRUE)
+median_pct <- median(plot_data$PctOver65, na.rm = TRUE)
+
+# Step 3: Population chart
+pop_plot <- ggplot(plot_data, aes(x = Pop65Plus, y = PA)) +
+  geom_col(fill = "#006400")+
+  geom_text(aes(label = LabelPop), hjust = -0.2, size = 2.8) +
+  geom_vline(xintercept = median_pop, color = "red", linetype = "dashed", linewidth = 0.8) +
+annotate("text", x = median_pop, y = 21.2, label = "Median", color = "red", size = 3, vjust = 1) +
+  labs(title = "Total Population Aged 65+", x = "Population", y = NULL) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    axis.text.y = element_text(size = 10),
+    plot.margin = margin(5, 30, 5, 5)  # add right margin space
+  ) +
+  scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.2)))
+
+# Step 4: Percentage chart
+pct_plot <- ggplot(plot_data, aes(x = PctOver65, y = PA)) +
+  geom_col(fill = "#b6e2d3") +
+  geom_text(aes(label = LabelPct), hjust = -0.2, size = 2.8) +
+  geom_vline(xintercept = median_pct, color = "red", linetype = "dashed", linewidth = 0.8) +
+ annotate("text", x = median_pct, y = 21.2, label = "Median", color = "red", size = 3, vjust = 1)+
+  labs(title = "Percentage Population Aged 65+", x = "% Aged 65+", y = NULL) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    plot.margin = margin(5, 5, 5, 5)  # optional
+  ) +
+  scale_x_continuous(labels = scales::label_percent(scale = 1), expand = expansion(mult = c(0, 0.2)))
+
+# Step 5: Combine with patchwork
+final_chart <- pop_plot + pct_plot +
+  plot_layout(ncol = 2, widths = c(1.1, 1)) +
+  plot_annotation(
+    title = "Elderly Population and Proportion by Top 20 Planning Area",
+    theme = theme(
+      plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+      plot.subtitle = element_text(hjust = 0.5, size = 11)
+    )
+  )
+
+# Step 6: Show plot
+final_chart
+```
+
+
+
+
+:::
+
+
+
 
 ### 3.1.3 Extra visualisation beyond the scope of Take-Home Exercise
 
