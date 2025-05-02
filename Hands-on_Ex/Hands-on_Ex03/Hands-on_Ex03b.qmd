@@ -320,7 +320,7 @@ bp
 
 These are the additional plots which are beyond the scope of the hand-on exercises for my learning purposes.
 
-```{r, echo=FALSE, include=FALSE, message=FALSE, warning=FALSE}
+```{r, eval=FALSE, include=FALSE, message=FALSE, warning=FALSE}
 # Required libraries
 library(tidyverse)
 library(gganimate)
