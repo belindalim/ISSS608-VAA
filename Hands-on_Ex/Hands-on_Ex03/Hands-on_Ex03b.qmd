@@ -315,3 +315,49 @@ bp
 -   [Building an animation step-by-step with gganimate](https://www.alexcookson.com/post/2020-10-18-building-an-animation-step-by-step-with-gganimate/).
 
 -   [Creating a composite gif with multiple gganimate panels](https://solarchemist.se/2021/08/02/composite-gif-gganimate/)
+
+## **4.6 Additional Plots** 
+
+These are the additional plots which are beyond the scope of the hand-on exercises for my learning purposes.
+
+```{r, echo=FALSE, include=FALSE, message=FALSE, warning=FALSE}
+# Required libraries
+library(tidyverse)
+library(gganimate)
+library(lubridate)
+
+# Load and prepare data
+coe_data <- read_csv("data/COEBiddingResultsPrices.csv") %>%
+  mutate(
+    month = ym(month),
+    premium = as.numeric(premium),
+    quota = as.numeric(quota),
+    vehicle_class = factor(vehicle_class)
+  )
+
+# Define plot
+p_line <- ggplot(coe_data, aes(x = month, y = premium, color = vehicle_class, group = vehicle_class)) +
+  geom_line(size = 1.2) +
+  labs(
+    title = "COE Premium Over Time — {frame_along}",
+    x = "Month", y = "Premium (SGD)", color = "Category"
+  ) +
+  transition_reveal(month) +
+  theme_minimal()
+
+# Animate and save explicitly using gifski_renderer
+anim_save(
+  filename = "coe_prices_line.gif",
+  animation = p_line,
+  renderer = gifski_renderer(loop = TRUE),
+  width = 900,
+  height = 500,
+  duration = 15
+)
+
+anim_save("coe_prices_line.gif")
+```
+
+![](coe_prices_line.gif)
+
+
