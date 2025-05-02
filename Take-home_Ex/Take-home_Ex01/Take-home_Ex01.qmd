@@ -16,7 +16,7 @@ execute:
 
 ## **1.1 Overview**
 
-According to [World Health Organisation](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/1119), economically dependent population is defined as the sum of the population under 15 years of age plus the population 65 years of age and over, for a given country, territory, or geographic area, at a specific point in time.
+According to [World Health Organisation](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/1119), an economically dependent population is defined as the sum of the population under 15 years of age plus the population 65 years of age and over, for a given country, territory, or geographic area, at a specific point in time.
 
 Economically productive population is defined as the population between 15 and 64 years of age, for the same country, territory, or geographic area, at the same specific point in time.
 
@@ -33,11 +33,11 @@ The data for Singapore Residents by Planning Area / Subzone, Single Year of Age 
 ::: callout-note
 ### Note
 
-It is assumed that you already have [**pacman**](https://cran.r-project.org/web/packages/pacman/index.html) package installed. If not, please go ahead install pacman first. The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.
+It is assumed that you already have [**pacman**](https://cran.r-project.org/web/packages/pacman/index.html) package installed. If not, please go ahead install pacman first. The code chunk below uses p_load() of pacman package to check if packages listed below are installed in the computer. If they are, then they will be launched into R.
 :::
 
 ```{r}
-pacman::p_load(tidyverse, patchwork, scales, sf, readr, ggplot2, viridis, plotly)
+pacman::p_load(tidyverse, ggplot2, patchwork, scales, sf, readr, viridis, plotly)
 ```
 
 We import Demographic_data.csv into R environment by using [*read_csv()*](https://readr.tidyverse.org/reference/read_delim.html) function of [**readr**](https://readr.tidyverse.org/) package. **readr** is one of the tidyverse package.
@@ -46,7 +46,21 @@ We import Demographic_data.csv into R environment by using [*read_csv()*](https:
 pop_data <- read_csv("data/Demographic_data.csv", show_col_types = FALSE)
 ```
 
-Under Age, there is also a category "90_and_Over". For data visualisation, the category is converted to the numeric number "90" instead. The following codes will convert and ensure that all figures under "Age" and "Pop" are numeric.
+The attributes found in the pop_data are:
+
+-   Planning Areas (PA): There are 55 PAs in Singapore designated by URA, such as Ang Mo Kio, Bedok, etc.
+
+-   Subzones (SZ): PAs are further sub-divided into 332 SZs, such as Ang Mo Kio Town Centre, Cheng San etc. under Ang Mo Kio PA.
+
+-   Age: 0 to 89 and 90_and_Over
+
+-   Sex: Male and Female
+
+-   Pop: Number of Population
+
+-   Time: 2024
+
+Under Age, there is also a category "90_and_Over". For data visualisation, the category is converted to the numeric number "90" instead. The following codes will convert and ensure that all figures under "Age" and "Pop" are numeric prior to further data analysis.
 
 ```{r}
 pop_data <- pop_data %>%
@@ -63,33 +77,27 @@ pop_data <- pop_data %>%
 
 ### 3.1.1 Data preparation and Visualisation
 
-First we will bin the ages into 5-year blocks for greater visibility by age groups.
+First we will bin the ages into 5-year blocks for greater visibility by age groups in the age pyramid.
 
 ```{r}
-# Prepare age group bins
 pop_data <- pop_data %>%
 mutate(AgeGroup = cut(Age, breaks = c(seq(0, 90, by = 5), Inf),
                         labels = c(paste(seq(0,85,5), seq(4,89,5), sep="-"), "90+"),
                         right = FALSE))
 ```
 
-The population data is grouped by age group and sex and convert the male population such that it is on the left.
+The population data is grouped by age group and sex and the data for male population is converted such that it is on the left.
 
 ```{r}
-# Age Pyramid Data
 age_pyramid <- pop_data %>%
   group_by(AgeGroup, Sex) %>%
   summarise(Population = sum(Pop), .groups = 'drop') %>%
   mutate(Population = ifelse(Sex == "Males", -Population, Population))
 ```
 
-The Age Pyramid data is plotted:
+The code for the Age Pyramid plot is:
 
-::: panel-tabset
-### The plot
-
-```{r, echo=FALSE}
-# Plot Age Pyramid
+```{r}
 pyramid_plot <- ggplot(age_pyramid, aes(x = Population, y = AgeGroup, fill = Sex)) +
   geom_bar(stat="identity") +
   scale_x_continuous(
@@ -100,32 +108,16 @@ pyramid_plot <- ggplot(age_pyramid, aes(x = Population, y = AgeGroup, fill = Sex
   theme_minimal() +
   theme(legend.position="bottom") +
   theme(plot.title = element_text(hjust = 0.5))  
+
 ```
 
-### The code
+To compare the life expectancy of males and female for each age group, it is recommended to compute their proportions for comparison by age groups due to the different population numbers in each age group. This helps to standardise the data for equitable comparisons of life expectancy between males and females.
 
-```{r, eval=FALSE}
-# Plot Age Pyramid
-pyramid_plot <- ggplot(age_pyramid, aes(x = Population, y = AgeGroup, fill = Sex)) +
-  geom_bar(stat="identity") +
-  scale_x_continuous(
-  labels = function(x) scales::comma(abs(x)),
-  breaks = scales::pretty_breaks()) +
-  labs(title="Age Pyramid", x="Population", y="Age Group") +
-  scale_fill_manual(values = c("Males" = "lightblue", "Females" = "pink")) +
-  theme_minimal() +
-  theme(legend.position="bottom") +
-  theme(plot.title = element_text(hjust = 0.5))  
-```
-:::
-
-To compare the life expectancy of males and female for each age group, it is recommended to compute proportions for comparison by age groups due to the different total population numbers in each age group. This helps to standardise the data for equitable comparisons of life expectancy between males and females.
-
-The formula used for males and females respectively is as follows:
+The formula used for computation of males and females proportion respectively is as follows:
 
 **Proportion for each age group = Population in each age group / Total population for each sex**
 
-For example,
+The illustration for male population proportion are shown below:
 
 | Age Group | Population    | Proportion                  |
 |-----------|---------------|-----------------------------|
@@ -138,7 +130,6 @@ For example,
 The code below executes the computation above.
 
 ```{r}
-# Life Expectancy Data (Proportional)
 life_expectancy <- pop_data %>%
   group_by(AgeGroup, Sex) %>%
   summarise(Population = sum(Pop), .groups = 'drop') %>%
@@ -146,11 +137,9 @@ life_expectancy <- pop_data %>%
   mutate(Proportion = Population / sum(Population))
 ```
 
-::: panel-tabset
-### The plot
+The code for the Life Expectancy Proportion plot is:
 
-```{r, echo=FALSE}
-# Plot Life Expectancy Proportion
+```{r}
 life_expectancy_plot <- ggplot(life_expectancy, aes(x = AgeGroup, y = Proportion, fill = Sex)) +
   geom_bar(stat = "identity", position = "dodge") +
   labs(title = "Life Expectancy Comparison by Proportion", x = "Age Group", y = "Proportion") +
@@ -162,42 +151,26 @@ life_expectancy_plot <- ggplot(life_expectancy, aes(x = AgeGroup, y = Proportion
     legend.position = "bottom"
   )
 ```
-
-### The code
-
-```{r, echo=FALSE}
-life_expectancy_plot <- ggplot(life_expectancy, aes(x = AgeGroup, y = Proportion, fill = Sex)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Life Expectancy Comparison by Proportion", x = "Age Group", y = "Proportion") +
-  scale_fill_manual(values = c("Males" = "lightblue", "Females" = "pink")) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(hjust = 0.5),
-    axis.text.x = element_text(angle = 45, hjust = 0.5),
-    legend.position = "bottom"
-  )
-```
-:::
 
 The 2 plots are combined using the code below.
 
-```{r}
+::: panel-tabset
+### The plot
+
+```{r, echo=FALSE, out.width='100%'}
 legend <- cowplot::get_legend(
   pyramid_plot + theme(legend.position = "bottom")
 )
 
-# Wrap legend as a patchwork element
 legend_patch <- wrap_elements(full = legend)
 
-# Title as a patchwork plot (can use plot_annotation + blank)
 title_patch <- plot_annotation(
   title = "Age Pyramid and Life Expectancy Comparison",
   theme = theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"))
 )
 
-# Combine everything
 combined_plot <- pyramid_plot + life_expectancy_plot +
-  plot_layout(ncol = 2, widths = c(1, 2), guides = "collect") +
+  plot_layout(ncol = 2, widths = c(1, 1.5), guides = "collect") +
   plot_annotation(
     title = "Age Pyramid and Life Expectancy Comparison",
     theme = theme(
@@ -216,29 +189,64 @@ combined_plot <- pyramid_plot + life_expectancy_plot +
 combined_plot
 ```
 
+### The code
+
+```{r, echo=FALSE}
+legend <- cowplot::get_legend(
+  pyramid_plot + theme(legend.position = "bottom")
+)
+
+legend_patch <- wrap_elements(full = legend)
+
+title_patch <- plot_annotation(
+  title = "Age Pyramid and Life Expectancy Comparison",
+  theme = theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"))
+)
+
+combined_plot <- pyramid_plot + life_expectancy_plot +
+  plot_layout(ncol = 2, widths = c(1, 1.5), guides = "collect") +
+  plot_annotation(
+    title = "Age Pyramid and Life Expectancy Comparison",
+    theme = theme(
+      plot.title = element_text(hjust = 0.5, size = 14, face = "bold")
+    )
+  ) & 
+  theme(
+    legend.position = "bottom",
+    legend.box = "horizontal",
+    legend.justification = "center",
+    legend.box.just = "center",
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 9)
+  )
+
+combined_plot
+```
+:::
+
 ### 3.1.2 Insights
 
-Singapore's population age pyramid can be described as a [constrictive pyramid](https://populationeducation.org/what-are-different-types-population-pyramids/), which is typical for countries with higher levels of social and economic developments. There are low birth and mortality rates, contributing to an ageing population. The largest population groups belong to ages 30-64, and this results in a reduced economically productive population over time.
+Singapore's population age pyramid can be described as a [constrictive pyramid](https://populationeducation.org/what-are-different-types-population-pyramids/), which is typical for countries with higher levels of socio-economic developments. There are low birth and mortality rates, contributing to an ageing population. The largest population groups belong to ages 30-64. As population ages, the proportion of economically productive population will decline.
 
-When we examine the population's life expectancy, we see that females have longer life expectancy than males especially from age 70 onwards. However, the life expectancy of females and males both show sharp decline from age 65 onwards, which suggest higher mortality rates for these groups.
+The population's life expectancy shows that females have longer life expectancy than males especially from age 70 onwards. Notably, the life expectancy of females and males both show sharp decline from age 65, which suggest higher mortality rates for these groups.
 
-With ageing population, it is important to focus on preventive healthcare measures for a healthier population. This enables a later retirement age for older Singaporeans to contribute economically. Given the lower life expectancy of males, more studies can be done to understand their morbidity causes to improve their lifespan.
+With ageing population, it is important to focus on preventive healthcare measures for a healthier population. This enables better quality of life and delayed retirement age for older Singaporeans to contribute economically. Given the lower life expectancy of males, more studies can be done to understand their health factors and morbidity causes to improve their lifespan.
 
 ## **3.2 Population demographics by Planning Areas**
 
-There are [55 Planning Areas](https://eservice.ura.gov.sg/maps/?service=MP#) (PA) designated by URA where each planning area is served by a town centre and several neighbourhood commercial/shopping centres. Each area is supported by smaller subzones (SZ), which are usually centred on a focal point such as neighbourhood centre or activity node.
+There are 55 Planning Areas (PA) designated by [URA](https://data.gov.sg/collections/1817/view) where each planning area is served by a town centre and several neighbourhood commercial/shopping centres. Each area is supported by smaller subzones (SZ), which are usually centred on a focal point such as neighbourhood centre or activity node.
 
-Using data visualisation, we can identify the top 10 PA with the highest percentage of population aged 65 and above.
+Using data visualisation, we can identify the top 10 PAs with the highest percentage of population aged 65 and above.
 
-### 3.1.1 Data preparation and Visualisation
+### 3.2.1 Data preparation and Visualisation
 
 The following codes are used to:
 
--   Compute Total population per Planning Area
+-   Compute Total population per PA
 
--   Compute Total Population aged 65 and above by Planning Areas
+-   Compute Total Population aged 65 and above by PA
 
--   Merge both data and compute percentage of Population aged 65 and above by Planning Areas
+-   Merge both data and compute percentage of Population aged 65 and above by PA
 
 ```{r}
 
@@ -257,12 +265,13 @@ pop_summary <- left_join(pop_total, pop_65plus, by = "PA") %>%
     PctOver65 = Pop65Plus / TotalPop * 100,
     PctOver65 = ifelse(is.nan(PctOver65), NA, round(PctOver65, 1))
   )
+
 ```
 
-
 ::: panel-tabset
+
 ### The plot
-```{r, echol = FALSE}
+```{r, echo = FALSE}
 plot_data <- pop_summary %>%
   arrange(desc(Pop65Plus)) %>%
   slice_head(n = 20) %>%
@@ -272,17 +281,15 @@ plot_data <- pop_summary %>%
     LabelPct = paste0(round(PctOver65, 1), "%")
   )
 
-# Step 2: Compute medians
 median_pop <- median(plot_data$Pop65Plus, na.rm = TRUE)
 median_pct <- median(plot_data$PctOver65, na.rm = TRUE)
 
-# Step 3: Population chart
 pop_plot <- ggplot(plot_data, aes(x = Pop65Plus, y = PA)) +
   geom_col(fill = "#006400")+
   geom_text(aes(label = LabelPop), hjust = -0.2, size = 2.8) +
   geom_vline(xintercept = median_pop, color = "red", linetype = "dashed", linewidth = 0.8) +
-annotate("text", x = median_pop, y = 21.2, label = "Median", color = "red", size = 3, vjust = 1) +
-  labs(title = "Total Population Aged 65+", x = "Population", y = NULL) +
+annotate("text", x = median_pop, y = 21.2, label = paste("Median =", scales::comma(median_pop)), color = "red", size = 3, vjust = 1) +
+  labs(title = "Population Numbers Aged 65+ by PA", x = NULL, y = NULL) +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 12, face = "bold"),
@@ -291,13 +298,12 @@ annotate("text", x = median_pop, y = 21.2, label = "Median", color = "red", size
   ) +
   scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.2)))
 
-# Step 4: Percentage chart
 pct_plot <- ggplot(plot_data, aes(x = PctOver65, y = PA)) +
   geom_col(fill = "#b6e2d3") +
   geom_text(aes(label = LabelPct), hjust = -0.2, size = 2.8) +
   geom_vline(xintercept = median_pct, color = "red", linetype = "dashed", linewidth = 0.8) +
- annotate("text", x = median_pct, y = 21.2, label = "Median", color = "red", size = 3, vjust = 1)+
-  labs(title = "Percentage Population Aged 65+", x = "% Aged 65+", y = NULL) +
+ annotate("text", x = median_pct, y = 21.2, label = paste0("Median = ", round(median_pct, 1), "%"), color = "red", size = 3, vjust = 1)+
+  labs(title = "% of Population Aged 65+ by PA", x = NULL, y = NULL) +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 12, face = "bold"),
@@ -307,22 +313,21 @@ pct_plot <- ggplot(plot_data, aes(x = PctOver65, y = PA)) +
   ) +
   scale_x_continuous(labels = scales::label_percent(scale = 1), expand = expansion(mult = c(0, 0.2)))
 
-# Step 5: Combine with patchwork
 final_chart <- pop_plot + pct_plot +
   plot_layout(ncol = 2, widths = c(1.1, 1)) +
   plot_annotation(
-    title = "Elderly Population and Proportion by Top 20 Planning Area",
+    title = "Top 20 PAs with highest Elderly Population and Proportion",
     theme = theme(
       plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
       plot.subtitle = element_text(hjust = 0.5, size = 11)
     )
   )
 
-# Step 6: Show plot
 final_chart
 ```
 
 ### The code
+
 ```{r, eval=FALSE}
 plot_data <- pop_summary %>%
   arrange(desc(Pop65Plus)) %>%
@@ -333,17 +338,15 @@ plot_data <- pop_summary %>%
     LabelPct = paste0(round(PctOver65, 1), "%")
   )
 
-# Step 2: Compute medians
 median_pop <- median(plot_data$Pop65Plus, na.rm = TRUE)
 median_pct <- median(plot_data$PctOver65, na.rm = TRUE)
 
-# Step 3: Population chart
 pop_plot <- ggplot(plot_data, aes(x = Pop65Plus, y = PA)) +
   geom_col(fill = "#006400")+
   geom_text(aes(label = LabelPop), hjust = -0.2, size = 2.8) +
   geom_vline(xintercept = median_pop, color = "red", linetype = "dashed", linewidth = 0.8) +
-annotate("text", x = median_pop, y = 21.2, label = "Median", color = "red", size = 3, vjust = 1) +
-  labs(title = "Total Population Aged 65+", x = "Population", y = NULL) +
+annotate("text", x = median_pop, y = 21.2, label = paste("Median =", scales::comma(median_pop)), color = "red", size = 3, vjust = 1) +
+  labs(title = "Population Numbers Aged 65+ by PA", x = NULL, y = NULL) +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 12, face = "bold"),
@@ -352,13 +355,12 @@ annotate("text", x = median_pop, y = 21.2, label = "Median", color = "red", size
   ) +
   scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.2)))
 
-# Step 4: Percentage chart
 pct_plot <- ggplot(plot_data, aes(x = PctOver65, y = PA)) +
   geom_col(fill = "#b6e2d3") +
   geom_text(aes(label = LabelPct), hjust = -0.2, size = 2.8) +
   geom_vline(xintercept = median_pct, color = "red", linetype = "dashed", linewidth = 0.8) +
- annotate("text", x = median_pct, y = 21.2, label = "Median", color = "red", size = 3, vjust = 1)+
-  labs(title = "Percentage Population Aged 65+", x = "% Aged 65+", y = NULL) +
+ annotate("text", x = median_pct, y = 21.2, label = paste0("Median = ", round(median_pct, 1), "%"), color = "red", size = 3, vjust = 1)+
+  labs(title = "% of Population Aged 65+ by PA", x = NULL, y = NULL) +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 12, face = "bold"),
@@ -368,38 +370,36 @@ pct_plot <- ggplot(plot_data, aes(x = PctOver65, y = PA)) +
   ) +
   scale_x_continuous(labels = scales::label_percent(scale = 1), expand = expansion(mult = c(0, 0.2)))
 
-# Step 5: Combine with patchwork
 final_chart <- pop_plot + pct_plot +
   plot_layout(ncol = 2, widths = c(1.1, 1)) +
   plot_annotation(
-    title = "Elderly Population and Proportion by Top 20 Planning Area",
+    title = "Top 20 PAs with highest Elderly Population and Proportion",
     theme = theme(
       plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
       plot.subtitle = element_text(hjust = 0.5, size = 11)
     )
   )
 
-# Step 6: Show plot
 final_chart
 ```
-
-
-
-
 :::
 
+### 3.2.2 Insights
+
+There are 10 PAs with elderly population aged 65 and above exceeding Singapore's median. As the population size vary across PAs, it is important to compare the numbers and percentage of elderly population in each PA to understand the ageing profile. From both charts, we conclude that there are 4 PAs, namely Bedok, Ang Mo Kio, Bukit Merah and Toa Payoh that have both higher number and percentage of elderly population higher than the median. These are critical ageing towns that requires necessary infrastructure, healthcare and eldercare services to support mobility and active lifestyle. 
+
+Towns like Tampines and Hougang also have high numbers of elderly population but with percentage of elderly population slightly below the median. These towns have more demographic mix, with younger populations residing. Given the high absolute number of elderly population, it is important to plan ahead and scale up infrastructure, healthcare and eldercare services too. 
 
 
+### 3.2.3 Extra visualisation beyond the scope of Take-Home Exercise
 
-### 3.1.3 Extra visualisation beyond the scope of Take-Home Exercise
-
-We download the Singapore's map shapefile from [URA's Master Plan 2014 Planning Area Boundary](https://data.gov.sg/collections/1701/view).
+The Singapore's map shapefile is downloaded from [URA's Master Plan 2014 Planning Area Boundary](https://data.gov.sg/collections/1701/view).
 
 ```{r, message=FALSE}
 sg_map <- st_read("data/Map/MP14_PLNG_AREA_WEB_PL.shp")
 ```
 
-Format and Join the computed percentage of Population aged 65 and above by Planning Areas to the map.
+The percentage of Population aged 65 and above by PA is computed and joined to the map.
 
 ```{r}
 sg_map <- sg_map %>%
@@ -412,10 +412,11 @@ sg_map_joined <- sg_map %>%
   left_join(pop_summary, by = "PA")
 ```
 
-Creating the plot
+The choropleth map with percentage of elderly population aged 65 and above is shown below: 
 
 ::: panel-tabset
 ### The plot
+
 ```{r, echo =FALSE}
 p <- ggplot(sg_map_joined) +
   geom_sf(aes(
@@ -427,7 +428,7 @@ p <- ggplot(sg_map_joined) +
     high = "#b30000",  # strong dark red-orange
     na.value = "grey90") +
   labs(
-    title = "Residents Aged 65+ by Planning Area (2024)",
+    title = "% of Population Aged 65+ by PA",
     fill = "% Aged 65+"
   ) +
   theme_void() + theme(panel.border = element_blank()) 
@@ -541,7 +542,6 @@ ggplot(pop_wide_DR, aes(x = DependencyRatio, y = reorder(PA, DependencyRatio), f
 # **5 References**
 
 ## **4.1 XXXX**
-::::
-:::::
 
-:::::
+::: :::::
+:::
