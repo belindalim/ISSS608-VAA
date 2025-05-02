@@ -987,3 +987,90 @@ This [link](https://davidgohel.github.io/ggiraph/index.html) provides online ver
 ## **3.10 Additional Plots**
 
 These are the additional plots which are beyond the scope of the hand-on exercises for my learning purposes.
+
+### 3.10.1 Additional Plots Interactive map of Singapore using ggiraph and plotlyr
+
+The Singapore's map shapefile is downloaded from [URA's Master Plan 2014 Planning Area Boundary](https://data.gov.sg/collections/1701/view).
+
+The libraries and codes used for data pre-processing and visualisation are shown below:
+
+```{r}
+library(sf)
+library(ggplot2)
+library(ggiraph)
+library(dplyr)
+
+sg_map <- st_read("data/Map/MP14_PLNG_AREA_WEB_PL.shp")
+
+sg_map <- sg_map %>%
+  mutate(tooltip = paste0("Planning Area: ", PLN_AREA_N))
+
+gg <- ggplot() +
+  geom_sf_interactive(
+    data = sg_map,
+    aes(geometry = geometry, tooltip = tooltip, data_id = PLN_AREA_N),
+    fill = "lightblue", color = "white"
+  ) +
+  theme_minimal()
+
+girafe(ggobj = gg, width_svg = 6, height_svg = 3)
+```
+
+### 3.10.2 Interactive map of Singapore based on percentage of Population aged 65 and above by Planning Areas (PA)
+
+First, the percentage of Population aged 65 and above by PA is computed and joined to the map.
+
+The codes used for data pre-processing are shown below:
+
+```{r}
+pop_data <- read_csv("data/Demographic_data.csv", show_col_types = FALSE)
+```
+
+```{r}
+pop_summary <- pop_data %>%
+  mutate(
+    Age_DR = if_else(Age == "90_and_Over", "90", as.character(Age)),
+    Age_DR = as.numeric(Age_DR),
+    Pop_DR = as.numeric(Pop)
+  ) %>%
+  group_by(PA) %>%
+  summarise(
+    Pop65 = sum(Pop_DR[Age_DR >= 65], na.rm = TRUE),
+    TotalPop = sum(Pop_DR, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(PctOver65 = round(Pop65 / TotalPop * 100, 1))
+```
+
+```{r}
+sg_map <- sg_map %>%
+  mutate(PA = toupper(trimws(PLN_AREA_N)))
+
+pop_summary <- pop_summary %>%
+  mutate(PA = toupper(trimws(PA)))
+
+sg_map_joined <- sg_map %>%
+  left_join(pop_summary, by = "PA")
+```
+
+The choropleth map with percentage of elderly population aged 65 and above is created using the codes shown below:
+
+```{r}
+p <- ggplot(sg_map_joined) +
+  geom_sf(aes(
+    fill = PctOver65,
+    text = paste0("Planning Area: ", PA, "\nAge 65+ Population: ", PctOver65, "%")
+  ), color = "white", linewidth = 0.3) +
+  scale_fill_gradient(
+    low = "#ffe0b2",   
+    high = "#b30000",  
+    na.value = "grey90") +
+  labs(
+    title = "% of Population Aged 65+ by PA",
+    fill = "% Aged 65+"
+  ) +
+  theme_void() + theme(panel.border = element_blank()) 
+
+ggplotly(p, tooltip = "text")
+
+```
