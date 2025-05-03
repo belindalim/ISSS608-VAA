@@ -92,7 +92,10 @@ The population data is grouped by age group and sex and the data for male popula
 age_pyramid <- pop_data %>%
   group_by(AgeGroup, Sex) %>%
   summarise(Population = sum(Pop), .groups = 'drop') %>%
-  mutate(Population = ifelse(Sex == "Males", -Population, Population))
+  mutate(
+    Population = ifelse(Sex == "Males", -Population, Population), 
+    Sex = factor(Sex, levels = c("Males", "Females"))
+    )
 ```
 
 The code for the Age Pyramid plot is:
@@ -103,52 +106,46 @@ pyramid_plot <- ggplot(age_pyramid, aes(x = Population, y = AgeGroup, fill = Sex
   scale_x_continuous(
   labels = function(x) scales::comma(abs(x)),
   breaks = scales::pretty_breaks()) +
-  labs(title="Age Pyramid", x="Population", y="Age Group") +
+  labs(title="Age Pyramid (Population Number)", x= NULL, y="Age Group") +
   scale_fill_manual(values = c("Males" = "lightblue", "Females" = "pink")) +
   theme_minimal() +
   theme(legend.position="bottom") +
-  theme(plot.title = element_text(hjust = 0.5))  
-
+  theme(plot.title = element_text(hjust = 0.5,size = 11))  
 ```
 
-To compare the life expectancy of males and female for each age group, it is recommended to compute their proportions for comparison by age groups due to the different population numbers in each age group. This helps to standardise the data for equitable comparisons of life expectancy between males and females.
-
-The formula used for computation of males and females proportion respectively is as follows:
-
-**Proportion for each age group = Population in each age group / Total population for each sex**
-
-The illustration for male population proportion are shown below:
-
-| Age Group | Population    | Proportion                  |
-|-----------|---------------|-----------------------------|
-| 0-4       | 87,420        | 87,420 / 2,038,810 = 0.043  |
-| 5-9       | 103,540       | 103,540 / 2,038,810 = 0.051 |
-| ...       | ...           | ...                         |
-| ...       | ...           | ...                         |
-| **Total** | **2,038,810** | **1**                       |
-
-The code below executes the computation above.
+The proportion of males and females are also compared for each age group. The code to compute the porportion is as follows:
 
 ```{r}
-life_expectancy <- pop_data %>%
+proportion_data <- pop_data %>%
   group_by(AgeGroup, Sex) %>%
-  summarise(Population = sum(Pop), .groups = 'drop') %>%
-  group_by(Sex) %>%
-  mutate(Proportion = Population / sum(Population))
+  summarise(Population = sum(Pop, na.rm = TRUE), .groups = "drop") %>%
+  group_by(AgeGroup) %>%
+  mutate(
+    TotalInGroup = sum(Population),
+    Proportion = Population / TotalInGroup
+  )
 ```
 
-The code for the Life Expectancy Proportion plot is:
+The code for the Proportion plot is:
 
 ```{r}
-life_expectancy_plot <- ggplot(life_expectancy, aes(x = AgeGroup, y = Proportion, fill = Sex)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Life Expectancy Comparison by Proportion", x = "Age Group", y = "Proportion") +
-  scale_fill_manual(values = c("Males" = "lightblue", "Females" = "pink")) +
+proportion_plot <- ggplot(proportion_data, aes(x = Proportion, y = AgeGroup, fill = Sex)) +
+  geom_bar(stat = "identity") +
+  geom_vline(xintercept = 0.5, color = "red", linetype = "dotted", linewidth = 1) + 
+  labs(
+    title = "Proportion of Males vs Females by Age Group",
+    x = NULL,
+    y = NULL
+  ) +
+  scale_fill_manual(
+  values = c("Males" = "lightblue", "Females" = "pink"),
+  guide = "none"  # 👈 This is the key part!
+) +
   theme_minimal() +
   theme(
-    plot.title = element_text(hjust = 0.5),
-    axis.text.x = element_text(angle = 45, hjust = 0.5),
-    legend.position = "bottom"
+    axis.text.x = element_text(hjust = 1),
+    plot.title = element_text(hjust = 0.5,size = 11),
+    legend.position = "none"
   )
 ```
 
@@ -158,65 +155,61 @@ The 2 plots are combined using the code below.
 ### The plot
 
 ```{r, echo=FALSE, out.width='100%'}
-legend <- cowplot::get_legend(
-  pyramid_plot + theme(legend.position = "bottom")
-)
+library(patchwork)
 
-legend_patch <- wrap_elements(full = legend)
+proportion_plot <- proportion_plot +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
-title_patch <- plot_annotation(
-  title = "Age Pyramid and Life Expectancy Comparison",
-  theme = theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"))
-)
-
-combined_plot <- pyramid_plot + life_expectancy_plot +
-  plot_layout(ncol = 2, widths = c(1, 1.5), guides = "collect") +
+combined_plot <- wrap_plots(
+  list(pyramid_plot, proportion_plot),
+  ncol = 2,
+  widths = c(1, 1),
+  guides = "collect",
+  align = "hv",
+  axis = "y"
+) +
   plot_annotation(
-    title = "Age Pyramid and Life Expectancy Comparison",
+    title = "Age Pyramid and Proportion",
     theme = theme(
       plot.title = element_text(hjust = 0.5, size = 14, face = "bold")
     )
-  ) & 
+  ) &
   theme(
     legend.position = "bottom",
     legend.box = "horizontal",
     legend.justification = "center",
     legend.box.just = "center",
-    legend.text = element_text(size = 8),
+    legend.text = element_text(size = 9),
     legend.title = element_text(size = 9)
   )
 
 combined_plot
 ```
 
-### The code
+```{r, eval=FALSE}
+proportion_plot <- proportion_plot +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
-```{r, echo=FALSE}
-legend <- cowplot::get_legend(
-  pyramid_plot + theme(legend.position = "bottom")
-)
-
-legend_patch <- wrap_elements(full = legend)
-
-title_patch <- plot_annotation(
-  title = "Age Pyramid and Life Expectancy Comparison",
-  theme = theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"))
-)
-
-combined_plot <- pyramid_plot + life_expectancy_plot +
-  plot_layout(ncol = 2, widths = c(1, 1.5), guides = "collect") +
+combined_plot <- wrap_plots(
+  list(pyramid_plot, proportion_plot),
+  ncol = 2,
+  widths = c(1, 1.5),
+  guides = "collect",
+  align = "hv",
+  axis = "y"
+) +
   plot_annotation(
-    title = "Age Pyramid and Life Expectancy Comparison",
+    title = "Age Pyramid and Proportion",
     theme = theme(
       plot.title = element_text(hjust = 0.5, size = 14, face = "bold")
     )
-  ) & 
+  ) &
   theme(
     legend.position = "bottom",
     legend.box = "horizontal",
     legend.justification = "center",
     legend.box.just = "center",
-    legend.text = element_text(size = 8),
+    legend.text = element_text(size = 9),
     legend.title = element_text(size = 9)
   )
 
@@ -226,11 +219,11 @@ combined_plot
 
 ### 3.1.2 Insights
 
-Singapore's population age pyramid can be described as a [constrictive pyramid](https://populationeducation.org/what-are-different-types-population-pyramids/), which is typical for countries with higher levels of socio-economic developments. There are low birth and mortality rates, contributing to an ageing population. The largest population groups belong to ages 30-64. As population ages, the proportion of economically productive population will decline.
+Singapore's population age pyramid can be described as a [constrictive pyramid](https://populationeducation.org/what-are-different-types-population-pyramids/), which is typical for countries with higher socio-economic development. There are low birth and mortality rates, contributing to an ageing population. The largest population groups belong to ages 30-64. As population ages, the proportion of economically productive population will decline.
 
-The population's life expectancy shows that females have longer life expectancy than males especially from age 70 onwards. Notably, the life expectancy of females and males both show sharp decline from age 65, which suggest higher mortality rates for these groups.
+The population's proportion shows that there is gender balance in the younger population aged 30 and below. Notably, there is increasingly higher proportion of females than males from age 70 onwards. This suggests that females tend to have longer life expectancy than males.
 
-With ageing population, it is important to focus on preventive healthcare measures for a healthier population. This enables better quality of life and delayed retirement age for older Singaporeans to contribute economically. Given the lower life expectancy of males, more studies can be done to understand their health factors and morbidity causes to improve their lifespan.
+With ageing population, it is important to focus on preventive healthcare measures for a healthier population. This enables better quality of life and delayed retirement age for older Singaporeans to contribute economically. As there are higher proportion of elderly females, more resources such as hospital beds or geriatric care can be catered for the females.
 
 ## **3.2 Population demographics by Planning Areas**
 
@@ -276,7 +269,7 @@ plot_data <- pop_summary %>%
   arrange(desc(Pop65Plus)) %>%
   slice_head(n = 20) %>%
   mutate(
-    PA = factor(PA, levels = rev(PA)),  # reversed so top is highest
+    PA = factor(PA, levels = rev(PA)),  
     LabelPop = format(Pop65Plus, big.mark = ","),
     LabelPct = paste0(round(PctOver65, 1), "%")
   )
@@ -294,7 +287,7 @@ annotate("text", x = median_pop, y = 21.2, label = paste("Median =", scales::com
   theme(
     plot.title = element_text(size = 12, face = "bold"),
     axis.text.y = element_text(size = 10),
-    plot.margin = margin(5, 30, 5, 5)  # add right margin space
+    plot.margin = margin(5, 30, 5, 5)  
   ) +
   scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.2)))
 
@@ -390,74 +383,6 @@ There are 10 PAs with elderly population aged 65 and above exceeding Singapore's
 
 Towns like Tampines and Hougang also have high numbers of elderly population but with percentage of elderly population slightly below the median. These towns have more demographic mix, with younger populations residing. Given the high absolute number of elderly population, it is important to plan ahead and scale up infrastructure, healthcare and eldercare services too.
 
-### 3.2.3 Extra visualisation beyond the scope of Take-Home Exercise
-
-The Singapore's map shapefile is downloaded from [URA's Master Plan 2014 Planning Area Boundary](https://data.gov.sg/collections/1701/view).
-
-```{r, message=FALSE}
-sg_map <- st_read("data/Map/MP14_PLNG_AREA_WEB_PL.shp")
-```
-
-The percentage of Population aged 65 and above by PA is computed and joined to the map.
-
-```{r}
-sg_map <- sg_map %>%
-  mutate(PA = toupper(trimws(PLN_AREA_N)))
-
-pop_summary <- pop_summary %>%
-  mutate(PA = toupper(trimws(PA)))
-
-sg_map_joined <- sg_map %>%
-  left_join(pop_summary, by = "PA")
-```
-
-The choropleth map with percentage of elderly population aged 65 and above is shown below:
-
-::: panel-tabset
-### The plot
-
-```{r, echo =FALSE}
-p <- ggplot(sg_map_joined) +
-  geom_sf(aes(
-    fill = PctOver65,
-    text = paste0("Planning Area: ", PA, "\nAge 65+ Population: ", PctOver65, "%")
-  ), color = "white", linewidth = 0.3) +
-  scale_fill_gradient(
-    low = "#ffe0b2",   
-    high = "#b30000",  
-    na.value = "grey90") +
-  labs(
-    title = "% of Population Aged 65+ by PA",
-    fill = "% Aged 65+"
-  ) +
-  theme_void() + theme(panel.border = element_blank()) 
-
-ggplotly(p, tooltip = "text")
-
-```
-
-### The code
-
-```{r, eval=FALSE}
-p <- ggplot(sg_map_joined) +
-  geom_sf(aes(
-    fill = PctOver65,
-    text = paste0("Planning Area: ", PA, "\nAge 65+ Population: ", PctOver65, "%")
-  ), color = "white", linewidth = 0.3) +
-  scale_fill_gradient(
-    low = "#ffe0b2",   
-    high = "#b30000",  
-    na.value = "grey90") +
-  labs(
-    title = "Residents Aged 65+ by Planning Area (2024)",
-    fill = "% Aged 65+"
-  ) +
-  theme_void() + theme(panel.border = element_blank()) 
-
-ggplotly(p, tooltip = "text")
-
-```
-:::
 
 ## **3.3 Dependency Ratio**
 
@@ -680,3 +605,73 @@ Future studies can consider having time-series analysis to analyse population ch
 
 ::: :::::
 :::
+
+# **6 Extra visualisation beyond the scope of Take-Home Exercise**
+
+The Singapore's map shapefile is downloaded from [URA's Master Plan 2014 Planning Area Boundary](https://data.gov.sg/collections/1701/view).
+
+```{r, message=FALSE}
+sg_map <- st_read("data/Map/MP14_PLNG_AREA_WEB_PL.shp")
+```
+
+The percentage of Population aged 65 and above by PA is computed and joined to the map.
+
+```{r}
+sg_map <- sg_map %>%
+  mutate(PA = toupper(trimws(PLN_AREA_N)))
+
+pop_summary <- pop_summary %>%
+  mutate(PA = toupper(trimws(PA)))
+
+sg_map_joined <- sg_map %>%
+  left_join(pop_summary, by = "PA")
+```
+
+The choropleth map with percentage of elderly population aged 65 and above is shown below:
+
+::: panel-tabset
+### The plot
+
+```{r, echo =FALSE}
+p <- ggplot(sg_map_joined) +
+  geom_sf(aes(
+    fill = PctOver65,
+    text = paste0("Planning Area: ", PA, "\nAge 65+ Population: ", PctOver65, "%")
+  ), color = "white", linewidth = 0.3) +
+  scale_fill_gradient(
+    low = "#ffe0b2",   
+    high = "#b30000",  
+    na.value = "grey90") +
+  labs(
+    title = "% of Population Aged 65+ by PA",
+    fill = "% Aged 65+"
+  ) +
+  theme_void() + theme(panel.border = element_blank()) 
+
+ggplotly(p, tooltip = "text")
+
+```
+
+### The code
+
+```{r, eval=FALSE}
+p <- ggplot(sg_map_joined) +
+  geom_sf(aes(
+    fill = PctOver65,
+    text = paste0("Planning Area: ", PA, "\nAge 65+ Population: ", PctOver65, "%")
+  ), color = "white", linewidth = 0.3) +
+  scale_fill_gradient(
+    low = "#ffe0b2",   
+    high = "#b30000",  
+    na.value = "grey90") +
+  labs(
+    title = "Residents Aged 65+ by Planning Area (2024)",
+    fill = "% Aged 65+"
+  ) +
+  theme_void() + theme(panel.border = element_blank()) 
+
+ggplotly(p, tooltip = "text")
+
+```
+:::
+
