@@ -37,7 +37,10 @@ It is assumed that you already have [**pacman**](https://cran.r-project.org/web
 :::
 
 ```{r}
-pacman::p_load(tidyverse, ggplot2, patchwork, scales, sf, readr, viridis, plotly)
+pacman::p_load(tidyverse, patchwork, scales, sf, plotly)
+# tidyverse, patchwork, scales, sf, plotly
+
+# tidyverse, ggplot2, patchwork, scales, sf, readr, viridis, plotly
 ```
 
 We import Demographic_data.csv into R environment by using [*read_csv()*](https://readr.tidyverse.org/reference/read_delim.html) function of [**readr**](https://readr.tidyverse.org/) package. **readr** is one of the tidyverse package.
@@ -110,7 +113,7 @@ pyramid_plot <- ggplot(age_pyramid, aes(x = Population, y = AgeGroup, fill = Sex
   scale_fill_manual(values = c("Males" = "lightblue", "Females" = "pink")) +
   theme_minimal() +
   theme(legend.position="bottom") +
-  theme(plot.title = element_text(hjust = 0.5,size = 11))  
+  theme(plot.title = element_text(hjust = 0.5,size = 11, face = "bold"))  
 ```
 
 The proportion of males and females are also compared for each age group. The code to compute the porportion is as follows:
@@ -139,12 +142,12 @@ proportion_plot <- ggplot(proportion_data, aes(x = Proportion, y = AgeGroup, fil
   ) +
   scale_fill_manual(
   values = c("Males" = "lightblue", "Females" = "pink"),
-  guide = "none"  # 👈 This is the key part!
+  guide = "none"  
 ) +
   theme_minimal() +
   theme(
-    axis.text.x = element_text(hjust = 1),
-    plot.title = element_text(hjust = 0.5,size = 11),
+    axis.text.x = element_text(hjust = 0.5),
+    plot.title = element_text(hjust = 0.5,size = 11, face = "bold"),
     legend.position = "none"
   )
 ```
@@ -155,7 +158,6 @@ The 2 plots are combined using the code below.
 ### The plot
 
 ```{r, echo=FALSE, out.width='100%'}
-library(patchwork)
 
 proportion_plot <- proportion_plot +
   theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
@@ -278,7 +280,7 @@ median_pop <- median(plot_data$Pop65Plus, na.rm = TRUE)
 median_pct <- median(plot_data$PctOver65, na.rm = TRUE)
 
 pop_plot <- ggplot(plot_data, aes(x = Pop65Plus, y = PA)) +
-  geom_col(fill = "#006400")+
+  geom_col(fill = "#6DAF88")+
   geom_text(aes(label = LabelPop), hjust = -0.2, size = 2.8) +
   geom_vline(xintercept = median_pop, color = "red", linetype = "dashed", linewidth = 0.8) +
 annotate("text", x = median_pop, y = 21.2, label = paste("Median =", scales::comma(median_pop)), color = "red", size = 3, vjust = 1) +
@@ -309,7 +311,7 @@ pct_plot <- ggplot(plot_data, aes(x = PctOver65, y = PA)) +
 final_chart <- pop_plot + pct_plot +
   plot_layout(ncol = 2, widths = c(1.1, 1)) +
   plot_annotation(
-    title = "Top 20 PAs with highest Elderly Population and Proportion",
+    title = "Top 20 PAs with highest Elderly Population",
     theme = theme(
       plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
       plot.subtitle = element_text(hjust = 0.5, size = 11)
@@ -326,7 +328,7 @@ plot_data <- pop_summary %>%
   arrange(desc(Pop65Plus)) %>%
   slice_head(n = 20) %>%
   mutate(
-    PA = factor(PA, levels = rev(PA)),  # reversed so top is highest
+    PA = factor(PA, levels = rev(PA)),  
     LabelPop = format(Pop65Plus, big.mark = ","),
     LabelPct = paste0(round(PctOver65, 1), "%")
   )
@@ -335,7 +337,7 @@ median_pop <- median(plot_data$Pop65Plus, na.rm = TRUE)
 median_pct <- median(plot_data$PctOver65, na.rm = TRUE)
 
 pop_plot <- ggplot(plot_data, aes(x = Pop65Plus, y = PA)) +
-  geom_col(fill = "#006400")+
+  geom_col(fill = "#6DAF88")+
   geom_text(aes(label = LabelPop), hjust = -0.2, size = 2.8) +
   geom_vline(xintercept = median_pop, color = "red", linetype = "dashed", linewidth = 0.8) +
 annotate("text", x = median_pop, y = 21.2, label = paste("Median =", scales::comma(median_pop)), color = "red", size = 3, vjust = 1) +
@@ -344,7 +346,7 @@ annotate("text", x = median_pop, y = 21.2, label = paste("Median =", scales::com
   theme(
     plot.title = element_text(size = 12, face = "bold"),
     axis.text.y = element_text(size = 10),
-    plot.margin = margin(5, 30, 5, 5)  # add right margin space
+    plot.margin = margin(5, 30, 5, 5)  
   ) +
   scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.2)))
 
@@ -366,7 +368,7 @@ pct_plot <- ggplot(plot_data, aes(x = PctOver65, y = PA)) +
 final_chart <- pop_plot + pct_plot +
   plot_layout(ncol = 2, widths = c(1.1, 1)) +
   plot_annotation(
-    title = "Top 20 PAs with highest Elderly Population and Proportion",
+    title = "Top 20 PAs with highest Elderly Population",
     theme = theme(
       plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
       plot.subtitle = element_text(hjust = 0.5, size = 11)
@@ -512,9 +514,8 @@ ggplot(pop_wide_DR, aes(x = DependencyRatio, y = reorder(PA, DependencyRatio), f
   coord_cartesian(clip = "off")
 
 ```
-
 ### The code
-```{r, eval= FALSE}
+```{r, echo =FALSE}
 ggplot(pop_wide_DR, aes(x = DependencyRatio, y = reorder(PA, DependencyRatio), fill = FillGroup)) +
   geom_col() +
 
@@ -570,10 +571,8 @@ ggplot(pop_wide_DR, aes(x = DependencyRatio, y = reorder(PA, DependencyRatio), f
   ) +
   
   coord_cartesian(clip = "off")
-
 ```
 :::
-
 
 ### 3.3.2 Insights
 
@@ -675,3 +674,40 @@ ggplotly(p, tooltip = "text")
 ```
 :::
 
+```{r}
+# Assuming your dataframe is named `pop_data`
+pa_to_pr <- c(
+  "Ang Mo Kio" = "North-East", "Bedok" = "East", "Bishan" = "Central", "Boon Lay" = "West",
+  "Bukit Batok" = "West", "Bukit Merah" = "Central", "Bukit Panjang" = "West", "Bukit Timah" = "Central",
+  "Central Water Catchment" = "North", "Changi" = "East", "Changi Bay" = "East", "Choa Chu Kang" = "West",
+  "Clementi" = "West", "Downtown Core" = "Central", "Geylang" = "Central", "Hougang" = "North-East",
+  "Jurong East" = "West", "Jurong West" = "West", "Kallang" = "Central", "Lim Chu Kang" = "North",
+  "Mandai" = "North", "Marina East" = "Central", "Marina South" = "Central", "Marine Parade" = "Central",
+  "Museum" = "Central", "Newton" = "Central", "North-Eastern Islands" = "North-East", "Novena" = "Central",
+  "Orchard" = "Central", "Outram" = "Central", "Pasir Ris" = "East", "Paya Lebar" = "East",
+  "Pioneer" = "West", "Punggol" = "North-East", "Queenstown" = "Central", "River Valley" = "Central",
+  "Rochor" = "Central", "Seletar" = "North-East", "Sembawang" = "North", "Sengkang" = "North-East",
+  "Serangoon" = "North-East", "Simpang" = "North", "Singapore River" = "Central", "Southern Islands" = "Central",
+  "Straits View" = "Central", "Sungei Kadut" = "North", "Tampines" = "East", "Tanglin" = "Central",
+  "Tengah" = "West", "Toa Payoh" = "Central", "Tuas" = "West", "Western Islands" = "West",
+  "Western Water Catchment" = "West", "Woodlands" = "North", "Yishun" = "North"
+)
+
+# Create new column `PR` based on `PA`
+pop_data$PR <- pa_to_pr[pop_data$PA]
+```
+
+```{r}
+# Convert Age to numeric and uncount by population
+pop_expanded <- pop_data %>%
+  mutate(Age_num = as.numeric(ifelse(Age == "90_and_Over", 90, Age))) %>%
+  filter(!is.na(Age_num)) %>%
+  uncount(weights = Pop)
+
+# Plot boxplot again (weighted by population)
+ggplot(pop_expanded, aes(x = PR, y = Age_num)) +
+  geom_boxplot(fill = "skyblue", alpha = 0.7) +
+  labs(title = "Population-Weighted Age Distribution by Planning Region",
+       x = "Planning Region", y = "Age") +
+  theme_minimal()
+```
