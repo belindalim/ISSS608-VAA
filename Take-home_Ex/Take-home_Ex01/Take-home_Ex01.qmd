@@ -113,7 +113,7 @@ pyramid_plot <- ggplot(age_pyramid, aes(x = Population, y = AgeGroup, fill = Sex
   scale_fill_manual(values = c("Males" = "lightblue", "Females" = "pink")) +
   theme_minimal() +
   theme(legend.position="bottom") +
-  theme(plot.title = element_text(hjust = 0.5,size = 11, face = "bold"))  
+  theme(plot.title = element_text(hjust = 0.5,size = 10, face = "bold"))  
 ```
 
 The proportion of males and females are also compared for each age group. The code to compute the porportion is as follows:
@@ -147,7 +147,7 @@ proportion_plot <- ggplot(proportion_data, aes(x = Proportion, y = AgeGroup, fil
   theme_minimal() +
   theme(
     axis.text.x = element_text(hjust = 0.5),
-    plot.title = element_text(hjust = 0.5,size = 11, face = "bold"),
+    plot.title = element_text(hjust = 0.5,size = 10, face = "bold"),
     legend.position = "none"
   )
 ```
@@ -266,7 +266,7 @@ pop_summary <- left_join(pop_total, pop_65plus, by = "PA") %>%
 ::: panel-tabset
 ### The plot
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, out.width='100%'}
 plot_data <- pop_summary %>%
   arrange(desc(Pop65Plus)) %>%
   slice_head(n = 20) %>%
@@ -385,7 +385,6 @@ There are 10 PAs with elderly population aged 65 and above exceeding Singapore's
 
 Towns like Tampines and Hougang also have high numbers of elderly population but with percentage of elderly population slightly below the median. These towns have more demographic mix, with younger populations residing. Given the high absolute number of elderly population, it is important to plan ahead and scale up infrastructure, healthcare and eldercare services too.
 
-
 ## **3.3 Dependency Ratio**
 
 Dependency ratio measures the average number of economically dependent population per 100 economically productive population, for a given country, territory, or geographic area, at a specific point in time.
@@ -456,39 +455,35 @@ pop_wide_DR <- pop_wide_DR %>%
 
 ::: panel-tabset
 ### The plot
-```{r, echo =FALSE}
+
+```{r, echo =FALSE, out.width='100%'}
 ggplot(pop_wide_DR, aes(x = DependencyRatio, y = reorder(PA, DependencyRatio), fill = FillGroup)) +
   geom_col() +
 
-  # % labels at bar ends
   geom_text(aes(label = paste0(round(DependencyRatio, 1), "%")),
             hjust = -0.2, size = 3, color = "black") +
 
-  # Vertical lines
   geom_vline(xintercept = median_DR, color = "red", linetype = "dashed", linewidth = 0.8) +
   geom_vline(xintercept = q75_DR, color = "darkred", linetype = "dotted", linewidth = 0.8) +
 
-  # Median label, moved left
+
   annotate("text", x = median_DR, y = 2,
            label = paste0("Median = ", round(median_DR, 1), "%"),
            color = "red", size = 3, hjust = 0.5, vjust = -1) +
 
-  # 75th label, moved left
   annotate("text", x = q75_DR, y = 5,
            label = paste0("75th Percentile ", round(q75_DR, 1), "%"),
            color = "darkred", size = 3, hjust = -0.1, vjust = -1) +
 
-  # Fill colors: 3 groups
   scale_fill_manual(
     values = c(
-      "Above 75th" = "orange",                  # darkest blue
-      "Between Median–75th" = "#2171b5",         # medium blue
-      "Below Median" = "#c6dbef"                 # light blue
+      "Above 75th" = "orange",                  
+      "Between Median–75th" = "#2171b5",        
+      "Below Median" = "#c6dbef"                 
     )
   ) +
   guides(fill = "none") +
 
-  # X-axis with % labels
   scale_x_continuous(
     breaks = c(0, 20, 40, 60),
     labels = function(x) paste0(x, "%"),
@@ -514,30 +509,27 @@ ggplot(pop_wide_DR, aes(x = DependencyRatio, y = reorder(PA, DependencyRatio), f
   coord_cartesian(clip = "off")
 
 ```
+
 ### The code
+
 ```{r, echo =FALSE}
 ggplot(pop_wide_DR, aes(x = DependencyRatio, y = reorder(PA, DependencyRatio), fill = FillGroup)) +
   geom_col() +
 
-  # % labels at bar ends
   geom_text(aes(label = paste0(round(DependencyRatio, 1), "%")),
             hjust = -0.2, size = 3, color = "black") +
 
-  # Vertical lines
   geom_vline(xintercept = median_DR, color = "red", linetype = "dashed", linewidth = 0.8) +
   geom_vline(xintercept = q75_DR, color = "darkred", linetype = "dotted", linewidth = 0.8) +
 
-  # Median label, moved left
   annotate("text", x = median_DR, y = 2,
            label = paste0("Median = ", round(median_DR, 1), "%"),
            color = "red", size = 3, hjust = 0.5, vjust = -1) +
 
-  # 75th label, moved left
   annotate("text", x = q75_DR, y = 5,
            label = paste0("75th Percentile ", round(q75_DR, 1), "%"),
            color = "darkred", size = 3, hjust = -0.1, vjust = -1) +
 
-  # Fill colors: 3 groups
   scale_fill_manual(
     values = c(
       "Above 75th" = "orange",                  # darkest blue
@@ -547,7 +539,6 @@ ggplot(pop_wide_DR, aes(x = DependencyRatio, y = reorder(PA, DependencyRatio), f
   ) +
   guides(fill = "none") +
 
-  # X-axis with % labels
   scale_x_continuous(
     breaks = c(0, 20, 40, 60),
     labels = function(x) paste0(x, "%"),
@@ -592,7 +583,7 @@ Future studies can consider having time-series analysis to analyse population ch
 
 <!-- -->
 
--   World Health Organization (2023). *Indicator Metadata Registry: Economically Dependent Population*. Retrieved from: <https://www.who.int/data/gho/indicator-metadata-registry/imr-details/1119>
+-   Population Education. *What are the Different Types of Population Pyramids?* Retrieved from: <https://populationeducation.org/what-are-different-types-population-pyramids/> 
 
 <!-- -->
 
@@ -600,7 +591,9 @@ Future studies can consider having time-series analysis to analyse population ch
 
 <!-- -->
 
--   Ministry of Health Singapore. *Action Plan for Successful Ageing*. Retrieved from: https://www.moh.gov.sg/policies-and-legislation/action-plan-for-successful-ageing
+-   World Health Organization (2023). *Indicator Metadata Registry: Economically Dependent Population*. Retrieved from: <https://www.who.int/data/gho/indicator-metadata-registry/imr-details/1119>
+
+
 
 ::: :::::
 :::
@@ -697,17 +690,3 @@ pa_to_pr <- c(
 pop_data$PR <- pa_to_pr[pop_data$PA]
 ```
 
-```{r}
-# Convert Age to numeric and uncount by population
-pop_expanded <- pop_data %>%
-  mutate(Age_num = as.numeric(ifelse(Age == "90_and_Over", 90, Age))) %>%
-  filter(!is.na(Age_num)) %>%
-  uncount(weights = Pop)
-
-# Plot boxplot again (weighted by population)
-ggplot(pop_expanded, aes(x = PR, y = Age_num)) +
-  geom_boxplot(fill = "skyblue", alpha = 0.7) +
-  labs(title = "Population-Weighted Age Distribution by Planning Region",
-       x = "Planning Region", y = "Age") +
-  theme_minimal()
-```
