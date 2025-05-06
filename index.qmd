@@ -75,7 +75,6 @@ Visual analytics done collaboratively during class sessions.\
 ::: card
 ![](images/Upcoming.png){width="100%" height="200px"}
 
-
 ### Group Project
 
 Group project involving data storytelling.\

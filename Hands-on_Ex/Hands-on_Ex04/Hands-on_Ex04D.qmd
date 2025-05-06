@@ -1,0 +1,146 @@
+---
+title: "Hands-on Exercise 4D"
+author: "Belinda Lim"
+date: May 6, 2025
+date-modified: "last-modified"
+format:
+  html:
+    theme: flatly
+    toc: true
+editor: source
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# **8  Funnel Plots for Fair Comparisons**
+
+## **8.1 Overview**
+
+Funnel plot is a specially designed data visualisation for conducting unbiased comparison between outlets, stores or business entities. By the end of this hands-on exercise, you will gain hands-on experience on:
+
+-   plotting funnel plots by using **funnelPlotR** package,
+
+-   plotting static funnel plot by using ggplot2 package, and
+
+-   plotting interactive funnel plot by using both **plotly R** and **ggplot2** packages.
+
+## **8.2 Installing and Launching R Packages**
+
+In this exercise, four R packages will be used. They are:
+
+-   **readr** for importing csv into R.
+
+-   **FunnelPlotR** for creating funnel plot.
+
+-   **ggplot2** for creating funnel plot manually.
+
+-   **knitr** for building static html table.
+
+-   **plotly** for creating interactive funnel plot.
+
+xxxx
+
+## **8.3 Importing Data**
+
+In this section, COVID-19_DKI_Jakarta will be used. The data was downloaded from [Open Data Covid-19 Provinsi DKI Jakarta portal](https://riwayat-file-covid-19-dki-jakarta-jakartagis.hub.arcgis.com/). For this hands-on exercise, we are going to compare the cumulative COVID-19 cases and death by sub-district (i.e. kelurahan) as at 31st July 2021, DKI Jakarta.
+
+The code chunk below imports the data into R and save it into a tibble data frame object called *covid19*.
+
+xxxx
+
+## **8.4 FunnelPlotR methods**
+
+[**FunnelPlotR**](https://nhs-r-community.github.io/FunnelPlotR/) package uses ggplot to generate funnel plots. It requires a `numerator` (events of interest), `denominator` (population to be considered) and `group`. The key arguments selected for customisation are:
+
+-   `limit`: plot limits (95 or 99).
+
+-   `label_outliers`: to label outliers (true or false).
+
+-   `Poisson_limits`: to add Poisson limits to the plot.
+
+-   `OD_adjust`: to add overdispersed limits to the plot.
+
+-   `xrange` and `yrange`: to specify the range to display for axes, acts like a zoom function.
+
+-   Other aesthetic components such as graph title, axis labels etc.
+
+### **8.4.1 FunnelPlotR methods: The basic plot**
+
+The code chunk below plots a funnel plot.
+
+xxxx
+
+Things to learn from the code chunk above.
+
+-   `group` in this function is different from the scatterplot. Here, it defines the level of the points to be plotted i.e. Sub-district, District or City. If Cityc is chosen, there are only six data points.
+
+-   By default, `data_type`argument is “SR”.
+
+-   `limit`: Plot limits, accepted values are: 95 or 99, corresponding to 95% or 99.8% quantiles of the distribution.
+
+### **8.4.2 FunnelPlotR methods: Makeover 1**
+
+The code chunk below plots a funnel plot.
+
+xxx
+
+Things to learn from the code chunk above. + `data_type` argument is used to change from default “SR” to “PR” (i.e. proportions). + `xrange` and `yrange` are used to set the range of x-axis and y-axis
+
+### **8.4.3 FunnelPlotR methods: Makeover 2**
+
+The code chunk below plots a funnel plot.
+
+xxx
+
+Things to learn from the code chunk above.
+
+-   `label = NA` argument is to removed the default label outliers feature.
+
+-   `title` argument is used to add plot title.
+
+-   `x_label` and `y_label` arguments are used to add/edit x-axis and y-axis titles.
+
+## **8.5 Funnel Plot for Fair Visual Comparison: ggplot2 methods**
+
+In this section, you will gain hands-on experience on building funnel plots step-by-step by using ggplot2. It aims to enhance you working experience of ggplot2 to customise speciallised data visualisation like funnel plot.
+
+### **8.5.1 Computing the basic derived fields**
+
+To plot the funnel plot from scratch, we need to derive cumulative death rate and standard error of cumulative death rate.
+
+xxx
+
+Next, the *fit.mean* is computed by using the code chunk below.
+
+xxx
+
+### **8.5.2 Calculate lower and upper limits for 95% and 99.9% CI**
+
+The code chunk below is used to compute the lower and upper limits for 95% confidence interval.
+
+xx
+
+### **8.5.3 Plotting a static funnel plot**
+
+In the code chunk below, ggplot2 functions are used to plot a static funnel plot.
+
+xxx
+
+### **8.5.4 Interactive Funnel Plot: plotly + ggplot2**
+
+The funnel plot created using ggplot2 functions can be made interactive with `ggplotly()` of **plotly** r package.
+
+xxxx
+
+## **8.6 References**
+
+-   [funnelPlotR](https://nhs-r-community.github.io/FunnelPlotR/index.html) package.
+
+-   [Funnel Plots for Indirectly-standardised ratios](https://nhs-r-community.github.io/FunnelPlotR/articles/funnel_plots.html).
+
+-   [Changing funnel plot options](https://nhs-r-community.github.io/FunnelPlotR/articles/changing_funnel_plot_options.html)
+
+-   [ggplot2](https://ggplot2.tidyverse.org/) package.

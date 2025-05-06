@@ -9,7 +9,7 @@
 <meta name="author" content="Belinda Lim">
 <meta name="dcterms.date" content="2025-05-06">
 
-<title>Hands-on Exercise 4A</title>
+<title>Hands-on Exercise 4D</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -201,28 +201,25 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#visualising-distribution" id="toc-visualising-distribution" class="nav-link active" data-scroll-target="#visualising-distribution"><strong>5&nbsp; Visualising Distribution</strong></a>
+  <li><a href="#funnel-plots-for-fair-comparisons" id="toc-funnel-plots-for-fair-comparisons" class="nav-link active" data-scroll-target="#funnel-plots-for-fair-comparisons"><strong>8&nbsp; Funnel Plots for Fair Comparisons</strong></a>
   <ul class="collapse">
-  <li><a href="#learning-outcome" id="toc-learning-outcome" class="nav-link" data-scroll-target="#learning-outcome"><strong>5.1 Learning Outcome</strong></a></li>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started"><strong>5.2 Getting Started</strong></a>
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview"><strong>8.1 Overview</strong></a></li>
+  <li><a href="#installing-and-launching-r-packages" id="toc-installing-and-launching-r-packages" class="nav-link" data-scroll-target="#installing-and-launching-r-packages"><strong>8.2 Installing and Launching R Packages</strong></a></li>
+  <li><a href="#importing-data" id="toc-importing-data" class="nav-link" data-scroll-target="#importing-data"><strong>8.3 Importing Data</strong></a></li>
+  <li><a href="#funnelplotr-methods" id="toc-funnelplotr-methods" class="nav-link" data-scroll-target="#funnelplotr-methods"><strong>8.4 FunnelPlotR methods</strong></a>
   <ul class="collapse">
-  <li><a href="#installing-and-loading-the-packages" id="toc-installing-and-loading-the-packages" class="nav-link" data-scroll-target="#installing-and-loading-the-packages"><strong>5.2.1 Installing and loading the packages</strong></a></li>
-  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import"><strong>5.2.2 Data import</strong></a></li>
+  <li><a href="#funnelplotr-methods-the-basic-plot" id="toc-funnelplotr-methods-the-basic-plot" class="nav-link" data-scroll-target="#funnelplotr-methods-the-basic-plot"><strong>8.4.1 FunnelPlotR methods: The basic plot</strong></a></li>
+  <li><a href="#funnelplotr-methods-makeover-1" id="toc-funnelplotr-methods-makeover-1" class="nav-link" data-scroll-target="#funnelplotr-methods-makeover-1"><strong>8.4.2 FunnelPlotR methods: Makeover 1</strong></a></li>
+  <li><a href="#funnelplotr-methods-makeover-2" id="toc-funnelplotr-methods-makeover-2" class="nav-link" data-scroll-target="#funnelplotr-methods-makeover-2"><strong>8.4.3 FunnelPlotR methods: Makeover 2</strong></a></li>
   </ul></li>
-  <li><a href="#visualising-distribution-with-ridgeline-plot" id="toc-visualising-distribution-with-ridgeline-plot" class="nav-link" data-scroll-target="#visualising-distribution-with-ridgeline-plot"><strong>5.3 Visualising Distribution with Ridgeline Plot</strong></a>
+  <li><a href="#funnel-plot-for-fair-visual-comparison-ggplot2-methods" id="toc-funnel-plot-for-fair-visual-comparison-ggplot2-methods" class="nav-link" data-scroll-target="#funnel-plot-for-fair-visual-comparison-ggplot2-methods"><strong>8.5 Funnel Plot for Fair Visual Comparison: ggplot2 methods</strong></a>
   <ul class="collapse">
-  <li><a href="#plotting-ridgeline-graph-ggridges-method" id="toc-plotting-ridgeline-graph-ggridges-method" class="nav-link" data-scroll-target="#plotting-ridgeline-graph-ggridges-method"><strong>5.3.1 Plotting ridgeline graph: ggridges method</strong></a></li>
-  <li><a href="#varying-fill-colors-along-the-x-axis" id="toc-varying-fill-colors-along-the-x-axis" class="nav-link" data-scroll-target="#varying-fill-colors-along-the-x-axis"><strong>5.3.2 Varying fill colors along the x axis</strong></a></li>
-  <li><a href="#mapping-the-probabilities-directly-onto-colour" id="toc-mapping-the-probabilities-directly-onto-colour" class="nav-link" data-scroll-target="#mapping-the-probabilities-directly-onto-colour"><strong>5.3.3 Mapping the probabilities directly onto colour</strong></a></li>
-  <li><a href="#ridgeline-plots-with-quantile-lines" id="toc-ridgeline-plots-with-quantile-lines" class="nav-link" data-scroll-target="#ridgeline-plots-with-quantile-lines"><strong>5.3.4 Ridgeline plots with quantile lines</strong></a></li>
+  <li><a href="#computing-the-basic-derived-fields" id="toc-computing-the-basic-derived-fields" class="nav-link" data-scroll-target="#computing-the-basic-derived-fields"><strong>8.5.1 Computing the basic derived fields</strong></a></li>
+  <li><a href="#calculate-lower-and-upper-limits-for-95-and-99.9-ci" id="toc-calculate-lower-and-upper-limits-for-95-and-99.9-ci" class="nav-link" data-scroll-target="#calculate-lower-and-upper-limits-for-95-and-99.9-ci"><strong>8.5.2 Calculate lower and upper limits for 95% and 99.9% CI</strong></a></li>
+  <li><a href="#plotting-a-static-funnel-plot" id="toc-plotting-a-static-funnel-plot" class="nav-link" data-scroll-target="#plotting-a-static-funnel-plot"><strong>8.5.3 Plotting a static funnel plot</strong></a></li>
+  <li><a href="#interactive-funnel-plot-plotly-ggplot2" id="toc-interactive-funnel-plot-plotly-ggplot2" class="nav-link" data-scroll-target="#interactive-funnel-plot-plotly-ggplot2"><strong>8.5.4 Interactive Funnel Plot: plotly + ggplot2</strong></a></li>
   </ul></li>
-  <li><a href="#visualising-distribution-with-raincloud-plot" id="toc-visualising-distribution-with-raincloud-plot" class="nav-link" data-scroll-target="#visualising-distribution-with-raincloud-plot"><strong>5.4 Visualising Distribution with Raincloud Plot</strong></a>
-  <ul class="collapse">
-  <li><a href="#plotting-a-half-eye-graph" id="toc-plotting-a-half-eye-graph" class="nav-link" data-scroll-target="#plotting-a-half-eye-graph"><strong>5.4.1 Plotting a Half Eye graph</strong></a></li>
-  <li><a href="#adding-the-boxplot-with-geom_boxplot" id="toc-adding-the-boxplot-with-geom_boxplot" class="nav-link" data-scroll-target="#adding-the-boxplot-with-geom_boxplot"><strong>5.4.2 Adding the boxplot with <code>geom_boxplot()</code></strong></a></li>
-  <li><a href="#adding-the-dot-plots-with-stat_dots" id="toc-adding-the-dot-plots-with-stat_dots" class="nav-link" data-scroll-target="#adding-the-dot-plots-with-stat_dots"><strong>5.4.3 Adding the Dot Plots with <code>stat_dots()</code></strong></a></li>
-  <li><a href="#finishing-touch" id="toc-finishing-touch" class="nav-link" data-scroll-target="#finishing-touch"><strong>5.4.4 Finishing touch</strong></a></li>
-  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><strong>8.6 References</strong></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -232,7 +229,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hands-on Exercise 4A</h1>
+<h1 class="title">Hands-on Exercise 4D</h1>
 </div>
 
 
@@ -267,112 +264,111 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="visualising-distribution" class="level1">
-<h1><strong>5&nbsp; Visualising Distribution</strong></h1>
-<section id="learning-outcome" class="level2">
-<h2 class="anchored" data-anchor-id="learning-outcome"><strong>5.1 Learning Outcome</strong></h2>
-<p>Visualising distribution is not new in statistical analysis. In chapter 1 we have shared with you some of the popular statistical graphics methods for visualising distribution are histogram, probability density curve (pdf), boxplot, notch plot and violin plot and how they can be created by using ggplot2. In this chapter, we are going to share with you two relatively new statistical graphic methods for visualising distribution, namely ridgeline plot and raincloud plot by using ggplot2 and its extensions.</p>
-</section>
-<section id="getting-started" class="level2">
-<h2 class="anchored" data-anchor-id="getting-started"><strong>5.2 Getting Started</strong></h2>
-<section id="installing-and-loading-the-packages" class="level3">
-<h3 class="anchored" data-anchor-id="installing-and-loading-the-packages"><strong>5.2.1 Installing and loading the packages</strong></h3>
-<p>For the purpose of this exercise, the following R packages will be used, they are:</p>
+<section id="funnel-plots-for-fair-comparisons" class="level1">
+<h1><strong>8&nbsp; Funnel Plots for Fair Comparisons</strong></h1>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview"><strong>8.1 Overview</strong></h2>
+<p>Funnel plot is a specially designed data visualisation for conducting unbiased comparison between outlets, stores or business entities. By the end of this hands-on exercise, you will gain hands-on experience on:</p>
 <ul>
-<li><p>ggridges, a ggplot2 extension specially designed for plotting ridgeline plots,</p></li>
-<li><p>ggdist, a ggplot2 extension spacially desgin for visualising distribution and uncertainty,</p></li>
-<li><p>tidyverse, a family of R packages to meet the modern data science and visual communication needs,</p></li>
-<li><p>ggthemes, a ggplot extension that provides the user additional themes, scales, and geoms for the ggplots package, and</p></li>
-<li><p>colorspace, an R package provides a broad toolbox for selecting individual colors or color palettes, manipulating these colors, and employing them in various kinds of visualisations.</p></li>
+<li><p>plotting funnel plots by using <strong>funnelPlotR</strong> package,</p></li>
+<li><p>plotting static funnel plot by using ggplot2 package, and</p></li>
+<li><p>plotting interactive funnel plot by using both <strong>plotly R</strong> and <strong>ggplot2</strong> packages.</p></li>
 </ul>
-<p>The code chunk below will be used load these R packages into RStudio environment.</p>
-<pre><code>pacman::p_load(ggdist, ggridges, ggthemes,                colorspace, tidyverse)</code></pre>
 </section>
-<section id="data-import" class="level3">
-<h3 class="anchored" data-anchor-id="data-import"><strong>5.2.2 Data import</strong></h3>
-<p>For the purpose of this exercise, <em>Exam_data.csv</em> will be used.</p>
-<p>In the code chunk below, <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>read_csv()</code></a> of <a href="https://readr.tidyverse.org/"><strong>readr</strong></a> package is used to import <em>Exam_data.csv</em> into R and saved it into a tibble data.frame.</p>
-<pre><code>exam &lt;- read_csv("data/Exam_data.csv")</code></pre>
-</section>
-</section>
-<section id="visualising-distribution-with-ridgeline-plot" class="level2">
-<h2 class="anchored" data-anchor-id="visualising-distribution-with-ridgeline-plot"><strong>5.3 Visualising Distribution with Ridgeline Plot</strong></h2>
-<p><a href="https://www.data-to-viz.com/graph/ridgeline.html"><em>Ridgeline plot</em></a> (sometimes called <em>Joyplot</em>) is a data visualisation technique for revealing the distribution of a numeric value for several groups. Distribution can be represented using histograms or density plots, all aligned to the same horizontal scale and presented with a slight overlap.</p>
-<p>Figure below is a ridgelines plot showing the distribution of English score by class.</p>
-<p>XXXXXXXXXXXXXXXX</p>
-<p><strong><br>
-Note</strong></p>
+<section id="installing-and-launching-r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="installing-and-launching-r-packages"><strong>8.2 Installing and Launching R Packages</strong></h2>
+<p>In this exercise, four R packages will be used. They are:</p>
 <ul>
-<li><p>Ridgeline plots make sense when the number of group to represent is medium to high, and thus a classic window separation would take to much space. Indeed, the fact that groups overlap each other allows to use space more efficiently. If you have less than 5 groups, dealing with other distribution plots is probably better.</p></li>
-<li><p>It works well when there is a clear pattern in the result, like if there is an obvious ranking in groups. Otherwise group will tend to overlap each other, leading to a messy plot not providing any insight.</p></li>
+<li><p><strong>readr</strong> for importing csv into R.</p></li>
+<li><p><strong>FunnelPlotR</strong> for creating funnel plot.</p></li>
+<li><p><strong>ggplot2</strong> for creating funnel plot manually.</p></li>
+<li><p><strong>knitr</strong> for building static html table.</p></li>
+<li><p><strong>plotly</strong> for creating interactive funnel plot.</p></li>
 </ul>
-<section id="plotting-ridgeline-graph-ggridges-method" class="level3">
-<h3 class="anchored" data-anchor-id="plotting-ridgeline-graph-ggridges-method"><strong>5.3.1 Plotting ridgeline graph: ggridges method</strong></h3>
-<p>There are several ways to plot ridgeline plot with R. In this section, you will learn how to plot ridgeline plot by using <a href="https://wilkelab.org/ggridges/index.html">ggridges</a> package.</p>
-<p>ggridges package provides two main geom to plot gridgeline plots, they are: <a href="https://wilkelab.org/ggridges/reference/geom_ridgeline.html"><code>geom_ridgeline()</code></a> and <a href="https://wilkelab.org/ggridges/reference/geom_density_ridges.html"><code>geom_density_ridges()</code></a>. The former takes height values directly to draw the ridgelines, and the latter first estimates data densities and then draws those using ridgelines.</p>
-<p>The ridgeline plot below is plotted by using <code>geom_density_ridges()</code>.</p>
-<p>xxxxx</p>
+<p>xxxx</p>
 </section>
-<section id="varying-fill-colors-along-the-x-axis" class="level3">
-<h3 class="anchored" data-anchor-id="varying-fill-colors-along-the-x-axis"><strong>5.3.2 Varying fill colors along the x axis</strong></h3>
-<p>Sometimes we would like to have the area under a ridgeline not filled with a single solid color but rather with colors that vary in some form along the x axis. This effect can be achieved by using either <a href="https://wilkelab.org/ggridges/reference/geom_ridgeline_gradient.html"><code>geom_ridgeline_gradient()</code></a> or <a href="https://wilkelab.org/ggridges/reference/geom_ridgeline_gradient.html"><code>geom_density_ridges_gradient()</code></a>. Both geoms work just like <code>geom_ridgeline()</code> and <code>geom_density_ridges()</code>, except that they allow for varying fill colors. However, they do not allow for alpha transparency in the fill. For technical reasons, we can have changing fill colors or transparency but not both.</p>
+<section id="importing-data" class="level2">
+<h2 class="anchored" data-anchor-id="importing-data"><strong>8.3 Importing Data</strong></h2>
+<p>In this section, COVID-19_DKI_Jakarta will be used. The data was downloaded from <a href="https://riwayat-file-covid-19-dki-jakarta-jakartagis.hub.arcgis.com/">Open Data Covid-19 Provinsi DKI Jakarta portal</a>. For this hands-on exercise, we are going to compare the cumulative COVID-19 cases and death by sub-district (i.e.&nbsp;kelurahan) as at 31st July 2021, DKI Jakarta.</p>
+<p>The code chunk below imports the data into R and save it into a tibble data frame object called <em>covid19</em>.</p>
+<p>xxxx</p>
+</section>
+<section id="funnelplotr-methods" class="level2">
+<h2 class="anchored" data-anchor-id="funnelplotr-methods"><strong>8.4 FunnelPlotR methods</strong></h2>
+<p><a href="https://nhs-r-community.github.io/FunnelPlotR/"><strong>FunnelPlotR</strong></a> package uses ggplot to generate funnel plots. It requires a <code>numerator</code> (events of interest), <code>denominator</code> (population to be considered) and <code>group</code>. The key arguments selected for customisation are:</p>
+<ul>
+<li><p><code>limit</code>: plot limits (95 or 99).</p></li>
+<li><p><code>label_outliers</code>: to label outliers (true or false).</p></li>
+<li><p><code>Poisson_limits</code>: to add Poisson limits to the plot.</p></li>
+<li><p><code>OD_adjust</code>: to add overdispersed limits to the plot.</p></li>
+<li><p><code>xrange</code> and <code>yrange</code>: to specify the range to display for axes, acts like a zoom function.</p></li>
+<li><p>Other aesthetic components such as graph title, axis labels etc.</p></li>
+</ul>
+<section id="funnelplotr-methods-the-basic-plot" class="level3">
+<h3 class="anchored" data-anchor-id="funnelplotr-methods-the-basic-plot"><strong>8.4.1 FunnelPlotR methods: The basic plot</strong></h3>
+<p>The code chunk below plots a funnel plot.</p>
+<p>xxxx</p>
+<p>Things to learn from the code chunk above.</p>
+<ul>
+<li><p><code>group</code> in this function is different from the scatterplot. Here, it defines the level of the points to be plotted i.e.&nbsp;Sub-district, District or City. If Cityc is chosen, there are only six data points.</p></li>
+<li><p>By default, <code>data_type</code>argument is “SR”.</p></li>
+<li><p><code>limit</code>: Plot limits, accepted values are: 95 or 99, corresponding to 95% or 99.8% quantiles of the distribution.</p></li>
+</ul>
+</section>
+<section id="funnelplotr-methods-makeover-1" class="level3">
+<h3 class="anchored" data-anchor-id="funnelplotr-methods-makeover-1"><strong>8.4.2 FunnelPlotR methods: Makeover 1</strong></h3>
+<p>The code chunk below plots a funnel plot.</p>
+<p>xxx</p>
+<p>Things to learn from the code chunk above. + <code>data_type</code> argument is used to change from default “SR” to “PR” (i.e.&nbsp;proportions). + <code>xrange</code> and <code>yrange</code> are used to set the range of x-axis and y-axis</p>
+</section>
+<section id="funnelplotr-methods-makeover-2" class="level3">
+<h3 class="anchored" data-anchor-id="funnelplotr-methods-makeover-2"><strong>8.4.3 FunnelPlotR methods: Makeover 2</strong></h3>
+<p>The code chunk below plots a funnel plot.</p>
+<p>xxx</p>
+<p>Things to learn from the code chunk above.</p>
+<ul>
+<li><p><code>label = NA</code> argument is to removed the default label outliers feature.</p></li>
+<li><p><code>title</code> argument is used to add plot title.</p></li>
+<li><p><code>x_label</code> and <code>y_label</code> arguments are used to add/edit x-axis and y-axis titles.</p></li>
+</ul>
+</section>
+</section>
+<section id="funnel-plot-for-fair-visual-comparison-ggplot2-methods" class="level2">
+<h2 class="anchored" data-anchor-id="funnel-plot-for-fair-visual-comparison-ggplot2-methods"><strong>8.5 Funnel Plot for Fair Visual Comparison: ggplot2 methods</strong></h2>
+<p>In this section, you will gain hands-on experience on building funnel plots step-by-step by using ggplot2. It aims to enhance you working experience of ggplot2 to customise speciallised data visualisation like funnel plot.</p>
+<section id="computing-the-basic-derived-fields" class="level3">
+<h3 class="anchored" data-anchor-id="computing-the-basic-derived-fields"><strong>8.5.1 Computing the basic derived fields</strong></h3>
+<p>To plot the funnel plot from scratch, we need to derive cumulative death rate and standard error of cumulative death rate.</p>
+<p>xxx</p>
+<p>Next, the&nbsp;<em>fit.mean</em>&nbsp;is computed by using the code chunk below.</p>
 <p>xxx</p>
 </section>
-<section id="mapping-the-probabilities-directly-onto-colour" class="level3">
-<h3 class="anchored" data-anchor-id="mapping-the-probabilities-directly-onto-colour"><strong>5.3.3 Mapping the probabilities directly onto colour</strong></h3>
-<p>Beside providing additional geom objects to support the need to plot ridgeline plot, ggridges package also provides a stat function called <a href="https://wilkelab.org/ggridges/reference/stat_density_ridges.html"><code>stat_density_ridges()</code></a> that replaces <a href="https://ggplot2.tidyverse.org/reference/geom_density.html"><code>stat_density()</code></a> of ggplot2.</p>
-<p>Figure below is plotted by mapping the probabilities calculated by using <code>stat(ecdf)</code> which represent the empirical cumulative density function for the distribution of English score.</p>
-<p>xxxxx</p>
-<p><strong><br>
-Important</strong></p>
-<p>It is important include the argument <code>calc_ecdf = TRUE</code> in <code>stat_density_ridges()</code>.</p>
+<section id="calculate-lower-and-upper-limits-for-95-and-99.9-ci" class="level3">
+<h3 class="anchored" data-anchor-id="calculate-lower-and-upper-limits-for-95-and-99.9-ci"><strong>8.5.2 Calculate lower and upper limits for 95% and 99.9% CI</strong></h3>
+<p>The code chunk below is used to compute the lower and upper limits for 95% confidence interval.</p>
+<p>xx</p>
 </section>
-<section id="ridgeline-plots-with-quantile-lines" class="level3">
-<h3 class="anchored" data-anchor-id="ridgeline-plots-with-quantile-lines"><strong>5.3.4 Ridgeline plots with quantile lines</strong></h3>
-<p>By using <a href="https://wilkelab.org/ggridges/reference/geom_ridgeline_gradient.html"><code>geom_density_ridges_gradient()</code></a>, we can colour the ridgeline plot by quantile, via the calculated <code>stat(quantile)</code> aesthetic as shown in the figure below.</p>
-<ul>
-<li><p>The plot</p></li>
-<li><p>The code chunk</p></li>
-</ul>
-<p>xxxxxxxx</p>
-<p>Instead of using number to define the quantiles, we can also specify quantiles by cut points such as 2.5% and 97.5% tails to colour the ridgeline plot as shown in the figure below.</p>
+<section id="plotting-a-static-funnel-plot" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-a-static-funnel-plot"><strong>8.5.3 Plotting a static funnel plot</strong></h3>
+<p>In the code chunk below, ggplot2 functions are used to plot a static funnel plot.</p>
+<p>xxx</p>
+</section>
+<section id="interactive-funnel-plot-plotly-ggplot2" class="level3">
+<h3 class="anchored" data-anchor-id="interactive-funnel-plot-plotly-ggplot2"><strong>8.5.4 Interactive Funnel Plot: plotly + ggplot2</strong></h3>
+<p>The funnel plot created using ggplot2 functions can be made interactive with <code>ggplotly()</code> of <strong>plotly</strong> r package.</p>
 <p>xxxx</p>
 </section>
 </section>
-<section id="visualising-distribution-with-raincloud-plot" class="level2">
-<h2 class="anchored" data-anchor-id="visualising-distribution-with-raincloud-plot"><strong>5.4 Visualising Distribution with Raincloud Plot</strong></h2>
-<p>Raincloud Plot is a data visualisation techniques that produces a half-density to a distribution plot. It gets the name because the density plot is in the shape of a “raincloud”. The raincloud (half-density) plot enhances the traditional box-plot by highlighting multiple modalities (an indicator that groups may exist). The boxplot does not show where densities are clustered, but the raincloud plot does!</p>
-<p>In this section, you will learn how to create a raincloud plot to visualise the distribution of English score by race. It will be created by using functions provided by <strong>ggdist</strong> and ggplot2 packages.</p>
-<section id="plotting-a-half-eye-graph" class="level3">
-<h3 class="anchored" data-anchor-id="plotting-a-half-eye-graph"><strong>5.4.1 Plotting a Half Eye graph</strong></h3>
-<p>First, we will plot a Half-Eye graph by using <a href="https://mjskay.github.io/ggdist/reference/stat_halfeye.html"><code>stat_halfeye()</code></a> of <strong>ggdist</strong> package.</p>
-<p>This produces a Half Eye visualization, which is contains a half-density and a slab-interval.</p>
-<p>xxxxx</p>
-</section>
-<section id="adding-the-boxplot-with-geom_boxplot" class="level3">
-<h3 class="anchored" data-anchor-id="adding-the-boxplot-with-geom_boxplot"><strong>5.4.2 Adding the boxplot with <code>geom_boxplot()</code></strong></h3>
-<p>Next, we will add the second geometry layer using <a href="https://r4va.netlify.app/chap09"><code>geom_boxplot()</code></a> of ggplot2. This produces a narrow boxplot. We reduce the width and adjust the opacity.</p>
-<p>xxx</p>
-</section>
-<section id="adding-the-dot-plots-with-stat_dots" class="level3">
-<h3 class="anchored" data-anchor-id="adding-the-dot-plots-with-stat_dots"><strong>5.4.3 Adding the Dot Plots with <code>stat_dots()</code></strong></h3>
-<p>Next, we will add the third geometry layer using <a href="https://mjskay.github.io/ggdist/reference/stat_dots.html"><code>stat_dots()</code></a> of ggdist package. This produces a half-dotplot, which is similar to a histogram that indicates the number of samples (number of dots) in each bin. We select side = “left” to indicate we want it on the left-hand side.</p>
-<p>xxxx</p>
-</section>
-<section id="finishing-touch" class="level3">
-<h3 class="anchored" data-anchor-id="finishing-touch"><strong>5.4.4 Finishing touch</strong></h3>
-<p>Lastly, <a href="https://ggplot2.tidyverse.org/reference/coord_flip.html"><code>coord_flip()</code></a> of ggplot2 package will be used to flip the raincloud chart horizontally to give it the raincloud appearance. At the same time, <code>theme_economist()</code> of ggthemes package is used to give the raincloud chart a professional publishing standard look.</p>
-<p>xxx</p>
-<p><strong>Reference</strong></p>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references"><strong>8.6 References</strong></h2>
 <ul>
-<li><p><a href="https://blog.revolutionanalytics.com/2017/07/joyplots.html">Introducing Ridgeline Plots (formerly Joyplots)</a></p></li>
-<li><p>Claus O. Wilke <a href="https://clauswilke.com/dataviz/">Fundamentals of Data Visualization</a> especially Chapter <a href="https://clauswilke.com/dataviz/visualizing-amounts.html">6</a>, <a href="https://clauswilke.com/dataviz/histograms-density-plots.html">7</a>, <a href="https://clauswilke.com/dataviz/ecdf-qq.html">8</a>, <a href="https://clauswilke.com/dataviz/boxplots-violins.html">9</a> and <a href="https://clauswilke.com/dataviz/visualizing-proportions.html">10</a>.</p></li>
-<li><p>Allen M, Poggiali D, Whitaker K et al.&nbsp;<a href="https://wellcomeopenresearch.org/articles/4-63">“Raincloud plots: a multi-platform tool for robust data. visualization”</a> [version 2; peer review: 2 approved]. Welcome Open Res 2021, pp.&nbsp;4:63.</p></li>
-<li><p><a href="https://mjskay.github.io/ggdist/articles/dotsinterval.html">Dots + interval stats and geoms</a></p></li>
+<li><p><a href="https://nhs-r-community.github.io/FunnelPlotR/index.html">funnelPlotR</a> package.</p></li>
+<li><p><a href="https://nhs-r-community.github.io/FunnelPlotR/articles/funnel_plots.html">Funnel Plots for Indirectly-standardised ratios</a>.</p></li>
+<li><p><a href="https://nhs-r-community.github.io/FunnelPlotR/articles/changing_funnel_plot_options.html">Changing funnel plot options</a></p></li>
+<li><p><a href="https://ggplot2.tidyverse.org/">ggplot2</a> package.</p></li>
 </ul>
 
 
-</section>
 </section>
 </section>
 
