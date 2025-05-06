@@ -20,7 +20,7 @@ Under Take-home Exercise 1b, we are required to select one submission from our c
 
 ## **1.2 Framework for Gauging Data Visualisation**
 
-Under the article published by [Ben Jones](Data%20Visualization:%20Clarity%20or%20Aesthetics?), he shared the following framework to gauge the objective and subjective merits of a data visualisation. It will be used to review my classmate's submission (see link to [original page](https://iss608-vaa.netlify.app/take-home_ex/take-home_ex01/take%20home%20exercise%201)).The submission was selected as the charts can be classified into the Quadrant II, III and IV:
+Under the article published by [Ben Jones](https://dataremixed.com/2012/05/data-visualization-clarity-or-aesthetics/), he shared the following framework to gauge the objective and subjective merits of a data visualisation. It will be used to review my classmate's submission (see link to [original page](https://iss608-vaa.netlify.app/take-home_ex/take-home_ex01/take%20home%20exercise%201)).The submission was selected as the charts can be classified into the Quadrant II, III and IV:
 
 -   Quadrant I = \[clear, beautiful\]
 
@@ -107,9 +107,13 @@ To improve the chart, it is recommended to:
 
 -   Sort bar chart by population numbers
 
--   Remove the x-axis label since the information is found in the chart title.
+-   Remove x-axis and y-axis label since the information is found in the chart title.
 
--   Increase the size of the x-axis numbers and title
+-   Adjust size of the x-axis numbers and add more intervals for the ticks
+
+-   Adjust size of the title
+
+-   Remove plot margins to allow chart to be bigger
 
 ### **2.2.2 Makeover of Original Chart**
 
@@ -125,17 +129,16 @@ ggplot(data = filtered_data, aes(x = reorder(PA, Pop), y = Pop)) +
   geom_bar(stat = "identity", fill = "steelblue") +
   coord_flip() +
   labs(
-    title = "Population by Planning Area (Singapore, 2024)",
-    x = NULL,  # Remove x-axis label
-    y = NULL   # Remove y-axis label ("Population")
+    title = "Population Numbers by Planning Areas (Singapore, 2024)",
+    x = NULL,  
+    y = NULL   
   ) +
-  scale_y_continuous(breaks = c(0, 50000, 100000, 150000, 200000, 250000), labels = comma) +
+  scale_y_continuous(breaks = c(0, 50000, 100000, 150000, 200000, 250000, 300000), labels = comma) +
   theme_minimal(base_size = 16) +
   theme(
-    plot.title = element_text(size = 18, face = "bold"),
-    axis.text.y = element_text(size = 8),   # Smaller PA names
-    axis.text.x = element_text(size = 13),  # Larger x-axis numbers
-    plot.margin = margin(1, 1, 1, 1, "cm")
+    plot.title = element_text(size = 12, face = "bold"),
+    axis.text.y = element_text(size = 8),   
+    axis.text.x = element_text(size = 8)
   )
 ```
 
@@ -226,13 +229,39 @@ ggplot(data = pyramid_data, aes(x = AG, y = Pop, fill = Sex)) +
   theme(axis.text.y = element_text(size = 10))
 ```
 
-XXX explain merits
+The chart is an age pyramid which illustrated the age structure of Singapore's population well and it is in sync with my classmate's data storytelling insights.
 
-xxx explain why
+However, the age pyramid can be classified under Quadrant IV = \[confusing, beautiful\]. This is because males are coded as red and females are coded as blue. There is also a negative number in the x-axis for population.
+
+To improve the chart, it is recommended to:
+
+-   Swop the colour code for gender
+
+-   Update the scale to be positive number.
 
 ### **2.3.2 Makeover of Original Chart**
 
-xxx
+```{r}
+pyramid_data <- aggregate(Pop ~ `AG` + Sex, data = Resident_Data, sum)
+
+age_order <- c("0_to_4", "5_to_9", "10_to_14", "15_to_19", "20_to_24", "25_to_29", 
+               "30_to_34", "35_to_39", "40_to_44", "45_to_49", "50_to_54", "55_to_59", 
+               "60_to_64", "65_to_69", "70_to_74", "75_to_79", "80_to_84", "85_to_89", 
+               "90_and_over")
+
+pyramid_data$AG <- factor(pyramid_data$AG, levels = age_order)
+
+pyramid_data$Pop[pyramid_data$Sex == "Males"] <- -pyramid_data$Pop[pyramid_data$Sex == "Males"]
+
+ggplot(data = pyramid_data, aes(x = AG, y = Pop, fill = Sex)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(title = "Population Pyramid (2024)", x = "Age Group", y = "Population") +
+  scale_y_continuous(labels = function(x) comma(abs(x))) +
+  scale_fill_manual(values = c("salmon", "skyblue")) + 
+  theme_minimal() +
+  theme(axis.text.y = element_text(size = 10))
+```
 
 ## **2.4 Box Plot based on Age Range**
 
@@ -274,10 +303,26 @@ ggplot(Resident_Data, aes(x = FA, y = Pop)) +
   theme_minimal()
 ```
 
-XXX explain merits
+The chart is a box plot based on age range. Box plots are used to show distributions of numeric continuous data values along y-axis, and compare them between multiple groups. As mentioned earlier, the data grouping seems to be erroneous. Given that the population numbers are by subzones, the box plot shows large number of outliers which is not useful for storytelling.
 
-xxx explain why
+Hence, the chart can be classified under Quadrant III = \[confusing, ugly\].
 
 ### **2.4.2 Makeover of Original Chart**
 
-xxx
+If the intent is to show the total population number in the 3 age groups as per the writeup, it is recommended to use a bar graph instead as shown below. The total population numbers in each age group are added together first, followed by the plotting.
+
+```{r}
+Resident_FA_summary <- Resident_Data %>%
+  group_by(FA) %>%
+  summarise(TotalPop = sum(Pop, na.rm = TRUE))
+
+ggplot(Resident_FA_summary, aes(x = FA, y = TotalPop)) +
+  geom_col(fill = "lightgreen") +
+  labs(title = "Total Population by FA Band", x = "FA Band", y = "Total Population") +
+  scale_y_continuous(labels = comma) +
+  theme_minimal()
+```
+
+# **3 References**
+
+**Jones, B.** (2012, May 28). *Data visualization: Clarity or aesthetics?* <https://dataremixed.com/2012/05/data-visualization-clarity-or-aesthetics/>
