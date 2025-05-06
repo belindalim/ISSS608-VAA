@@ -15,10 +15,9 @@ In this website, you will find my coursework prepared for this course.
 
 ## Recent Projects
 
-:::::: {.grid}
-
-:::: {.g-col-6}
-::: {.card}
+::::::::::::::: grid
+:::: g-col-6
+::: card
 ![](images/HOE3OV.png){width="100%" height="200px"}
 
 ### Hands-on Exercise 3
@@ -28,8 +27,8 @@ Explore advanced ggplot2 techniques, including enhanced annotations with ggrepel
 :::
 ::::
 
-:::: {.g-col-6}
-::: {.card}
+:::: g-col-6
+::: card
 ![](images/HOE2.png){width="100%" height="200px"}
 
 ### Hands-on Exercise 2
@@ -39,8 +38,8 @@ Explore advanced ggplot2 techniques, including enhanced annotations with ggrepel
 :::
 ::::
 
-:::: {.g-col-6}
-::: {.card}
+:::: g-col-6
+::: card
 ![](images/Handsonex1.png){width="100%" height="200px"}
 
 ### Hands-on Exercise 1
@@ -50,9 +49,20 @@ Introduce the concepts and components of ggplot2, focusing on the Layered Gramma
 :::
 ::::
 
-:::: {.g-col-6}
-::: {.card}
+:::: g-col-6
+::: card
 ![](images/Upcoming.png){width="100%" height="200px"}
+
+### Take-home Exercises
+
+Demographic structures and distribution of Singapore in 2024.\
+[View Take-home Exercises](Take-home_Ex/Take-home_Ex01/Take-home_Ex01.qmd)
+:::
+::::
+
+:::: g-col-6
+::: card
+![](images/TOE1.png){width="100%" height="200px"}
 
 ### In-class Exercises
 
@@ -61,20 +71,10 @@ Visual analytics done collaboratively during class sessions.\
 :::
 ::::
 
-:::: {.g-col-6}
-::: {.card}
+:::: g-col-6
+::: card
 ![](images/Upcoming.png){width="100%" height="200px"}
 
-### Take-home Exercises
-
-Individual assignments applying visual analytics to real-world datasets.\
-[View Take-home Exercises](Take-home_Ex/Take-home_Ex01/Take-home_Ex01.qmd)
-:::
-::::
-
-:::: {.g-col-6}
-::: {.card}
-![](images/Upcoming.png){width="100%" height="200px"}
 
 ### Group Project
 
@@ -82,4 +82,4 @@ Group project involving data storytelling.\
 [View Project](project/project-overview.qmd)
 :::
 ::::
-:::::::::::
+:::::::::::::::
