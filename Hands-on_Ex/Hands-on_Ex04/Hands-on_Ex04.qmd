@@ -447,7 +447,7 @@ ggplot(exam,
   coord_flip() +
   theme_economist()
 ```
-
+:::
 
 **Reference**
 
