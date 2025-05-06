@@ -115,8 +115,7 @@ To improve the chart, it is recommended to:
 
 ### **2.2.2 Makeover of Original Chart**
 
-```{r}
-knitr::opts_chunk$set(fig.width = 12, fig.height = 15)
+```{r, fig.width=8, fig.height=7}
 
 filtered_data <- Resident_Data %>%
   filter(!is.na(Pop) & Pop > 0) %>%
