@@ -389,8 +389,8 @@ $ Time &lt;int&gt; 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2
 &lt;0 rows&gt; (or 0-length row.names)</code></pre>
 </div>
 </div>
-<p>Note that my classmate has renamed SZ to Subzone and created two additional columns AG (Age Group) and FA (Functional Age) as shown in my classmate’s website (see extract in the Figure below). To ensure that the charts are reproducible, the data pre-processing details and codes should be spelt out.</p>
-<p><u>Figure 1: Extracts from classmate’s website</u><img src="images/clipboard-185020519.png" class="img-fluid"></p>
+<p>Note that my classmate has renamed SZ to Subzone and created two additional columns AG (Age Group) and FA (Functional Age) as shown in my classmate’s website (see extract in the Figure below). To ensure that the charts are reproducible, the data pre-processing steps and codes should be spelt out.</p>
+<p><u>Figure 1: Extracts from classmate’s website</u> <img src="images/clipboard-185020519.png" style="border: 2px solid #ccc; border-radius: 8px; width: 80%;"></p>
 </section>
 <section id="bar-chart-based-on-population-area" class="level2">
 <h2 class="anchored" data-anchor-id="bar-chart-based-on-population-area"><strong>2.2 Bar chart based on Population Area</strong></h2>
@@ -426,8 +426,7 @@ $ Time &lt;int&gt; 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2
 </div>
 </div>
 <p>However, the chart produced did not look like the one published on my classmate’s website:</p>
-<p>Figure 2: Extracts from my classmate’s website.</p>
-<p><img src="images/clipboard-320653457.png" class="img-fluid"></p>
+<p><u>Figure 2: Extracts from classmate’s website</u> <img src="images/clipboard-320653457.png" style="border: 2px solid #ccc; border-radius: 8px; width: 80%;"></p>
 <p>The chart can be classified under Quadrant II = [clear, ugly]. The bar chart summarised the population numbers for all PA in Singapore clearly with a well-labelled x-axis scale.</p>
 <p>To improve the chart, it is recommended to:</p>
 <ul>
@@ -478,7 +477,7 @@ $ Time &lt;int&gt; 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2
 <section id="original-chart-1" class="level3">
 <h3 class="anchored" data-anchor-id="original-chart-1"><strong>2.3.1 Original Chart</strong></h3>
 <p>The attempt to reproduce the original chart using the code below has failed:</p>
-<p>{r} pyramid_data &lt;- aggregate(Pop ~ <code>AG</code> + Sex, data = Resident_Data, sum)</p>
+<p>pyramid_data &lt;- aggregate(Pop ~ <code>AG</code> + Sex, data = Resident_Data, sum)</p>
 <p>age_order &lt;- c(“0_to_4”, “5_to_9”, “10_to_14”, “15_to_19”, “20_to_24”, “25_to_29”, “30_to_34”, “35_to_39”, “40_to_44”, “45_to_49”, “50_to_54”, “55_to_59”, “60_to_64”, “65_to_69”, “70_to_74”, “75_to_79”, “80_to_84”, “85_to_89”, “90_and_over”)</p>
 <p>pyramid_data<span class="math inline">\(AG &lt;- factor(pyramid_data\)</span>AG, levels = age_order)</p>
 <p>pyramid_data<span class="math inline">\(Pop[pyramid_data\)</span>Sex == “Males”] &lt;- -pyramid_data<span class="math inline">\(Pop[pyramid_data\)</span>Sex == “Males”]</p>
@@ -561,35 +560,30 @@ $ Time &lt;int&gt; 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2
 <p>To improve the chart, it is recommended to:</p>
 <ul>
 <li><p>Swop the colour code for gender</p></li>
-<li><p>Update the scale to be positive number.</p></li>
+<li><p>Update the scale to be positive number</p></li>
+<li><p>Compress the chart.</p></li>
 </ul>
 </section>
 <section id="makeover-of-original-chart-1" class="level3">
 <h3 class="anchored" data-anchor-id="makeover-of-original-chart-1"><strong>2.3.2 Makeover of Original Chart</strong></h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pyramid_data <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(Pop <span class="sc">~</span> <span class="st">`</span><span class="at">AG</span><span class="st">`</span> <span class="sc">+</span> Sex, <span class="at">data =</span> Resident_Data, sum)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>age_order <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"0_to_4"</span>, <span class="st">"5_to_9"</span>, <span class="st">"10_to_14"</span>, <span class="st">"15_to_19"</span>, <span class="st">"20_to_24"</span>, <span class="st">"25_to_29"</span>, </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>               <span class="st">"30_to_34"</span>, <span class="st">"35_to_39"</span>, <span class="st">"40_to_44"</span>, <span class="st">"45_to_49"</span>, <span class="st">"50_to_54"</span>, <span class="st">"55_to_59"</span>, </span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>               <span class="st">"60_to_64"</span>, <span class="st">"65_to_69"</span>, <span class="st">"70_to_74"</span>, <span class="st">"75_to_79"</span>, <span class="st">"80_to_84"</span>, <span class="st">"85_to_89"</span>, </span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>               <span class="st">"90_and_over"</span>)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>pyramid_data<span class="sc">$</span>AG <span class="ot">&lt;-</span> <span class="fu">factor</span>(pyramid_data<span class="sc">$</span>AG, <span class="at">levels =</span> age_order)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>pyramid_data<span class="sc">$</span>Pop[pyramid_data<span class="sc">$</span>Sex <span class="sc">==</span> <span class="st">"Males"</span>] <span class="ot">&lt;-</span> <span class="sc">-</span>pyramid_data<span class="sc">$</span>Pop[pyramid_data<span class="sc">$</span>Sex <span class="sc">==</span> <span class="st">"Males"</span>]</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pyramid_data, <span class="fu">aes</span>(<span class="at">x =</span> AG, <span class="at">y =</span> Pop, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Population Pyramid (2024)"</span>, <span class="at">x =</span> <span class="st">"Age Group"</span>, <span class="at">y =</span> <span class="st">"Population"</span>) <span class="sc">+</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">comma</span>(<span class="fu">abs</span>(x))) <span class="sc">+</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"salmon"</span>, <span class="st">"skyblue"</span>)) <span class="sc">+</span> </span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pyramid_data, <span class="fu">aes</span>(<span class="at">x =</span> AG, <span class="at">y =</span> Pop, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Population Pyramid (2024)"</span>, <span class="at">x =</span> <span class="st">"Age Group"</span>, <span class="at">y =</span> <span class="st">"Population"</span>) <span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">comma</span>(<span class="fu">abs</span>(x))) <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"skyblue"</span>, <span class="st">"salmon"</span>)) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Take-home_Ex01b_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="1152"></p>
+<p><img src="Take-home_Ex01b_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -601,7 +595,7 @@ $ Time &lt;int&gt; 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2
 <section id="original-chart-2" class="level3">
 <h3 class="anchored" data-anchor-id="original-chart-2"><strong>2.4.1 Original Chart</strong></h3>
 <p>The attempt to reproduce the original chart using the code below has failed too as there was no FA column created.</p>
-<p>{r} FA_order &lt;- c(“&lt;= 60”, “&gt;60 to 80”, “&gt;80 to 100”, “&gt;100 to 120”, “&gt;120”, “Not Available”) Resident_Data<span class="math inline">\(FA &lt;- factor(Resident_Data\)</span>FA, levels = FA_order)</p>
+<p>FA_order &lt;- c(“&lt;= 60”, “&gt;60 to 80”, “&gt;80 to 100”, “&gt;100 to 120”, “&gt;120”, “Not Available”) Resident_Data<span class="math inline">\(FA &lt;- factor(Resident_Data\)</span>FA, levels = FA_order)</p>
 <p>ggplot(Resident_Data, aes(x = FA, y = Pop)) + geom_boxplot(fill = “lightgreen”) + labs(title = “Population by Functional Age Range (FA)”, x = “FA Band”, y = “Population”) + theme_minimal()</p>
 <p>To rectify, it is assumed that FA refers to Functional Age binned based on Age &lt;= 60, &gt;60 to 80, &gt;80 to 100, &gt;100 to 120, &gt;120, Not Available.</p>
 <p>The following codes for FA column were inserted</p>
@@ -654,7 +648,7 @@ $ Time &lt;int&gt; 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Take-home_Ex01b_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="1152"></p>
+<p><img src="Take-home_Ex01b_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
