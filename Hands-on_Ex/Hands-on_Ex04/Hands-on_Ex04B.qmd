@@ -31,8 +31,7 @@ In this hands-on exercise, you will gain hands-on experience on using:
 
 [**ggstatsplot**](https://indrajeetpatil.github.io/ggstatsplot/index.html) ![](https://r4va.netlify.app/chap10/img/image1.jpg){width="45" height="45"} is an extension of [**ggplot2**](https://ggplot2.tidyverse.org/) package for creating graphics with details from statistical tests included in the information-rich plots themselves.
 
-\- To provide alternative statistical inference methods by default.
-- To follow best practices for statistical reporting. For all statistical tests reported in the plots, the default template abides by the \[APA\](https://my.ilstu.edu/\~jhkahn/apastats.html) gold standard for statistical reporting. For example, here are results from a robust t-test:
+\- To provide alternative statistical inference methods by default. - To follow best practices for statistical reporting. For all statistical tests reported in the plots, the default template abides by the \[APA\](https://my.ilstu.edu/\~jhkahn/apastats.html) gold standard for statistical reporting. For example, here are results from a robust t-test:
 
 ![](images/clipboard-18459593.png){width="831"}
 
@@ -52,8 +51,9 @@ pacman::p_load(ggstatsplot, tidyverse)
 ### Do-It-Yourself
 
 Importing *Exam.csv* data by using appropriate tidyverse package as follows:
+:::
 
-```{r}         
+```{r}
 exam <- read_csv("data/Exam_data.csv")
 ```
 
@@ -61,8 +61,6 @@ exam <- read_csv("data/Exam_data.csv")
 
 In the code chunk below, [*gghistostats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/gghistostats.html) is used to to build an visual of one-sample test on English scores.
 
-::: panel-tabset
-### The plot
 ```{r, echo = FALSE}
 set.seed(1234)
 
@@ -74,7 +72,6 @@ gghistostats(
   xlab = "English scores"
 )
 ```
-
 
 Default information: - statistical details - Bayes Factor - sample sizes - distribution summary
 
@@ -100,7 +97,15 @@ A **Bayes Factor** can be any positive number. One of the most common interpreta
 
 In the code chunk below, [*ggbetweenstats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/ggbetweenstats.html) is used to build a visual for two-sample mean test of Maths scores by gender.
 
-xxxxx
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = GENDER, 
+  y = MATHS,
+  type = "np",
+  messages = FALSE
+)
+```
 
 Default information: - statistical details - Bayes Factor - sample sizes - distribution summary
 
@@ -108,7 +113,19 @@ Default information: - statistical details - Bayes Factor - sample sizes - distr
 
 In the code chunk below, [*ggbetweenstats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/ggbetweenstats.html) is used to build a visual for One-way ANOVA test on English score by race.
 
-xxx
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = RACE, 
+  y = ENGLISH,
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "s",
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
 
 -   “ns” → only non-significant
 
@@ -126,14 +143,32 @@ xxx
 
 In the code chunk below, [*ggscatterstats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/ggscatterstats.html) is used to build a visual for Significant Test of Correlation between Maths scores and English scores.
 
-xxxx
+```{r}
+ggscatterstats(
+  data = exam,
+  x = MATHS,
+  y = ENGLISH,
+  marginal = FALSE,
+  )
+```
 
 ### **6.3.9 Significant Test of Association (Depedence) : *ggbarstats()* methods**
 
 In the code chunk below, the Maths scores is binned into a 4-class variable by using [*cut()*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cut).
 
-xxxx
+```{r}
+exam1 <- exam %>% 
+  mutate(MATHS_bins = 
+           cut(MATHS, 
+               breaks = c(0,60,75,85,100))
+)
+```
 
 In this code chunk below [*ggbarstats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/ggbarstats.html) is used to build a visual for Significant Test of Association
 
-xxxx
+```{r}
+ggbarstats(exam1, 
+           x = MATHS_bins, 
+           y = GENDER)
+```
+
