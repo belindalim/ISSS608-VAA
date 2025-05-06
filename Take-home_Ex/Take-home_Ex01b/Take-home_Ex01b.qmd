@@ -1,5 +1,254 @@
 ---
-title: "Take-home_Ex01b"
+title: "Take-home Exercise 1b: Data Visualisation Makeover"
 format: html
+author: "Belinda Lim"
+date: May 6, 2025
+date-modified: "last-modified"
+editor: source
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
+# **1 Introduction**
+
+## **1.1 Overview**
+
+Under Take-home Exercise 1b, we are required to select one submission from our classmate for Take-home Exercise 1 to critic 3 good design principles and 3 areas for further improvements. With reference to the comments, we will provide a makeover of the data visualisation.
+
+## **1.2 Framework for Gauging Data Visualisation**
+
+Under the article published by [Ben Jones](Data%20Visualization:%20Clarity%20or%20Aesthetics?), he shared the following framework to gauge the objective and subjective merits of a data visualisation. It will be used to review my classmate's submission (see link to [original page](https://iss608-vaa.netlify.app/take-home_ex/take-home_ex01/take%20home%20exercise%201)).The submission was selected as the charts can be classified into the Quadrant II, III and IV:
+
+-   Quadrant I = \[clear, beautiful\]
+
+-   Quadrant II = \[clear, ugly\]
+
+-   Quadrant III = \[confusing, ugly\]
+
+-   Quadrant IV = \[confusing, beautiful\]
+
+![](images/clipboard-891094182.png)
+
+# **2 Critique**
+
+## **2.1 Loading of libraries and data pre-processing based on classmate's codes**
+
+```{r}
+library("pacman")
+suppressWarnings(library("lubridate"))
+library(readr)
+```
+
+```{r}
+pacman::p_load(tidyverse, readxl, 
+               janitor, lubridate, 
+               ggplot2, ggthemes, 
+               scales, ggridges, 
+               ggdist, patchwork)
+```
+
+```{r}
+Resident_Data <- read.csv("data/Resident_Data.csv")
+```
+
+```{r}
+glimpse(Resident_Data)
+```
+
+Note that my classmate has renamed SZ to Subzone and created two additional columns AG (Age Group) and FA (Functional Age) as shown in my classmate's website. To ensure that the charts are reproducible, the data pre-pre-processing details and codes should be spelt out.
+
+![](images/clipboard-185020519.png)
+
+```{r}
+Resident_Data[duplicated(Resident_Data),]
+```
+
+## **2.2 Bar chart based on Population Area**
+
+### **2.2.1 Original Chart**
+
+The original chart is reproduced below:
+
+```{r}
+filtered_data <- Resident_Data[!is.na(Resident_Data$Pop) & Resident_Data$Pop > 0, ]
+
+ggplot(data = filtered_data, aes(x = reorder(`PA`, Pop), y = Pop)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  coord_flip() +
+  labs(
+    title = "Population by Planning Area (Singapore, 2024)",
+    x = "Planning Area",
+    y = "Population"
+  ) +
+  scale_y_continuous(labels = comma) +
+  theme_minimal(base_size = 20) +  # Increase base font size
+  
+  theme(
+    plot.title = element_text(size = 18, face = "bold"),
+    axis.text.y = element_text(size = 15),
+    axis.text.x = element_text(size = 10),
+    plot.margin = margin(1, 1, 1, 1, "cm")  # Add breathing space
+  )
+
+
+
+```
+
+XXX explain merits
+
+xxx explain why
+
+### **2.2.2 Makeover of Original Chart**
+
+xxx
+
+## **2.3 Pyramid Bar chart based on Population Area**
+
+### **2.3.1 Original Chart**
+
+The attempt to reproduce the original chart using the code below has failed:
+
+{r}
+pyramid_data <- aggregate(Pop ~ `AG` + Sex, data = Resident_Data, sum)
+
+age_order <- c("0_to_4", "5_to_9", "10_to_14", "15_to_19", "20_to_24", "25_to_29", 
+               "30_to_34", "35_to_39", "40_to_44", "45_to_49", "50_to_54", "55_to_59", 
+               "60_to_64", "65_to_69", "70_to_74", "75_to_79", "80_to_84", "85_to_89", 
+               "90_and_over")
+
+pyramid_data$AG <- factor(pyramid_data$AG, levels = age_order)
+
+pyramid_data$Pop[pyramid_data$Sex == "Males"] <- -pyramid_data$Pop[pyramid_data$Sex == "Males"]
+
+ggplot(data = pyramid_data, aes(x = AG, y = Pop, fill = Sex)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(title = "Population Pyramid (2024)", x = "Age Group", y = "Population") +
+  scale_y_continuous(labels = comma) +
+  scale_fill_manual(values = c("skyblue", "salmon")) + 
+  theme_minimal() +
+  theme(axis.text.y = element_text(size = 10))
+
+A check was done on the column names. 
+```{r}
+colnames(Resident_Data)
+```
+
+There was an error as the original data does not have AG (or Age Group) but AG was cited in the codes above. 
+
+To rectify, the following codes for AG column were inserted
+
+```{r}
+Resident_Data <- Resident_Data %>%
+  mutate(
+    Age = recode(Age, "90_and_Over" = "90"),  
+    Age = as.numeric(Age),                    
+    Pop = as.numeric(Pop)                     
+  )
+```
+
+```{r}
+  Resident_Data <- Resident_Data %>%
+  mutate(
+    AG = case_when(
+      Age >= 0 & Age <= 4 ~ "0_to_4",
+      Age >= 5 & Age <= 9 ~ "5_to_9",
+      Age >= 10 & Age <= 14 ~ "10_to_14",
+      Age >= 15 & Age <= 19 ~ "15_to_19",
+      Age >= 20 & Age <= 24 ~ "20_to_24",
+      Age >= 25 & Age <= 29 ~ "25_to_29",
+      Age >= 30 & Age <= 34 ~ "30_to_34",
+      Age >= 35 & Age <= 39 ~ "35_to_39",
+      Age >= 40 & Age <= 44 ~ "40_to_44",
+      Age >= 45 & Age <= 49 ~ "45_to_49",
+      Age >= 50 & Age <= 54 ~ "50_to_54",
+      Age >= 55 & Age <= 59 ~ "55_to_59",
+      Age >= 60 & Age <= 64 ~ "60_to_64",
+      Age >= 65 & Age <= 69 ~ "65_to_69",
+      Age >= 70 & Age <= 74 ~ "70_to_74",
+      Age >= 75 & Age <= 79 ~ "75_to_79",
+      Age >= 80 & Age <= 84 ~ "80_to_84",
+      Age >= 85 & Age <= 89 ~ "85_to_89",
+      Age >= 90 ~ "90_and_over",
+      TRUE ~ NA_character_
+    )
+  )
+```
+
+The orignal code can now be reproduced: 
+```{r}
+pyramid_data <- aggregate(Pop ~ `AG` + Sex, data = Resident_Data, sum)
+
+age_order <- c("0_to_4", "5_to_9", "10_to_14", "15_to_19", "20_to_24", "25_to_29", 
+               "30_to_34", "35_to_39", "40_to_44", "45_to_49", "50_to_54", "55_to_59", 
+               "60_to_64", "65_to_69", "70_to_74", "75_to_79", "80_to_84", "85_to_89", 
+               "90_and_over")
+
+pyramid_data$AG <- factor(pyramid_data$AG, levels = age_order)
+
+pyramid_data$Pop[pyramid_data$Sex == "Males"] <- -pyramid_data$Pop[pyramid_data$Sex == "Males"]
+
+ggplot(data = pyramid_data, aes(x = AG, y = Pop, fill = Sex)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(title = "Population Pyramid (2024)", x = "Age Group", y = "Population") +
+  scale_y_continuous(labels = comma) +
+  scale_fill_manual(values = c("skyblue", "salmon")) + 
+  theme_minimal() +
+  theme(axis.text.y = element_text(size = 10))
+```
+XXX explain merits
+
+xxx explain why
+
+### **2.3.2 Makeover of Original Chart**
+
+xxx
+
+## **2.4 Box Plot based on Age Range**
+
+### **2.4.1 Original Chart**
+
+The attempt to reproduce the original chart using the code below has failed too as there was no FA column created. 
+
+{r}
+FA_order <- c("<= 60", ">60 to 80", ">80 to 100", ">100 to 120", ">120", "Not Available")
+Resident_Data$FA <- factor(Resident_Data$FA, levels = FA_order)
+
+ggplot(Resident_Data, aes(x = FA, y = Pop)) +
+  geom_boxplot(fill = "lightgreen") +
+  labs(title = "Population by Functional Age Range (FA)", x = "FA Band", y = "Population") +
+  theme_minimal()
+```
+
+To rectify, it is assumed that FA refers to Functional Age binned based on Age <= 60, >60 to 80, >80 to 100, >100 to 120, >120, Not Available.
+
+the following codes for AG column were inserted
+
+```{r}
+Resident_Data <- Resident_Data %>%
+  mutate(
+    FA = case_when(
+      Age <= 60 ~ "<= 60",
+      Age > 60 & Age <= 80 ~ ">60 to 80",
+      Age > 80 & Age <= 100 ~ ">80 to 100",
+      Age > 100 & Age <= 120 ~ ">100 to 120",
+      Age > 120 ~ ">120",
+      TRUE ~ "Not Available"
+    )
+  )
+```
+
+
+
+
+XXX explain merits
+
+xxx explain why
+
+### **2.4.2 Makeover of Original Chart**
+
+xxx
