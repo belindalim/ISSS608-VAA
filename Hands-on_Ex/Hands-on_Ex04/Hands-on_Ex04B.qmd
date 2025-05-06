@@ -172,3 +172,6 @@ ggbarstats(exam1,
            y = GENDER)
 ```
 
+## **6.4 Additional Plots**
+
+Additional plots which are beyond the scope of the hand-on exercises for my learning purposes will be added after trying. 
