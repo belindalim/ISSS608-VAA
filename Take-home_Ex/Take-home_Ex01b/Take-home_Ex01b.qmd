@@ -249,7 +249,7 @@ ggplot(data = pyramid_data, aes(x = AG, y = Pop, fill = Sex)) +
   coord_flip() +
   labs(title = "Population Pyramid (2024)", x = "Age Group", y = "Population") +
   scale_y_continuous(labels = function(x) comma(abs(x))) +
-  scale_fill_manual(values = c("skyblue", "salmon")) +
+  scale_fill_manual(values = c("Males" = "skyblue", "Females" = "salmon")) +
   theme_minimal() +
   theme(
     axis.text.y = element_text(size = 9),
@@ -320,7 +320,7 @@ Resident_FA_summary <- Resident_Data %>%
 
 ggplot(Resident_FA_summary, aes(x = FA, y = TotalPop)) +
   geom_col(fill = "lightgreen") +
-  labs(title = "Total Population by FA Band", x = "FA Band", y = "Total Population") +
+  labs(title = "Total Population by Functional Age (FA) Band", x = "FA Band", y = "Total Population") +
   scale_y_continuous(labels = comma) +
   theme_minimal()
 ```
