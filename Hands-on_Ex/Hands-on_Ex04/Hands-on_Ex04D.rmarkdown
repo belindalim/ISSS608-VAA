@@ -15,6 +15,8 @@ execute:
   freeze: true
 ---
 
+
+
 # **8  Funnel Plots for Fair Comparisons**
 
 ## **8.1 Overview**
@@ -41,9 +43,13 @@ In this exercise, four R packages will be used. They are:
 
 -   **plotly** for creating interactive funnel plot.
 
+
+
 ```{r}
 pacman::p_load(tidyverse, FunnelPlotR, plotly, knitr)
 ```
+
+
 
 ## **8.3 Importing Data**
 
@@ -51,10 +57,14 @@ In this section, COVID-19_DKI_Jakarta will be used. The data was downloaded from
 
 The code chunk below imports the data into R and save it into a tibble data frame object called *covid19*.
 
+
+
 ```{r}
 covid19 <- read_csv("data/COVID-19_DKI_Jakarta.csv") %>%
   mutate_if(is.character, as.factor)
 ```
+
+
 
 ## **8.4 FunnelPlotR methods**
 
@@ -76,6 +86,8 @@ covid19 <- read_csv("data/COVID-19_DKI_Jakarta.csv") %>%
 
 The code chunk below plots a funnel plot.
 
+
+
 ```{r}
 funnel_plot(
   .data = covid19,
@@ -84,6 +96,8 @@ funnel_plot(
   group = `Sub-district`
 )
 ```
+
+
 
 Things to learn from the code chunk above.
 
@@ -97,6 +111,8 @@ Things to learn from the code chunk above.
 
 The code chunk below plots a funnel plot.
 
+
+
 ```{r}
 funnel_plot(
   .data = covid19,
@@ -109,11 +125,15 @@ funnel_plot(
 )
 ```
 
+
+
 Things to learn from the code chunk above. + `data_type` argument is used to change from default “SR” to “PR” (i.e. proportions). + `xrange` and `yrange` are used to set the range of x-axis and y-axis
 
 ### **8.4.3 FunnelPlotR methods: Makeover 2**
 
 The code chunk below plots a funnel plot.
+
+
 
 ```{r}
 funnel_plot(
@@ -131,6 +151,8 @@ funnel_plot(
 )
 ```
 
+
+
 Things to learn from the code chunk above.
 
 -   `label = NA` argument is to removed the default label outliers feature.
@@ -147,6 +169,8 @@ In this section, you will gain hands-on experience on building funnel plots step
 
 To plot the funnel plot from scratch, we need to derive cumulative death rate and standard error of cumulative death rate.
 
+
+
 ```{r}
 df <- covid19 %>%
   mutate(rate = Death / Positive) %>%
@@ -154,15 +178,23 @@ df <- covid19 %>%
   filter(rate > 0)
 ```
 
+
+
 Next, the *fit.mean* is computed by using the code chunk below.
+
+
 
 ```{r}
 fit.mean <- weighted.mean(df$rate, 1/df$rate.se^2)
 ```
 
+
+
 ### **8.5.2 Calculate lower and upper limits for 95% and 99.9% CI**
 
 The code chunk below is used to compute the lower and upper limits for 95% confidence interval.
+
+
 
 ```{r}
 number.seq <- seq(1, max(df$Positive), 1)
@@ -174,9 +206,13 @@ dfCI <- data.frame(number.ll95, number.ul95, number.ll999,
                    number.ul999, number.seq, fit.mean)
 ```
 
+
+
 ### **8.5.3 Plotting a static funnel plot**
 
 In the code chunk below, ggplot2 functions are used to plot a static funnel plot.
+
+
 
 ```{r}
 p <- ggplot(df, aes(x = Positive, y = rate)) +
@@ -224,9 +260,13 @@ p <- ggplot(df, aes(x = Positive, y = rate)) +
 p
 ```
 
+
+
 ### **8.5.4 Interactive Funnel Plot: plotly + ggplot2**
 
 The funnel plot created using ggplot2 functions can be made interactive with `ggplotly()` of **plotly** r package.
+
+
 
 ```{r}
 fp_ggplotly <- ggplotly(p,
@@ -235,6 +275,8 @@ fp_ggplotly <- ggplotly(p,
               "y"))
 fp_ggplotly
 ```
+
+
 
 ## **8.6 References**
 
@@ -247,3 +289,4 @@ fp_ggplotly
 -   [ggplot2](https://ggplot2.tidyverse.org/) package.
 
 ## **8.7 References**
+
