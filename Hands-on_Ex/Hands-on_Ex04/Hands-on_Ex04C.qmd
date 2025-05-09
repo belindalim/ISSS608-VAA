@@ -87,7 +87,7 @@ my_sum <- exam %>%
 ```
 
 ::: callout-tip
-### Things to learn from the code chunk above\*\*
+### Things to learn from the code chunk above
 
 -   `group_by()` of **dplyr** package is used to group the observation by RACE,
 
@@ -144,7 +144,7 @@ ggplot(my_sum) +
            color="red",
            size = 1.5,
            alpha=1) +
-  ggtitle("Standard error of mean maths score by rac")
+  ggtitle("Standard error of mean maths score by race")
 ```
 
 ### The code
@@ -166,17 +166,10 @@ ggplot(my_sum) +
            color="red",
            size = 1.5,
            alpha=1) +
-  ggtitle("Standard error of mean maths score by rac")
+  ggtitle("Standard error of mean maths score by race")
 ```
 :::
 
-::: callout-tip
-### Things to learn from the code chunk above
-
--   The error bars are computed by using the formula mean+/-se.
-
--   For `geom_point()`, it is important to indicate *stat=“identity”*.
-:::
 
 ### **7.3.2 Plotting confidence interval of point estimates**
 
@@ -238,7 +231,7 @@ In this section, you will learn how to plot interactive error bars for the 99% c
 ```{r, echo = FALSE}
 shared_df = SharedData$new(my_sum)
 
-bscols(widths = c(4,8),
+bscols(widths = c(6,6),
        ggplotly((ggplot(shared_df) +
                    geom_errorbar(aes(
                      x=reorder(RACE, -mean),
@@ -265,13 +258,15 @@ bscols(widths = c(4,8),
                    ylab("Average Scores") + 
                    theme_minimal() + 
                    theme(axis.text.x = element_text(
-                     angle = 45, vjust = 0.5, hjust=1)) +
-                   ggtitle("99% Confidence interval of average /<br>maths scores by race")), 
+                      angle = 45, vjust = 0.5, hjust=1),
+                      plot.title = element_text(size = 10)
+                     ) +
+                   ggtitle("99% Confidence interval of average maths scores by race")), 
                 tooltip = "text"), 
        DT::datatable(shared_df, 
                      rownames = FALSE, 
                      class="compact", 
-                     width="100%", 
+                     width="110%", 
                      options = list(pageLength = 10,
                                     scrollX=T), 
                      colnames = c("No. of pupils", 
@@ -287,7 +282,7 @@ bscols(widths = c(4,8),
 ```{r, eval = FALSE}
 shared_df = SharedData$new(my_sum)
 
-bscols(widths = c(4,8),
+bscols(widths = c(6,6),
        ggplotly((ggplot(shared_df) +
                    geom_errorbar(aes(
                      x=reorder(RACE, -mean),
@@ -314,13 +309,15 @@ bscols(widths = c(4,8),
                    ylab("Average Scores") + 
                    theme_minimal() + 
                    theme(axis.text.x = element_text(
-                     angle = 45, vjust = 0.5, hjust=1)) +
-                   ggtitle("99% Confidence interval of average /<br>maths scores by race")), 
+                      angle = 45, vjust = 0.5, hjust=1),
+                      plot.title = element_text(size = 10)
+                     ) +
+                   ggtitle("99% Confidence interval of average maths scores by race")), 
                 tooltip = "text"), 
        DT::datatable(shared_df, 
                      rownames = FALSE, 
                      class="compact", 
-                     width="100%", 
+                     width="110%", 
                      options = list(pageLength = 10,
                                     scrollX=T), 
                      colnames = c("No. of pupils", 
@@ -382,11 +379,9 @@ exam %>%
     title = "Visualising confidence intervals of median math score",
     subtitle = "Median Point + Multiple-interval plot")
 ```
-
 ::: callout-note
-###Your turn
 
-Makeover the plot on previous slide by showing 95% and 99% confidence intervals.
+Makeover of the plot on previous slide by showing 95% and 99% confidence intervals.
 :::
 
 ```{r}
@@ -459,4 +454,4 @@ ggplot(data = exam,
   transition_states(.draw, 1, 3)
 ``` 
 
-### **7.6 Additional Plots**
+### **7.6 Additional Plots (if any)**
