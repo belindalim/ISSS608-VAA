@@ -257,6 +257,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#adding-the-dot-plots-with-stat_dots" id="toc-adding-the-dot-plots-with-stat_dots" class="nav-link" data-scroll-target="#adding-the-dot-plots-with-stat_dots"><strong>5.4.3 Adding the Dot Plots with <code>stat_dots()</code></strong></a></li>
   <li><a href="#finishing-touch" id="toc-finishing-touch" class="nav-link" data-scroll-target="#finishing-touch"><strong>5.4.4 Finishing touch</strong></a></li>
   </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><strong>5.5 References</strong></a></li>
+  <li><a href="#additional-plots" id="toc-additional-plots" class="nav-link" data-scroll-target="#additional-plots"><strong>5.6 Additional Plots</strong></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -290,7 +292,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 7, 2025</p>
+      <p class="date-modified">May 9, 2025</p>
     </div>
   </div>
     
@@ -321,7 +323,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>The code chunk below will be used load these R packages into RStudio environment.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggdist, ggridges, ggthemes,                colorspace, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggdist, ggridges, ggthemes, colorspace, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="data-import" class="level3">
@@ -357,7 +359,7 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><p>Ridgeline plots make sense when the number of group to represent is medium to high, and thus a classic window separation would take to much space. Indeed, the fact that groups overlap each other allows to use space more efficiently. If you have less than 5 groups, dealing with other distribution plots is probably better.</p></li>
+<li><p>Ridgeline plots make sense when the number of group to represent is medium to high, and thus a classic window separation would take too much space. Indeed, the fact that groups overlap each other allows to use space more efficiently. If you have less than 5 groups, dealing with other distribution plots is probably better.</p></li>
 <li><p>It works well when there is a clear pattern in the result, like if there is an obvious ranking in groups. Otherwise group will tend to overlap each other, leading to a messy plot not providing any insight.</p></li>
 </ul>
 </div>
@@ -708,16 +710,53 @@ Important
 </div>
 </div>
 </div>
-<p><strong>Reference</strong></p>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references"><strong>5.5 References</strong></h2>
 <ul>
 <li><p><a href="https://blog.revolutionanalytics.com/2017/07/joyplots.html">Introducing Ridgeline Plots (formerly Joyplots)</a></p></li>
 <li><p>Claus O. Wilke <a href="https://clauswilke.com/dataviz/">Fundamentals of Data Visualization</a> especially Chapter <a href="https://clauswilke.com/dataviz/visualizing-amounts.html">6</a>, <a href="https://clauswilke.com/dataviz/histograms-density-plots.html">7</a>, <a href="https://clauswilke.com/dataviz/ecdf-qq.html">8</a>, <a href="https://clauswilke.com/dataviz/boxplots-violins.html">9</a> and <a href="https://clauswilke.com/dataviz/visualizing-proportions.html">10</a>.</p></li>
 <li><p>Allen M, Poggiali D, Whitaker K et al.&nbsp;<a href="https://wellcomeopenresearch.org/articles/4-63">“Raincloud plots: a multi-platform tool for robust data. visualization”</a> [version 2; peer review: 2 approved]. Welcome Open Res 2021, pp.&nbsp;4:63.</p></li>
 <li><p><a href="https://mjskay.github.io/ggdist/articles/dotsinterval.html">Dots + interval stats and geoms</a></p></li>
 </ul>
-
-
 </section>
+<section id="additional-plots" class="level2">
+<h2 class="anchored" data-anchor-id="additional-plots"><strong>5.6 Additional Plots</strong></h2>
+<p>Additional Plots for my learning purposes:</p>
+<p>Include another category “Gender” for the dots.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(exam, </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> RACE, <span class="at">y =</span> ENGLISH)) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">adjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">justification =</span> <span class="sc">-</span><span class="fl">0.2</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">.width =</span> <span class="dv">0</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">point_colour =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.20</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dots</span>(<span class="fu">aes</span>(<span class="at">fill =</span> GENDER),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="cn">NA</span>,  </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">side =</span> <span class="st">"left"</span>, </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">justification =</span> <span class="fl">1.2</span>, </span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">binwidth =</span> <span class="fl">0.5</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">dotsize =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"darkred"</span>, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"steelblue"</span>)) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_economist</span>()<span class="sc">+</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),  </span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)     </span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hands-on_Ex04_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
 </section>
 </section>
 
