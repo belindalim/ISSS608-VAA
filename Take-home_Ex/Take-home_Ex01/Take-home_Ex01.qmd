@@ -1,6 +1,8 @@
 ---
 title: "Take-home Exercise 1: Demographic structures and distribution of Singapore in 2024"
-format: html
+format:
+  docx:
+    prefer-html: true
 author: "Belinda Lim"
 date: May 1, 2025
 date-modified: "last-modified"
@@ -38,9 +40,6 @@ It is assumed that you already have [**pacman**](https://cran.r-project.org/web
 
 ```{r}
 pacman::p_load(tidyverse, patchwork, scales, sf, plotly)
-# tidyverse, patchwork, scales, sf, plotly
-
-# tidyverse, ggplot2, patchwork, scales, sf, readr, viridis, plotly
 ```
 
 We import Demographic_data.csv into R environment by using [*read_csv()*](https://readr.tidyverse.org/reference/read_delim.html) function of [**readr**](https://readr.tidyverse.org/) package. **readr** is one of the tidyverse package.
@@ -624,7 +623,7 @@ The choropleth map with percentage of elderly population aged 65 and above is sh
 ::: panel-tabset
 ### The plot
 
-```{r, echo =FALSE}
+```{r, r, eval = knitr::is_html_output()}
 p <- ggplot(sg_map_joined) +
   geom_sf(aes(
     fill = PctOver65,
@@ -646,7 +645,7 @@ ggplotly(p, tooltip = "text")
 
 ### The code
 
-```{r, eval=FALSE}
+```{r, eval=knitr::is_html_output()}
 p <- ggplot(sg_map_joined) +
   geom_sf(aes(
     fill = PctOver65,

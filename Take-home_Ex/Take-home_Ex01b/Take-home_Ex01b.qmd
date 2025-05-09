@@ -64,7 +64,7 @@ Resident_Data[duplicated(Resident_Data),]
 
 Note that my classmate has renamed SZ to Subzone and created two additional columns AG (Age Group) and FA (Functional Age) as shown in my classmate's website (see extract in the Figure below). To ensure that the charts are reproducible, the data pre-processing steps and codes should be spelt out.
 
-[Figure 1: Extracts from classmate's website]{.underline} <img src="images/clipboard-185020519.png" style="border: 2px solid #ccc; border-radius: 8px; width: 80%;">
+[Figure 1: Extracts from classmate's website]{.underline} <img src="images/clipboard-185020519.png" style="border: 2px solid #ccc; border-radius: 8px; width: 80%;"/>
 
 ## **2.2 Bar chart based on Population Area**
 
@@ -97,9 +97,19 @@ ggplot(data = filtered_data, aes(x = reorder(`PA`, Pop), y = Pop)) +
 
 However, the chart produced did not look like the one published on my classmate's website:
 
-[Figure 2: Extracts from classmate's website]{.underline} <img src="images/clipboard-320653457.png" style="border: 2px solid #ccc; border-radius: 8px; width: 80%;">
+[Figure 2: Extracts from classmate's website]{.underline} <img src="images/clipboard-320653457.png" style="border: 2px solid #ccc; border-radius: 8px; width: 80%;"/>
 
-The chart can be classified under Quadrant II = \[clear, ugly\]. The bar chart summarised the population numbers for all PA in Singapore clearly with a well-labelled x-axis scale.
+[Good Design Principles]{.underline}
+
+-   The bar chart summarised the population numbers for all PAs in Singapore.
+
+-   It also has a well-labelled x-axis scale.
+
+-   It uses gridlines that are greyed-out which helps with the visual mapping to the x-axis.
+
+[Areas of Improvements]{.underline}
+
+However, the chart can be classified under Quadrant II = \[clear, ugly\].
 
 To improve the chart, it is recommended to:
 
@@ -229,9 +239,17 @@ ggplot(data = pyramid_data, aes(x = AG, y = Pop, fill = Sex)) +
   theme(axis.text.y = element_text(size = 10))
 ```
 
-The chart is an age pyramid which illustrated the age structure of Singapore's population well and it is in sync with my classmate's data storytelling insights.
+[Good Design Principles]{.underline}
+
+-    The chart is an age pyramid which illustrated the age structure of Singapore's population well as we can immediately see that the main bulk of the population is between 30 to 69.
+
+-   Instead of doing a simple bar chart where Males and Females population are both on the right, the scale of the bar chart has been adjusted to move Males to the left.
+
+-   The gridlines also helps with the visual mapping to the x-axis numbers.
 
 However, the age pyramid can be classified under Quadrant IV = \[confusing, beautiful\]. This is because males are coded as red and females are coded as blue. There is also a negative number in the x-axis for population.
+
+[Areas of Improvements]{.underline}
 
 To improve the chart, it is recommended to:
 
@@ -239,7 +257,7 @@ To improve the chart, it is recommended to:
 
 -   Update the scale to be positive number
 
--   Compress the chart. 
+-   Compress the chart.
 
 ### **2.3.2 Makeover of Original Chart**
 
@@ -293,7 +311,7 @@ Resident_Data <- Resident_Data %>%
   )
 ```
 
-I have attempted to reproduce the original chart using the codes provided but was unable to do so as it is not possible to distinguish population aged "\>100 to 120", "\>120" and "Not Available" since all population aged 90 and above will be classified under "\>80 to 100".
+I have attempted to reproduce the original chart using the codes provided but was unable to do so as it is not possible to distinguish population aged "\>100 to 120", "\>120" and "Not Available" since all population aged 90 and above will be classified under "\>80 to 100". Hence, I am unable to critique on the good design principles for this chart.
 
 ```{r}
 FA_order <- c("<= 60", ">60 to 80", ">80 to 100", ">100 to 120", ">120", "Not Available")
@@ -305,7 +323,13 @@ ggplot(Resident_Data, aes(x = FA, y = Pop)) +
   theme_minimal()
 ```
 
-The chart is a box plot based on age range. Box plots are used to show distributions of numeric continuous data values along y-axis, and compare them between multiple groups. As mentioned earlier, the data grouping seems to be erroneous. Given that the population numbers are by subzones, the box plot shows large number of outliers which is not useful for storytelling.
+[Areas of Improvement]{.underline}
+
+-   The chart is a box plot based on age range. However, box plots are used to show distributions of numeric continuous data values along y-axis, and compare them between multiple groups.
+
+-   As mentioned earlier, the data grouping seems to be erroneous and needs corrections to the code.
+
+-   Given that the population numbers are by subzones, the box plot shows large number of outliers which is not useful for storytelling.
 
 Hence, the chart can be classified under Quadrant III = \[confusing, ugly\].
 
