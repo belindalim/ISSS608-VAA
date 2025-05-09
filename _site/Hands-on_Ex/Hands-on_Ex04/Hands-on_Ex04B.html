@@ -251,7 +251,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#significant-test-of-correlation-ggscatterstats" id="toc-significant-test-of-correlation-ggscatterstats" class="nav-link" data-scroll-target="#significant-test-of-correlation-ggscatterstats"><strong>6.3.8 Significant Test of Correlation: <em>ggscatterstats()</em></strong></a></li>
   <li><a href="#significant-test-of-association-depedence-ggbarstats-methods" id="toc-significant-test-of-association-depedence-ggbarstats-methods" class="nav-link" data-scroll-target="#significant-test-of-association-depedence-ggbarstats-methods"><strong>6.3.9 Significant Test of Association (Depedence) : <em>ggbarstats()</em> methods</strong></a></li>
   </ul></li>
-  <li><a href="#additional-plots" id="toc-additional-plots" class="nav-link" data-scroll-target="#additional-plots"><strong>6.4 Additional Plots</strong></a></li>
+  <li><a href="#additional-plots" id="toc-additional-plots" class="nav-link" data-scroll-target="#additional-plots"><strong>6.4 Additional Plots</strong></a>
+  <ul class="collapse">
+  <li><a href="#categorical-association-in-a-pie-chart-format" id="toc-categorical-association-in-a-pie-chart-format" class="nav-link" data-scroll-target="#categorical-association-in-a-pie-chart-format"><strong>6.4.1 Categorical association in a pie-chart format</strong></a></li>
+  <li><a href="#compare-english-scores-across-gender-and-race" id="toc-compare-english-scores-across-gender-and-race" class="nav-link" data-scroll-target="#compare-english-scores-across-gender-and-race"><strong>6.4.2 Compare English scores across gender and race</strong></a></li>
+  <li><a href="#bayesian-correlation-test-between-math-and-science-scores" id="toc-bayesian-correlation-test-between-math-and-science-scores" class="nav-link" data-scroll-target="#bayesian-correlation-test-between-math-and-science-scores"><strong>6.4.3 Bayesian correlation test between Math and Science scores</strong></a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -285,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 7, 2025</p>
+      <p class="date-modified">May 9, 2025</p>
     </div>
   </div>
     
@@ -310,7 +315,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="visual-statistical-analysis-with-ggstatsplot" class="level2">
 <h2 class="anchored" data-anchor-id="visual-statistical-analysis-with-ggstatsplot"><strong>6.2 Visual Statistical Analysis with ggstatsplot</strong></h2>
 <p><a href="https://indrajeetpatil.github.io/ggstatsplot/index.html"><strong>ggstatsplot</strong></a> <img src="https://r4va.netlify.app/chap10/img/image1.jpg" width="45" height="45"> is an extension of <a href="https://ggplot2.tidyverse.org/"><strong>ggplot2</strong></a> package for creating graphics with details from statistical tests included in the information-rich plots themselves.</p>
-<p>- To provide alternative statistical inference methods by default. - To follow best practices for statistical reporting. For all statistical tests reported in the plots, the default template abides by the [APA](https://my.ilstu.edu/~jhkahn/apastats.html) gold standard for statistical reporting. For example, here are results from a robust t-test:</p>
+<p>- To provide alternative statistical inference methods by default.</p>
+<ul>
+<li><p>To follow best practices for statistical reporting.</p></li>
+<li><p>For all statistical tests reported in the plots, the default template abides by the [APA](https://my.ilstu.edu/~jhkahn/apastats.html) gold standard for statistical reporting.</p></li>
+</ul>
+<p>For example, here are results from a robust t-test:</p>
 <p><img src="images/clipboard-18459593.png" class="img-fluid" width="831"></p>
 </section>
 <section id="getting-started" class="level2">
@@ -478,9 +488,75 @@ Do-It-Yourself
 </section>
 <section id="additional-plots" class="level2">
 <h2 class="anchored" data-anchor-id="additional-plots"><strong>6.4 Additional Plots</strong></h2>
-<p>Additional plots which are beyond the scope of the hand-on exercises for my learning purposes will be added after trying.</p>
+<p>These are plots beyond the hands-on exercises for my learning purpose:</p>
+<section id="categorical-association-in-a-pie-chart-format" class="level3">
+<h3 class="anchored" data-anchor-id="categorical-association-in-a-pie-chart-format"><strong>6.4.1 Categorical association in a pie-chart format</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpiestats</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> exam,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> RACE,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> GENDER</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hands-on_Ex04B_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="compare-english-scores-across-gender-and-race" class="level3">
+<h3 class="anchored" data-anchor-id="compare-english-scores-across-gender-and-race"><strong>6.4.2 Compare English scores across gender and race</strong></h3>
+<p>Non-parametric test was used as some of the group sizes are &lt;30.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grouped_ggbetweenstats</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> exam,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> GENDER,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> ENGLISH,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">grouping.var =</span> RACE,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"nonparametric"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">pairwise.comparisons =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">plotgrid.args =</span> <span class="fu">list</span>(<span class="at">ncol =</span> <span class="dv">2</span>),  <span class="co"># show in 2 columns</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">ggplot.component =</span> <span class="fu">list</span>(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>),  <span class="co"># smaller text</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">results.subtitle.args =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="fl">3.5</span>),   <span class="co"># smaller APA annotation</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">point.args =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="fl">2.5</span>)               <span class="co"># smaller mean dot</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hands-on_Ex04B_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="bayesian-correlation-test-between-math-and-science-scores" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-correlation-test-between-math-and-science-scores"><strong>6.4.3 Bayesian correlation test between Math and Science scores</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatterstats</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> exam,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> MATHS,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> SCIENCE,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"bayes"</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hands-on_Ex04B_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
+</section>
 </section>
 </section>
 

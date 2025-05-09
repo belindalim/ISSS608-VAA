@@ -31,7 +31,13 @@ In this hands-on exercise, you will gain hands-on experience on using:
 
 [**ggstatsplot**](https://indrajeetpatil.github.io/ggstatsplot/index.html) ![](https://r4va.netlify.app/chap10/img/image1.jpg){width="45" height="45"} is an extension of [**ggplot2**](https://ggplot2.tidyverse.org/) package for creating graphics with details from statistical tests included in the information-rich plots themselves.
 
-\- To provide alternative statistical inference methods by default. - To follow best practices for statistical reporting. For all statistical tests reported in the plots, the default template abides by the \[APA\](https://my.ilstu.edu/\~jhkahn/apastats.html) gold standard for statistical reporting. For example, here are results from a robust t-test:
+\- To provide alternative statistical inference methods by default.
+
+-   To follow best practices for statistical reporting.
+
+-   For all statistical tests reported in the plots, the default template abides by the \[APA\](https://my.ilstu.edu/\~jhkahn/apastats.html) gold standard for statistical reporting.
+
+For example, here are results from a robust t-test:
 
 ![](images/clipboard-18459593.png){width="831"}
 
@@ -172,9 +178,50 @@ ggbarstats(exam1,
            y = GENDER)
 ```
 
-## **6.4 Additional Plots** 
+## **6.4 Additional Plots**
 
-Additional plots which are beyond the scope of the hand-on exercises for my learning purposes will be added after trying. 
+These are plots beyond the hands-on exercises for my learning purpose:
 
+### **6.4.1 Categorical association in a pie-chart format**
+```{r}
+ggpiestats(
+  data = exam,
+  x = RACE,
+  y = GENDER
+)
+```
+### **6.4.2 Compare English scores across gender and race**
 
+Non-parametric test was used as some of the group sizes are <30.
 
+```{r}
+grouped_ggbetweenstats(
+  data = exam,
+  x = GENDER,
+  y = ENGLISH,
+  grouping.var = RACE,
+  type = "nonparametric",
+  pairwise.comparisons = FALSE,
+  plotgrid.args = list(ncol = 2),  # show in 2 columns
+  ggplot.component = list(
+    theme(
+      text = element_text(size = 7),  # smaller text
+      plot.title = element_text(size = 11),
+      legend.text = element_text(size = 8)
+    )
+  ),
+  results.subtitle.args = list(size = 3.5),   # smaller APA annotation
+  point.args = list(size = 2.5)               # smaller mean dot
+)
+```
+
+### **6.4.3 Bayesian correlation test between Math and Science scores**
+
+```{r}
+ggscatterstats(
+  data = exam,
+  x = MATHS,
+  y = SCIENCE,
+  type = "bayes"
+)
+```
