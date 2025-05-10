@@ -101,9 +101,9 @@ However, the chart produced did not look like the one published on my classmate'
 
 [Good Design Principles]{.underline}
 
--   The bar chart summarised the population numbers for all PAs in Singapore.
+-   The bar chart summarised the population numbers in each all PA in Singapore.
 
--   It also has a well-labelled x-axis scale.
+-   It also has a labelled x-axis scale.
 
 -   It uses gridlines that are greyed-out which helps with the visual mapping to the x-axis.
 
@@ -241,11 +241,11 @@ ggplot(data = pyramid_data, aes(x = AG, y = Pop, fill = Sex)) +
 
 [Good Design Principles]{.underline}
 
--    The chart is an age pyramid which illustrated the age structure of Singapore's population well as we can immediately see that the main bulk of the population is between 30 to 69.
+-   The chart is an age pyramid which illustrated the age structure of Singapore's population well as we can immediately see that the main bulk of the population is between 30 to 69.
 
 -   Instead of doing a simple bar chart where Males and Females population are both on the right, the scale of the bar chart has been adjusted to move Males to the left.
 
--   The gridlines also helps with the visual mapping to the x-axis numbers.
+-   The gridlines also help with the visual mapping to the x-axis numbers.
 
 However, the age pyramid can be classified under Quadrant IV = \[confusing, beautiful\]. This is because males are coded as red and females are coded as blue. There is also a negative number in the x-axis for population.
 
@@ -253,11 +253,13 @@ However, the age pyramid can be classified under Quadrant IV = \[confusing, beau
 
 To improve the chart, it is recommended to:
 
+-   Correct the codes for binning as mentioned above. 
+
 -   Swop the colour code for gender
 
 -   Update the scale to be positive number
 
--   Compress the chart.
+-   Compress the chart to be shorter
 
 ### **2.3.2 Makeover of Original Chart**
 
