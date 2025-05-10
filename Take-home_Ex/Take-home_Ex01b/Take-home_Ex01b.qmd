@@ -1,6 +1,6 @@
 ---
 title: "Take-home Exercise 1b: Data Visualisation Makeover"
-format: html
+format: docx
 author: "Belinda Lim"
 date: May 6, 2025
 date-modified: "last-modified"

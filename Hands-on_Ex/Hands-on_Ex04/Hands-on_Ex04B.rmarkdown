@@ -1,0 +1,271 @@
+---
+title: "Hands-on Exercise 4B"
+author: "Belinda Lim"
+date: May 6, 2025
+date-modified: "last-modified"
+format:
+  html:
+    theme: flatly
+    toc: true
+editor: source
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+
+
+# **6  Programming Animated Statistical Graphics with R**
+
+## **6.1 Learning Outcome**
+
+In this hands-on exercise, you will gain hands-on experience on using:
+
+-   ggstatsplot package to create visual graphics with rich statistical information,
+
+-   performance package to visualise model diagnostics, and
+
+-   parameters package to visualise model parameters
+
+## **6.2 Visual Statistical Analysis with ggstatsplot**
+
+[**ggstatsplot**](https://indrajeetpatil.github.io/ggstatsplot/index.html) ![](https://r4va.netlify.app/chap10/img/image1.jpg){width="45" height="45"} is an extension of [**ggplot2**](https://ggplot2.tidyverse.org/) package for creating graphics with details from statistical tests included in the information-rich plots themselves.
+
+\- To provide alternative statistical inference methods by default.
+
+-   To follow best practices for statistical reporting.
+
+-   For all statistical tests reported in the plots, the default template abides by the \[APA\](https://my.ilstu.edu/\~jhkahn/apastats.html) gold standard for statistical reporting.
+
+For example, here are results from a robust t-test:
+
+![](images/clipboard-18459593.png){width="831"}
+
+## **6.3 Getting Started**
+
+### **6.3.1 Installing and launching R packages**
+
+In this exercise, **ggstatsplot** and **tidyverse** will be used.
+
+
+
+```{r}
+pacman::p_load(ggstatsplot, tidyverse)
+```
+
+
+
+### **6.3.2 Importing data**
+
+::: callout-note
+### Do-It-Yourself
+
+Importing *Exam.csv* data by using appropriate tidyverse package as follows:
+:::
+
+
+
+```{r}
+exam <- read_csv("data/Exam_data.csv")
+```
+
+
+
+### **6.3.3 One-sample test: *gghistostats()* method**
+
+In the code chunk below, [*gghistostats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/gghistostats.html) is used to to build an visual of one-sample test on English scores.
+
+
+
+```{r, echo = FALSE}
+set.seed(1234)
+
+gghistostats(
+  data = exam,
+  x = ENGLISH,
+  type = "bayes",
+  test.value = 60,
+  xlab = "English scores"
+)
+```
+
+
+
+Default information: - statistical details - Bayes Factor - sample sizes - distribution summary
+
+### **6.3.4 Unpacking the Bayes Factor**
+
+-   A Bayes factor is the ratio of the likelihood of one particular hypothesis to the likelihood of another. It can be interpreted as a measure of the strength of evidence in favor of one theory among two competing theories.
+
+-   That’s because the Bayes factor gives us a way to evaluate the data in favor of a null hypothesis, and to use external information to do so. It tells us what the weight of the evidence is in favor of a given hypothesis.
+
+-   When we are comparing two hypotheses, H1 (the alternate hypothesis) and H0 (the null hypothesis), the Bayes Factor is often written as B10. It can be defined mathematically as
+
+![](images/clipboard-3788699597.png){width="440"}
+
+-   The [**Schwarz criterion**](https://www.statisticshowto.com/bayesian-information-criterion/) is one of the easiest ways to calculate rough approximation of the Bayes Factor.
+
+### **6.3.5 How to interpret Bayes Factor**
+
+A **Bayes Factor** can be any positive number. One of the most common interpretations is this one—first proposed by Harold Jeffereys (1961) and slightly modified by [Lee and Wagenmakers](https://www-tandfonline-com.libproxy.smu.edu.sg/doi/pdf/10.1080/00031305.1999.10474443?needAccess=true) in 2013:
+
+![](images/clipboard-3819306550.png){width="423"}
+
+### **6.3.6 Two-sample mean test: *ggbetweenstats()***
+
+In the code chunk below, [*ggbetweenstats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/ggbetweenstats.html) is used to build a visual for two-sample mean test of Maths scores by gender.
+
+
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = GENDER, 
+  y = MATHS,
+  type = "np",
+  messages = FALSE
+)
+```
+
+
+
+Default information: - statistical details - Bayes Factor - sample sizes - distribution summary
+
+### **6.3.7 Oneway ANOVA Test: *ggbetweenstats()* method**
+
+In the code chunk below, [*ggbetweenstats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/ggbetweenstats.html) is used to build a visual for One-way ANOVA test on English score by race.
+
+
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = RACE, 
+  y = ENGLISH,
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "s",
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+
+
+-   “ns” → only non-significant
+
+-   “s” → only significant
+
+-   “all” → everything
+
+#### 10.3.7.1 ggbetweenstats - Summary of tests
+
+![](images/clipboard-1318965758.png)
+
+![![](images/clipboard-2170736383.png)](images/clipboard-11828082.png)
+
+### **6.3.8 Significant Test of Correlation: *ggscatterstats()***
+
+In the code chunk below, [*ggscatterstats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/ggscatterstats.html) is used to build a visual for Significant Test of Correlation between Maths scores and English scores.
+
+
+
+```{r}
+ggscatterstats(
+  data = exam,
+  x = MATHS,
+  y = ENGLISH,
+  marginal = FALSE,
+  )
+```
+
+
+
+### **6.3.9 Significant Test of Association (Depedence) : *ggbarstats()* methods**
+
+In the code chunk below, the Maths scores is binned into a 4-class variable by using [*cut()*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cut).
+
+
+
+```{r}
+exam1 <- exam %>% 
+  mutate(MATHS_bins = 
+           cut(MATHS, 
+               breaks = c(0,60,75,85,100))
+)
+```
+
+
+
+In this code chunk below [*ggbarstats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/ggbarstats.html) is used to build a visual for Significant Test of Association
+
+
+
+```{r}
+ggbarstats(exam1, 
+           x = MATHS_bins, 
+           y = GENDER)
+```
+
+
+
+## **6.4 Additional Plots**
+
+These are plots beyond the hands-on exercises for my learning purpose:
+
+### **6.4.1 Categorical association in a pie-chart format**
+
+
+```{r}
+ggpiestats(
+  data = exam,
+  x = RACE,
+  y = GENDER
+)
+```
+
+
+### **6.4.2 Compare English scores across gender and race**
+
+Non-parametric test was used as some of the group sizes are <30.
+
+
+
+```{r}
+grouped_ggbetweenstats(
+  data = exam,
+  x = GENDER,
+  y = ENGLISH,
+  grouping.var = RACE,
+  type = "nonparametric",
+  pairwise.comparisons = FALSE,
+  plotgrid.args = list(ncol = 2),  # show in 2 columns
+  ggplot.component = list(
+    theme(
+      text = element_text(size = 7),  # smaller text
+      plot.title = element_text(size = 11),
+      legend.text = element_text(size = 8)
+    )
+  ),
+  results.subtitle.args = list(size = 3.5),   # smaller APA annotation
+  point.args = list(size = 2.5)               # smaller mean dot
+)
+```
+
+
+
+### **6.4.3 Bayesian correlation test between Math and Science scores**
+
+
+
+```{r}
+ggscatterstats(
+  data = exam,
+  x = MATHS,
+  y = SCIENCE,
+  type = "bayes"
+)
+```
