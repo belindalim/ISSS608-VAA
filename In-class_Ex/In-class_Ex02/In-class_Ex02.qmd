@@ -1,0 +1,17 @@
+---
+title: "In-class Exercise 2"
+author: "Belinda Lim"
+date: May 17, 2025
+date-modified: "last-modified"
+format:
+  html:
+    theme: flatly
+    toc: true
+editor: source
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+

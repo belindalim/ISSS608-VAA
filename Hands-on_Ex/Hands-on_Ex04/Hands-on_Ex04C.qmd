@@ -124,7 +124,7 @@ knitr::kable(head(my_sum), format = 'html')
 
 Now we are ready to plot the standard error bars of mean maths score by race as shown below.
 
-:::: panel-tabset
+::: panel-tabset
 ### The plot
 
 ```{r, echo = FALSE}
@@ -170,13 +170,13 @@ ggplot(my_sum) +
 ```
 :::
 
-
 ### **7.3.2 Plotting confidence interval of point estimates**
 
 Instead of plotting the standard error bar of point estimates, we can also plot the confidence intervals of mean maths score by race.
 
 ::: panel-tabset
 ### The plot
+
 ```{r, echo = FALSE}
 ggplot(my_sum) +
   geom_errorbar(
@@ -228,6 +228,7 @@ In this section, you will learn how to plot interactive error bars for the 99% c
 
 ::: panel-tabset
 ### The plot
+
 ```{r, echo = FALSE}
 shared_df = SharedData$new(my_sum)
 
@@ -379,8 +380,8 @@ exam %>%
     title = "Visualising confidence intervals of median math score",
     subtitle = "Median Point + Multiple-interval plot")
 ```
-::: callout-note
 
+::: callout-note
 Makeover of the plot on previous slide by showing 95% and 99% confidence intervals.
 :::
 
@@ -452,6 +453,6 @@ ggplot(data = exam,
               color = "#D55E00") +
   theme_bw() + 
   transition_states(.draw, 1, 3)
-``` 
+```
 
 ### **7.6 Additional Plots (if any)**

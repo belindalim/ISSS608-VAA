@@ -1,5 +1,231 @@
 ---
-title: "Take-home_Ex02"
-format: html
+title: "Take-Home Exercise 2"
+author: "Belinda Lim"
+date: May 16, 2025
+date-modified: "last-modified"
+format:
+  html:
+    theme: flatly
+    toc: true
+editor: source
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
+
+
+```{r}
+library(jsonlite)
+json_data <- fromJSON("C:/Users/Belinda/OneDrive - Singapore Management University/Desktop/Visual Analytics/Project/MC1_release/MC1_release/MC1_graph.json")
+nodes <- json_data$nodes
+edges <- json_data$edges
+```
+
+```{r}
+head(nodes)
+table(nodes$type)
+```
+
+
+```{r}
+library(igraph)
+g <- graph_from_data_frame(d = edges, vertices = nodes, directed = TRUE)
+```
+```{r}
+colnames(nodes)
+```
+
+```{r}
+library(tidyverse)
+nodes %>%
+  count(`Node Type`) %>%
+  ggplot(aes(x = reorder(`Node Type`, -n), y = n, fill = `Node Type`)) +
+  geom_col() +
+  labs(title = "Count of Each Node Type", x = "Node Type", y = "Count") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+```{r}
+nodes %>%
+  filter(!is.na(release_date)) %>%
+  ggplot(aes(x = as.numeric(release_date))) +
+  geom_histogram(binwidth = 1, fill = "steelblue") +
+  labs(title = "Distribution of Release Years", x = "Release Year", y = "Frequency") +
+  theme_minimal()
+```
+
+
+
+```{r}
+nodes %>%
+  filter(!is.na(genre)) %>%
+  count(genre, sort = TRUE) %>%
+  top_n(10) %>%
+  ggplot(aes(x = reorder(genre, n), y = n, fill = genre)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Top 10 Genres", x = "Genre", y = "Count") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+```{r}
+nodes %>%
+  filter(`Node Type` == "Song") %>%
+  count(notable) %>%
+  ggplot(aes(x = notable, y = n, fill = notable)) +
+  geom_col() +
+  labs(title = "Notable vs Non-Notable Songs", x = "Notable", y = "Count") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+```{r}
+library(jsonlite)
+json_data <- fromJSON("C:/Users/Belinda/OneDrive - Singapore Management University/Desktop/Visual Analytics/Project/MC3_release/MC3_release/MC3_graph.json")
+nodes <- json_data$nodes
+edges <- json_data$edges
+```
+
+```{r}
+head(nodes)
+table(nodes$type)
+```
+
+```{r}
+colnames(nodes)
+```
+```{r}
+colnames(edges)
+```
+```{r}
+nodes %>%
+  count(type, sort = TRUE) %>%
+  ggplot(aes(x = reorder(type, n), y = n, fill = type)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Distribution of Node Types", x = "Type", y = "Count") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+```{r}
+nodes %>%
+  count(sub_type, sort = TRUE) %>%
+  slice_max(n, n = 10) %>%   # top 10
+  ggplot(aes(x = reorder(sub_type, n), y = n, fill = sub_type)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Top 10 Sub-Types", x = "Sub-Type", y = "Count") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+```{r}
+nodes %>%
+  filter(!is.na(start_date)) %>%
+  mutate(start_date = as.Date(start_date)) %>%
+  ggplot(aes(x = start_date)) +
+  geom_histogram(binwidth = 1, fill = "darkorange") +
+  labs(title = "Start Date Distribution", x = "Start Date", y = "Count") +
+  theme_minimal()
+```
+
+
+```{r}
+nodes %>%
+  count(type, sub_type) %>%
+  ggplot(aes(x = type, y = sub_type, fill = n)) +
+  geom_tile(color = "white") +
+  scale_fill_viridis_c() +
+  labs(title = "Node Type vs Sub-Type", x = "Type", y = "Sub-Type") +
+  theme_minimal()
+```
+
+```{r}
+nodes %>%
+  count(report_type, sort = TRUE) %>%
+  drop_na(report_type) %>%
+  head(10)
+```
+
+```{r}
+library(dplyr)
+edges_fixed <- edges %>%
+  rename(from = source, to = target) %>%
+  mutate(from = as.character(from), to = as.character(to))
+```
+
+```{r}
+# See if it exists
+"name" %in% colnames(nodes)
+
+# Check for duplicates
+sum(duplicated(nodes$name))     # > 0 = problem
+```
+
+```{r}
+edges <- edges %>%
+  rename(from = source, to = target)
+
+# Make sure edges are referring to IDs
+edges$from <- as.character(edges$from)
+edges$to <- as.character(edges$to)
+nodes$id <- as.character(nodes$id)
+```
+
+
+
+```{r}
+nodes %>%
+  filter(type == "Event", !is.na(start_date)) %>%
+  mutate(start_date = as.Date(start_date)) %>%
+  ggplot(aes(x = start_date, fill = sub_type)) +
+  geom_histogram(binwidth = 1) +
+  theme_minimal() +
+  labs(title = "Event Timeline", x = "Date", y = "Count")
+```
+
+```{r}
+nodes %>%
+  filter(type == "Event", !is.na(start_date)) %>%
+  nrow()
+
+unique(nodes$type)
+unique(nodes$sub_type)
+summary(nodes$start_date)
+
+nodes %>%
+  filter(start_date != "") %>%
+  select(type, sub_type, start_date) %>%
+  head(10)
+```
+
+```{r}
+nodes <- nodes %>%
+  mutate(start_date = as.POSIXct(start_date, format = "%Y-%m-%d %H:%M:%S"))
+  
+  nodes %>%
+  filter(type == "Relationship", !is.na(start_date)) %>%
+  mutate(start_date = as.Date(start_date)) %>%
+  ggplot(aes(x = start_date, fill = sub_type)) +
+  geom_histogram(binwidth = 1) +
+  theme_minimal() +
+  labs(title = "AccessPermission Events Over Time", x = "Date", y = "Count")
+
+```
+
+```{r}
+nodes %>%
+  filter(type == "Event", !is.na(start_date)) %>%
+  mutate(start_date = as.Date(start_date)) %>%
+  ggplot(aes(x = start_date, fill = sub_type)) +
+  geom_histogram(binwidth = 1) +
+  theme_minimal() +
+  labs(title = "Event Timeline", x = "Date", y = "Count")
+```
 
