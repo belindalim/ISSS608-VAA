@@ -149,7 +149,7 @@ ggraph(graph_memberof, layout = "fr") +
                  repel = TRUE,
                  size = 2.5) + 
   theme_void()
-#they say with their group for quite long
+#they stay with their group for quite long
 # change to interactive so that can hover and see all labels
 ```
 
