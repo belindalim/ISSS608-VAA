@@ -325,7 +325,7 @@ hline.data <- Vietnam %>%
 
 The code chunk below is used to plot the cycle plot as shown earlier.
 
-```{r, warning= FALSE}
+```{r, warning= FALSE, fig.width=12, fig.height=7}
 ggplot() + 
   geom_line(data = Vietnam,
             aes(x = year, 
@@ -342,7 +342,7 @@ ggplot() +
        x = "", 
        y = "No. of Visitors") +   
   theme_minimal(base_family = "Helvetica") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 8))
 ```
 
 ## **10.5 Plotting Slopegraph**
