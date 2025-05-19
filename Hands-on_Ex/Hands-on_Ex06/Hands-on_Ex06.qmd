@@ -171,7 +171,9 @@ theme(axis.ticks = element_blank(),
       legend.text = element_text(size = 6) )
 ```
 
-::: callout-Things to learn from the code chunk
+::: callout-Tip
+
+Things to learn from the code chunk
 
 -   a tibble data table called *grouped* is derived by aggregating the attack by *wkday* and *hour* fields.
 
@@ -325,23 +327,22 @@ The code chunk below is used to plot the cycle plot as shown earlier.
 
 ```{r, warning= FALSE}
 ggplot() + 
-  geom_line(data=Vietnam,
-            aes(x=year, 
-                y=`Vietnam`, 
-                group=month), 
-            colour="black") +
-  geom_hline(aes(yintercept=avgvalue), 
-             data=hline.data, 
-             linetype=6, 
-             colour="red", 
-             size=0.5) + 
+  geom_line(data = Vietnam,
+            aes(x = year, 
+                y = `Vietnam`, 
+                group = month), 
+            colour = "black") +
+  geom_hline(data = hline.data, 
+             aes(yintercept = avgvalue), 
+             linetype = "dashed", 
+             colour = "red", 
+             size = 0.5) + 
   facet_grid(~month) +
-  labs(axis.text.x = element_blank(),
-       title = "Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019") +
-  xlab("") +
-  ylab("No. of Visitors") +
-  theme_tufte(base_family = "Helvetica") +
-theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
+  labs(title = "Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019",
+       x = "", 
+       y = "No. of Visitors") +   
+  theme_minimal(base_family = "Helvetica") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
 ```
 
 ## **10.5 Plotting Slopegraph**
@@ -393,7 +394,8 @@ rice %>%
 ```
 
 
-::: callout - Thing to learn from the code chunk above
+::: callout - Tip
+Thing to learn from the code chunk above
 
 For effective data visualisation design, `factor()` is used convert the value type of *Year* field from numeric to factor.
 :::

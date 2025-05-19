@@ -278,22 +278,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#examining-the-data-structure" id="toc-examining-the-data-structure" class="nav-link" data-scroll-target="#examining-the-data-structure"><strong>10.3.3 Examining the data structure</strong></a></li>
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation"><strong>10.3.4 Data Preparation</strong></a></li>
   <li><a href="#building-the-calendar-heatmaps" id="toc-building-the-calendar-heatmaps" class="nav-link" data-scroll-target="#building-the-calendar-heatmaps"><strong>10.3.5 Building the Calendar Heatmaps</strong></a></li>
-  <li><a href="#building-multiple-calendar-heatmaps" id="toc-building-multiple-calendar-heatmaps" class="nav-link" data-scroll-target="#building-multiple-calendar-heatmaps"><strong>10.3.6 Building Multiple Calendar Heatmaps</strong></a></li>
-  <li><a href="#plotting-multiple-calendar-heatmaps" id="toc-plotting-multiple-calendar-heatmaps" class="nav-link" data-scroll-target="#plotting-multiple-calendar-heatmaps"><strong>10.3.7 Plotting Multiple Calendar Heatmaps</strong></a></li>
-  <li><a href="#plotting-multiple-calendar-heatmaps-1" id="toc-plotting-multiple-calendar-heatmaps-1" class="nav-link" data-scroll-target="#plotting-multiple-calendar-heatmaps-1"><strong>10.3.8 Plotting Multiple Calendar Heatmaps</strong></a></li>
-  </ul></li>
-  <li><a href="#plotting-cycle-plot" id="toc-plotting-cycle-plot" class="nav-link" data-scroll-target="#plotting-cycle-plot"><strong>10.4 Plotting Cycle Plot</strong></a>
-  <ul class="collapse">
-  <li><a href="#step-1-data-import" id="toc-step-1-data-import" class="nav-link" data-scroll-target="#step-1-data-import"><strong>10.4.1 Step 1: Data Import</strong></a></li>
-  <li><a href="#step-2-and-3-deriving-month-and-year-fields" id="toc-step-2-and-3-deriving-month-and-year-fields" class="nav-link" data-scroll-target="#step-2-and-3-deriving-month-and-year-fields"><strong>10.4.2 Step 2 and 3: Deriving month and year fields</strong></a></li>
-  <li><a href="#step-4-extracting-the-target-country" id="toc-step-4-extracting-the-target-country" class="nav-link" data-scroll-target="#step-4-extracting-the-target-country"><strong>10.4.3 Step 4: Extracting the target country</strong></a></li>
-  <li><a href="#step-5-computing-year-average-arrivals-by-month" id="toc-step-5-computing-year-average-arrivals-by-month" class="nav-link" data-scroll-target="#step-5-computing-year-average-arrivals-by-month"><strong>10.4.4 Step 5: Computing year average arrivals by month</strong></a></li>
-  <li><a href="#step-6-plotting-the-cycle-plot" id="toc-step-6-plotting-the-cycle-plot" class="nav-link" data-scroll-target="#step-6-plotting-the-cycle-plot"><strong>10.4.5 Step 6: Plotting the cycle plot</strong></a></li>
-  </ul></li>
-  <li><a href="#plotting-slopegraph" id="toc-plotting-slopegraph" class="nav-link" data-scroll-target="#plotting-slopegraph"><strong>10.5 Plotting Slopegraph</strong></a>
-  <ul class="collapse">
-  <li><a href="#step-1-data-import-1" id="toc-step-1-data-import-1" class="nav-link" data-scroll-target="#step-1-data-import-1"><strong>10.5.1 Step 1: Data Import</strong></a></li>
-  <li><a href="#step-2-plotting-the-slopegraph" id="toc-step-2-plotting-the-slopegraph" class="nav-link" data-scroll-target="#step-2-plotting-the-slopegraph"><strong>10.5.2 Step 2: Plotting the slopegraph</strong></a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -561,7 +545,7 @@ Note
 </div>
 </section>
 <section id="building-the-calendar-heatmaps" class="level3">
-<h3 class="anchored" data-anchor-id="building-the-calendar-heatmaps"><strong>10.3.5 Building the Calendar Heatmaps</strong></h3>
+<h3 class="anchored"><strong>10.3.5 Building the Calendar Heatmaps</strong></h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>grouped <span class="ot">&lt;-</span> attacks <span class="sc">%&gt;%</span> </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(wkday, hour) <span class="sc">%&gt;%</span> </span>
@@ -594,7 +578,8 @@ Note
 </div>
 </div>
 </div>
-<p>::: callout-Things to learn from the code chunk</p>
+<div class="callout-Tip">
+<p>Things to learn from the code chunk</p>
 <ul>
 <li><p>a tibble data table called <em>grouped</em> is derived by aggregating the attack by <em>wkday</em> and <em>hour</em> fields.</p></li>
 <li><p>a new field called <em>n</em> is derived by using <code>group_by()</code> and <code>count()</code> functions.</p></li>
@@ -605,7 +590,6 @@ Note
 <li><p><code>scale_fill_gradient()</code> function is used to creates a two colour gradient (low-high). :::</p></li>
 </ul>
 <p>Then we can simply group the count by hour and wkday and plot it, since we know that we have values for every combination there’s no need to further preprocess the data.</p>
-</section>
 <section id="building-multiple-calendar-heatmaps" class="level3">
 <h3 class="anchored" data-anchor-id="building-multiple-calendar-heatmaps"><strong>10.3.6 Building Multiple Calendar Heatmaps</strong></h3>
 <p><strong>Challenge:</strong> Building multiple heatmaps for the top four countries with the highest number of attacks (see steps below).</p>
@@ -671,7 +655,6 @@ Note
 </div>
 </div>
 </section>
-</section>
 <section id="plotting-cycle-plot" class="level2">
 <h2 class="anchored" data-anchor-id="plotting-cycle-plot"><strong>10.4 Plotting Cycle Plot</strong></h2>
 <p>In this section, you will learn how to plot a cycle plot showing the time-series patterns and trend of visitor arrivals from Vietnam programmatically by using ggplot2 functions.</p>
@@ -720,23 +703,22 @@ Note
 <p>The code chunk below is used to plot the cycle plot as shown earlier.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>Vietnam,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x=</span>year, </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">y=</span><span class="st">`</span><span class="at">Vietnam</span><span class="st">`</span>, </span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">group=</span>month), </span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">colour=</span><span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept=</span>avgvalue), </span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">data=</span>hline.data, </span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype=</span><span class="dv">6</span>, </span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour=</span><span class="st">"red"</span>, </span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">size=</span><span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> Vietnam,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> year, </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> <span class="st">`</span><span class="at">Vietnam</span><span class="st">`</span>, </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">group =</span> month), </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">data =</span> hline.data, </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">yintercept =</span> avgvalue), </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">"red"</span>, </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>month) <span class="sc">+</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019"</span>) <span class="sc">+</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"No. of Visitors"</span>) <span class="sc">+</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tufte</span>(<span class="at">base_family =</span> <span class="st">"Helvetica"</span>) <span class="sc">+</span></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">6</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019"</span>,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">""</span>, </span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"No. of Visitors"</span>) <span class="sc">+</span>   </span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_family =</span> <span class="st">"Helvetica"</span>) <span class="sc">+</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">6</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -803,8 +785,11 @@ Note
 </div>
 </div>
 </div>
-<p>::: callout - Thing to learn from the code chunk above</p>
-<p>For effective data visualisation design, <code>factor()</code> is used convert the value type of <em>Year</em> field from numeric to factor. :::</p>
+<p>::: callout - Tip Thing to learn from the code chunk above</p>
+<p>For effective data visualisation design, <code>factor()</code> is used convert the value type of <em>Year</em> field from numeric to factor.</p>
+</section>
+</section>
+</div>
 
 
 </section>
