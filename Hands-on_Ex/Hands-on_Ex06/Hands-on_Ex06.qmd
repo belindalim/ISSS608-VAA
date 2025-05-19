@@ -171,9 +171,7 @@ theme(axis.ticks = element_blank(),
       legend.text = element_text(size = 6) )
 ```
 
-::: callout-Tip
-
-Things to learn from the code chunk
+::: callout-Things to learn from the code chunk
 
 -   a tibble data table called *grouped* is derived by aggregating the attack by *wkday* and *hour* fields.
 
@@ -394,8 +392,7 @@ rice %>%
 ```
 
 
-::: callout - Tip
-Thing to learn from the code chunk above
+::: callout-Thing to learn from the code chunk above
 
 For effective data visualisation design, `factor()` is used convert the value type of *Year* field from numeric to factor.
 :::
