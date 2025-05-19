@@ -27,7 +27,7 @@ pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph)
 
 ## **1.2 Importing Data**
 
-in the code chunk below, 'fromJSON()' of undefined
+In the code chunk below, fromJSON() of jsonlite package is used to import MC1_graph.json file into R and save the output object
 
 ```{r}
 kg <- fromJSON("MC1/data/MC1_graph.json")
