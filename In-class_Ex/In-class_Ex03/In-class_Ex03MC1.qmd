@@ -19,23 +19,26 @@ execute:
 
 ## **1.1 Load packages**
 
-In the code chunk below, p_load() of pacman packages is used to load the R packages into R environment: 
+In the code chunk below, p_load() of pacman packages is used to load the R packages into R environment:
+
 ```{r}
 pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph)
 ```
 
 ## **1.2 Importing Data**
 
-in the code chunk below, 'fromJSON()' of 
+in the code chunk below, 'fromJSON()' of undefined
 
 ```{r}
 kg <- fromJSON("MC1/data/MC1_graph.json")
 ```
 
 ### Inspect Structure
+
 ```{r}
 str(kg, max.level = 1)
 ```
+
 ### Extract and Inspect
 
 ```{r}
@@ -51,12 +54,17 @@ ggplot(data = edges_tbl,
   geom_bar()
 ```
 
+On the other hands, code chunk below uses ggplot2 functions to reveal the frequency distribution of *Node Type* field of *nodes_tbl*.
+
 ```{r}
 ggplot(data = nodes_tbl,
        aes(y = `Node Type`)) +
   geom_bar()
 ```
+
 ## **1.4 Create Knowledge Graph**
+
+Before we can go ahead to build the tidygraph object, it is important for us to ensures each id from the node list is mapped to the correct row number. This requirement can be achive by using the code chunk below.
 
 ### Step 1: Mapping from node id to row index
 
@@ -70,6 +78,8 @@ This ensures each id from your node list is mapped to the correct row number.
 
 ### Step 2: Map source and target IDs to row indices
 
+Next, we will map the source and the target IDs to row indices by using the code chunk below.
+
 ```{r}
 edges_tbl <- edges_tbl %>%
   left_join(id_map, by = c("source" = "id")) %>%
@@ -78,7 +88,12 @@ edges_tbl <- edges_tbl %>%
   rename(to = index)
 ```
 
+Note: To better understand the changes before and after the process, it is to take a screenshot of *edges_tbl* before and after this process and examine the differences.
+
 ### Step 3: Filter out any unmatched (invalid) edges
+
+Lastly, the code chunk below will be used to exclude the unmatch edges.
+
 ```{r}
 edges_tbl <- edges_tbl %>%
   filter(!is.na(from), !is.na(to))
@@ -86,38 +101,60 @@ edges_tbl <- edges_tbl %>%
 
 ### Step 4: Creating the graph
 
-Lastly 
+Lastly, `tbl_graph()` is used to create tidygraph’s graph object by using the code chunk below.
+
 ```{r}
 graph <- tbl_graph(nodes = nodes_tbl, edges = edges_tbl, directed = kg$directed)
                   
 ```
 
+You might want to confirm the output object is indeed in tidygraph format by using the code chunk below.
+
+```{r}
+class(graph)
+```
+
 ## **1.5 Visualising the knowledge graph**
+
+In this section, we will use ggraph’s functions to visualise and analyse the graph object.
+
+Warning: The two examples below are not model answers, they are examples to show you how to use the mantra of **Overview first, details on demand** of visual investigation.
+
+Several of the ggraph layouts involve randomisation. In order to ensure reproducibility, it is necessary to set the seed value before plotting by using the code chunk below.
+
 ```{r}
 set.seed(1234)
                   
 ```
 
 ## **1.6 Visualising the whole graph**
+
+In the code chunk below, ggraph functions are used to visualise the whole graph.
+
 ```{r, eval = FALSE}
 ggraph(graph, layout = "fr") +
   geom_edge_link(alpha = 0.3, colour = "gray") + 
   geom_node_point(aes(color = `Node Type`),
                   size = 4) +
-  geom_node_text(aes(label = name), repel = TRUE, size = 2.5) + #repel will force word apart
+  geom_node_text(aes(label = name), repel = TRUE, size = 2.5) +    #repel will force word to be apart
   theme_void()
 ```
+
+Notice that the whole graph is very messy and we can hardy discover any useful patterns. This is always the case in graph visualisation and analysis. In order to gain meaningful visual discovery, it is always useful for us to looking into the details, for example by plotting sub-graphs.
+
 ### Visualising the sub-graph
+
+In this section, we are interested to create a sub-graph base on *MemberOf* value in *Edge Type* column of the *edges* data frame.
 
 #### Step 1: Filter edges to only "MemberOf"
 
 ```{r}
 graph_memberof <-graph %>%
   activate(edges) %>%
-  filter(`Edge Type` == "MemberOf")  #filter away the edge, nodes are still there (orphan)
+  filter(`Edge Type` == "MemberOf")  #filter away the edge, nodes are still there 
 ```
 
-#### Step 2: Extract only connected nodes (i.e., used in these edges)
+#### Step 2: Extract **only connected nodes (i.e., used in these edges)**
 
 ```{r}
 used_node_indices <- graph_memberof %>%  #eliminate away orphan nodes
@@ -128,7 +165,7 @@ used_node_indices <- graph_memberof %>%  #eliminate away orphan nodes
   unique()
 ```
 
-#### Step 3: Extract only connected nodes (i.e., used in these edges)
+#### Step 3: **Keeping only those nodes**
 
 ```{r}
 graph_memberof <- graph_memberof %>%
@@ -138,7 +175,7 @@ graph_memberof <- graph_memberof %>%
   select(-row_id) # optional clean up
 ```
 
-#### Plot the sub-graph
+#### Step 4: Plot the sub-graph
 
 ```{r}
 ggraph(graph_memberof, layout = "fr") +
@@ -149,14 +186,10 @@ ggraph(graph_memberof, layout = "fr") +
                  repel = TRUE,
                  size = 2.5) + 
   theme_void()
-#they stay with their group for quite long
+# they stay with their group for quite long
 # change to interactive so that can hover and see all labels
 ```
 
+Notice that the sub-graph above is very clear and the relationship between musical group and person can be visualise easily. 
 
-
-
-```{r}
-
-
-```
+Note: They stay with their group for quite long. May want to change to interactive so that we can hover and see all labels.
