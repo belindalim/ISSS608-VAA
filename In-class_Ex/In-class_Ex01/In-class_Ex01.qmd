@@ -1,4 +1,20 @@
 ---
-title: "In-class_Ex01"
-format: html
+title: "In-class Exercise 1"
+author: "Belinda Lim"
+date: Apr 2, 2025
+date-modified: "last-modified"
+format:
+  html:
+    theme: flatly
+    toc: true
+editor: source
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
+
+Interactive dashboard was created on [Tableau](https://public.tableau.com/app/profile/belindalim/viz/In-classExercise2SuperstoreReport/Dashboard1).
+
+![](images/clipboard-1667082452.png)

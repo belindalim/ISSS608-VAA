@@ -47,5 +47,19 @@
     "title": "In-class Exercise 3",
     "section": "",
     "text": "In the code chunk below, ggraph functions are used to visualise the whole graph.\n\nggraph(graph, layout = \"fr\") +\n  geom_edge_link(alpha = 0.3, colour = \"gray\") + \n  geom_node_point(aes(color = `Node Type`),\n                  size = 4) +\n  geom_node_text(aes(label = name), repel = TRUE, size = 2.5) +    #repel will force word to be apart\n  theme_void()\n\nNotice that the whole graph is very messy and we can hardy discover any useful patterns. This is always the case in graph visualisation and analysis. In order to gain meaningful visual discovery, it is always useful for us to looking into the details, for example by plotting sub-graphs.\n\n\nIn this section, we are interested to create a sub-graph base on MemberOf value in Edge Type column of the edges data frame.\n\n\n\ngraph_memberof &lt;-graph %&gt;%\n  activate(edges) %&gt;%\n  filter(`Edge Type` == \"MemberOf\")  #filter away the edge, nodes are still there \n\n\n\n\n\nused_node_indices &lt;- graph_memberof %&gt;%  #eliminate away orphan nodes\n  activate(edges) %&gt;%\n  as_tibble() %&gt;%\n  select(from, to) %&gt;%\n  unlist() %&gt;%\n  unique()\n\n\n\n\n\ngraph_memberof &lt;- graph_memberof %&gt;%\n  activate(nodes) %&gt;%\n  mutate(row_id = row_number()) %&gt;%\n  filter(row_id %in% used_node_indices) %&gt;%\n  select(-row_id) # optional clean up\n\n\n\n\n\nggraph(graph_memberof, layout = \"fr\") +\n  geom_edge_link(alpha = 0.5, colour = \"gray\") + \n  geom_node_point(aes(color= `Node Type`),\n                  size = 1) + \n  geom_node_text(aes(label = name),\n                 repel = TRUE,\n                 size = 2.5) + \n  theme_void()\n\n\n\n\n\n\n\n# they stay with their group for quite long\n# change to interactive so that can hover and see all labels\n\nNotice that the sub-graph above is very clear and the relationship between musical group and person can be visualise easily.\nNote: They stay with their group for quite long. May want to change to interactive so that we can hover and see all labels."
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex01/In-class_Ex01.html",
+    "href": "In-class_Ex/In-class_Ex01/In-class_Ex01.html",
+    "title": "In-class Exercise 1",
+    "section": "",
+    "text": "Interactive dashboard was created on Tableau."
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex02/In-class_Ex02.html",
+    "href": "In-class_Ex/In-class_Ex02/In-class_Ex02.html",
+    "title": "In-class Exercise 2",
+    "section": "",
+    "text": "Interactive dashboard was created on Tableau."
   }
 ]
