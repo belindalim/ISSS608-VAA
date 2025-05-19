@@ -138,5 +138,19 @@
     "title": "Take-Home Exercise 2",
     "section": "3.4 Visualising the sub-graph",
     "text": "3.4 Visualising the sub-graph\nIn this section, we are interested to create a sub-graph base on MemberOf value in Edge Type column of the edges data frame.\n\nStep 1: Filter edges to only “MemberOf”\n\ngraph_memberof &lt;-graph %&gt;%\n  activate(edges) %&gt;%\n  filter(`Edge Type` == \"MemberOf\")  #filter away the edge, nodes are still there \n\n\n\nStep 2: Extract only connected nodes (i.e., used in these edges)\n\nused_node_indices &lt;- graph_memberof %&gt;%  #eliminate away orphan nodes\n  activate(edges) %&gt;%\n  as_tibble() %&gt;%\n  select(from, to) %&gt;%\n  unlist() %&gt;%\n  unique()\n\n\n\nStep 3: Keeping only those nodes\n\ngraph_memberof &lt;- graph_memberof %&gt;%\n  activate(nodes) %&gt;%\n  mutate(row_id = row_number()) %&gt;%\n  filter(row_id %in% used_node_indices) %&gt;%\n  select(-row_id) # optional clean up\n\n\n\nStep 4: Plot the sub-graph\n\nggraph(graph_memberof, layout = \"fr\") +\n  geom_edge_link(alpha = 0.5, colour = \"gray\") + \n  geom_node_point(aes(color= `Node Type`),\n                  size = 1) + \n  geom_node_text(aes(label = name),\n                 repel = TRUE,\n                 size = 2.5) + \n  theme_void()\n\n\n\n\n\n\n\n# they stay with their group for quite long\n# change to interactive so that can hover and see all labels"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Belinda’s ISSS608-VAA Journey",
+    "section": "",
+    "text": "Welcome to ISSS608 Visual Analytics and Applications.\nIn this website, you will find my coursework prepared for this course."
+  },
+  {
+    "objectID": "index.html#recent-projects",
+    "href": "index.html#recent-projects",
+    "title": "Belinda’s ISSS608-VAA Journey",
+    "section": "Recent Projects",
+    "text": "Recent Projects\n\n\n\n\n\nHands-on Exercise 3\nExplore advanced ggplot2 techniques, including enhanced annotations with ggrepel, professional theming using ggthemes and hrbrthemes, and creating composite figures with the patchwork package.\nView Hands-on Exercises\n\n\n\n\n\n\n\nHands-on Exercise 2\nExplore advanced ggplot2 techniques, including enhanced annotations with ggrepel, professional theming using ggthemes and hrbrthemes, and creating composite figures with the patchwork package.\nView Hands-on Exercises\n\n\n\n\n\n\n\nHands-on Exercise 1\nIntroduce the concepts and components of ggplot2, focusing on the Layered Grammar of Graphics to create effective and elegant statistical visualizations in R.\nView Hands-on Exercises\n\n\n\n\n\n\n\nTake-home Exercises\nDemographic structures and distribution of Singapore in 2024.\nView Take-home Exercises\n\n\n\n\n\n\n\nIn-class Exercises\nVisual analytics done collaboratively during class sessions.\nView In-class Exercises\n\n\n\n\n\n\n\nGroup Project\nGroup project involving data storytelling.\nView Project"
   }
 ]
