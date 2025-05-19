@@ -278,22 +278,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#examining-the-data-structure" id="toc-examining-the-data-structure" class="nav-link" data-scroll-target="#examining-the-data-structure"><strong>10.3.3 Examining the data structure</strong></a></li>
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation"><strong>10.3.4 Data Preparation</strong></a></li>
   <li><a href="#building-the-calendar-heatmaps" id="toc-building-the-calendar-heatmaps" class="nav-link" data-scroll-target="#building-the-calendar-heatmaps"><strong>10.3.5 Building the Calendar Heatmaps</strong></a></li>
-  <li><a href="#building-multiple-calendar-heatmaps" id="toc-building-multiple-calendar-heatmaps" class="nav-link" data-scroll-target="#building-multiple-calendar-heatmaps"><strong>10.3.6 Building Multiple Calendar Heatmaps</strong></a></li>
-  <li><a href="#plotting-multiple-calendar-heatmaps" id="toc-plotting-multiple-calendar-heatmaps" class="nav-link" data-scroll-target="#plotting-multiple-calendar-heatmaps"><strong>10.3.7 Plotting Multiple Calendar Heatmaps</strong></a></li>
-  <li><a href="#plotting-multiple-calendar-heatmaps-1" id="toc-plotting-multiple-calendar-heatmaps-1" class="nav-link" data-scroll-target="#plotting-multiple-calendar-heatmaps-1"><strong>10.3.8 Plotting Multiple Calendar Heatmaps</strong></a></li>
-  </ul></li>
-  <li><a href="#plotting-cycle-plot" id="toc-plotting-cycle-plot" class="nav-link" data-scroll-target="#plotting-cycle-plot"><strong>10.4 Plotting Cycle Plot</strong></a>
-  <ul class="collapse">
-  <li><a href="#step-1-data-import" id="toc-step-1-data-import" class="nav-link" data-scroll-target="#step-1-data-import"><strong>10.4.1 Step 1: Data Import</strong></a></li>
-  <li><a href="#step-2-and-3-deriving-month-and-year-fields" id="toc-step-2-and-3-deriving-month-and-year-fields" class="nav-link" data-scroll-target="#step-2-and-3-deriving-month-and-year-fields"><strong>10.4.2 Step 2 and 3: Deriving month and year fields</strong></a></li>
-  <li><a href="#step-4-extracting-the-target-country" id="toc-step-4-extracting-the-target-country" class="nav-link" data-scroll-target="#step-4-extracting-the-target-country"><strong>10.4.3 Step 4: Extracting the target country</strong></a></li>
-  <li><a href="#step-5-computing-year-average-arrivals-by-month" id="toc-step-5-computing-year-average-arrivals-by-month" class="nav-link" data-scroll-target="#step-5-computing-year-average-arrivals-by-month"><strong>10.4.4 Step 5: Computing year average arrivals by month</strong></a></li>
-  <li><a href="#step-6-plotting-the-cycle-plot" id="toc-step-6-plotting-the-cycle-plot" class="nav-link" data-scroll-target="#step-6-plotting-the-cycle-plot"><strong>10.4.5 Step 6: Plotting the cycle plot</strong></a></li>
-  </ul></li>
-  <li><a href="#plotting-slopegraph" id="toc-plotting-slopegraph" class="nav-link" data-scroll-target="#plotting-slopegraph"><strong>10.5 Plotting Slopegraph</strong></a>
-  <ul class="collapse">
-  <li><a href="#step-1-data-import-1" id="toc-step-1-data-import-1" class="nav-link" data-scroll-target="#step-1-data-import-1"><strong>10.5.1 Step 1: Data Import</strong></a></li>
-  <li><a href="#step-2-plotting-the-slopegraph" id="toc-step-2-plotting-the-slopegraph" class="nav-link" data-scroll-target="#step-2-plotting-the-slopegraph"><strong>10.5.2 Step 2: Plotting the slopegraph</strong></a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -561,7 +545,7 @@ Note
 </div>
 </section>
 <section id="building-the-calendar-heatmaps" class="level3">
-<h3 class="anchored" data-anchor-id="building-the-calendar-heatmaps"><strong>10.3.5 Building the Calendar Heatmaps</strong></h3>
+<h3 class="anchored"><strong>10.3.5 Building the Calendar Heatmaps</strong></h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>grouped <span class="ot">&lt;-</span> attacks <span class="sc">%&gt;%</span> </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(wkday, hour) <span class="sc">%&gt;%</span> </span>
@@ -594,7 +578,16 @@ Note
 </div>
 </div>
 </div>
-<p>::: callout-Things to learn from the code chunk</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Things to learn from the code chunk
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
 <li><p>a tibble data table called <em>grouped</em> is derived by aggregating the attack by <em>wkday</em> and <em>hour</em> fields.</p></li>
 <li><p>a new field called <em>n</em> is derived by using <code>group_by()</code> and <code>count()</code> functions.</p></li>
@@ -605,7 +598,6 @@ Note
 <li><p><code>scale_fill_gradient()</code> function is used to creates a two colour gradient (low-high). :::</p></li>
 </ul>
 <p>Then we can simply group the count by hour and wkday and plot it, since we know that we have values for every combination there’s no need to further preprocess the data.</p>
-</section>
 <section id="building-multiple-calendar-heatmaps" class="level3">
 <h3 class="anchored" data-anchor-id="building-multiple-calendar-heatmaps"><strong>10.3.6 Building Multiple Calendar Heatmaps</strong></h3>
 <p><strong>Challenge:</strong> Building multiple heatmaps for the top four countries with the highest number of attacks (see steps below).</p>
@@ -670,7 +662,6 @@ Note
 </div>
 </div>
 </div>
-</section>
 </section>
 <section id="plotting-cycle-plot" class="level2">
 <h2 class="anchored" data-anchor-id="plotting-cycle-plot"><strong>10.4 Plotting Cycle Plot</strong></h2>
@@ -802,10 +793,25 @@ Note
 </div>
 </div>
 </div>
-<p>::: callout-Thing to learn from the code chunk above</p>
-<p>For effective data visualisation design, <code>factor()</code> is used convert the value type of <em>Year</em> field from numeric to factor. :::</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Thing to learn from the code chunk above
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For effective data visualisation design, <code>factor()</code> is used convert the value type of <em>Year</em> field from numeric to factor.</p>
+</div>
+</div>
 
 
+</section>
+</section>
+</div>
+</div>
 </section>
 </section>
 </section>
