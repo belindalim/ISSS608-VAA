@@ -323,7 +323,7 @@ hline.data <- Vietnam %>%
 
 The code chunk below is used to plot the cycle plot as shown earlier.
 
-```{r}
+```{r, warning= FALSE}
 ggplot() + 
   geom_line(data=Vietnam,
             aes(x=year, 
@@ -340,7 +340,8 @@ ggplot() +
        title = "Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019") +
   xlab("") +
   ylab("No. of Visitors") +
-  theme_tufte(base_family = "Helvetica")
+  theme_tufte(base_family = "Helvetica") +
+theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
 ```
 
 ## **10.5 Plotting Slopegraph**
@@ -372,7 +373,7 @@ rice %>%
 ```
 The alternative chart created by myself: 
 
-```{r, fig.width=10, fig.height=7}
+```{r, fig.width=10, fig.height=9}
 rice %>% 
   mutate(Year = factor(Year)) %>%
   filter(Year %in% c(1961, 1980)) %>%
@@ -384,7 +385,7 @@ rice %>%
     Title = "Rice Yield of Top 11 Asian Countries",
     SubTitle = "1961–1980",
     Caption = "Prepared by: Belinda Lim",
-    DataTextSize = 2.5,
+    DataTextSize = 2,
     LineThickness = 1.1,
     RemoveMissing = TRUE,
     WiderLabels = TRUE
@@ -392,7 +393,7 @@ rice %>%
 ```
 
 
-::: callout- Thing to learn from the code chunk above
+::: callout - Thing to learn from the code chunk above
 
 For effective data visualisation design, `factor()` is used convert the value type of *Year* field from numeric to factor.
 :::
