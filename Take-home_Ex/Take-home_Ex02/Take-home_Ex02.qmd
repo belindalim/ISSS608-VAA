@@ -233,7 +233,7 @@ all(mc1_edges_raw$source %in% mc1_nodes_clean$id)
 all(mc1_edges_raw$target %in% mc1_nodes_clean$id)
 ```
 
-### **2.3.6 Mapping from node name to edges indexes**
+### **2.3.6 Mapping from node name to edges indexes
 
 Map each node’s ID to its name. This is useful for labeling, joining and plotting later.
 
@@ -527,7 +527,7 @@ ggplot(sailor_works_genre, aes(x = release_date.y, y = n, fill = genre.y)) +
 ```
 :::
 
-## **4.2 Find Works that influenced Sailor's works**
+## **4.3 Find Works that influenced Sailor's works
 
 Works that influenced Sailor's works is based on what was cited by in her works (InStyleOf", "InterpolatesFrom", "CoverOf", "DirectlySamples", "LyricalReferenceTo"). There were 26 songs/ album cited by Sailor's works. 
 
@@ -551,7 +551,7 @@ influences %>%
   count(`Node Type`, sort = TRUE)
 ```
 
-## **4.3 Find Creators of Works that influenced Sailor's works
+## **4.4 Find Creators of Works that influenced Sailor's works
 
 Based on the code chunk below, we linked the work to the influencers to find out who were the influencers influencing Sailor. 
 
@@ -580,7 +580,7 @@ influencer_people %>%
   count(name, sort = TRUE)
 ```
 
-## **4.4 Check Sailor's group membership and ID
+## **4.5 Check Sailor's group membership and ID
 
 A check was done to confirm if Sailor was in any musical group. It is confirmed that she only belonged to Ivy Echos. 
 
@@ -1013,10 +1013,9 @@ As there are many influencers and overlaps, it is suggested to do an interactive
 
 ## **6.5 Prepare Interactive Plot
 
-```{r}
-#| code-fold: true
-#| code-summary: "Show code"
-#| 
+::: panel-tabset
+### The plot
+```{r, echo=FALSE}
 # Identify Sailor node index
 sailor_index <- graph_tbl %>%
   activate(nodes) %>%
@@ -1053,6 +1052,44 @@ graph_tbl <- graph_tbl %>%
   filter(!row_number() %in% sailor_solo_works)
 ```
 
+### The code
+```{r, echo=FALSE}
+# Identify Sailor node index
+sailor_index <- graph_tbl %>%
+  activate(nodes) %>%
+  mutate(node_index = row_number()) %>%
+  filter(is_sailor_node) %>%
+  pull(node_index)
+
+# Pull all edges and check which nodes are only connected to Sailor
+edges_tbl <- graph_tbl %>%
+  activate(edges) %>%
+  as_tibble()
+
+# Count how many unique nodes each target is connected to. We are only keen on degree = 1 and only connected to Sailor.
+solo_sailor_targets <- edges_tbl %>%
+  filter(from == sailor_index) %>%
+  pull(to)
+
+# Calculate degrees
+node_degrees <- graph_tbl %>%
+  activate(nodes) %>%
+  mutate(node_index = row_number(),
+         deg = centrality_degree(mode = "all")) %>%
+  as_tibble()
+
+# Find target nodes with degree = 1 and only connected to Sailor
+sailor_solo_works <- node_degrees %>%
+  filter(node_index %in% solo_sailor_targets, deg == 1) %>%
+  pull(node_index)
+
+# Drop them from the graph
+graph_tbl <- graph_tbl %>%
+  activate(nodes) %>%
+  mutate(node_index = row_number()) %>%  # safe if not changed above
+  filter(!row_number() %in% sailor_solo_works)
+```
+:::
 
 ## **6.6 Visualising Sailor's Influencers (Interactive)**
 
@@ -1246,6 +1283,8 @@ Who has Sailor collaborated with and directly or indirectly influenced how has s
 Find Sailor's collaborators where she is a "PerformerOf", "ComposerOf", "ProducerOf", "LyricistOf" and "Memberof".
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 sailor_collaborators <- mc1_edges_clean %>%
   filter(
     to_id %in% sailor_works,
@@ -1254,13 +1293,15 @@ sailor_collaborators <- mc1_edges_clean %>%
   ) %>%
   left_join(
     mc1_nodes_clean %>% 
-      select(id, name, node_type = `Node Type`),  # rename before joining
+      select(id, name, node_type = `Node Type`),  
     by = c("from_id" = "id")
   ) %>%
   distinct(from_id, name, node_type)
 ```
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 sailor_collaborators %>%
   count(node_type, sort = TRUE)
   
@@ -1280,9 +1321,14 @@ sailor_collaborators %>%
   sailor_collaborators_roles
 ```
 
-There are 48 persons and musical groups whom collaborated with her.
+There were 48 persons and musical groups whom collaborated with her.
+
+## **7.2 Frequency of Collaborations**
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| 
 sailor_collaborator_role_frequency <- mc1_edges_clean %>%
   filter(
     to_id %in% sailor_works,
@@ -1298,7 +1344,11 @@ sailor_collaborator_role_frequency <- mc1_edges_clean %>%
 sailor_collaborator_role_frequency
 ```
 
+Using the code chunk below, it is confirmed that there were 77 collaborations.
+
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 total_collaborations <- mc1_edges_clean %>%
   filter(
     to_id %in% sailor_works,
@@ -1310,11 +1360,14 @@ total_collaborations <- mc1_edges_clean %>%
 total_collaborations
 ```
 
-There were 77 collaborations.
 
 ## **7.2 Find works and musicians which were directly influenced by Sailor and Ivy Echos**
 
+Filter by works that cited Sailor based on "InStyleOf", "InterpolatesFrom", "CoverOf", "LyricalReferenceTo", "DirectlySamples" 
+
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 referencing_works <- mc1_edges_clean %>%
   filter(
     to_id %in% sailor_works,
@@ -1323,9 +1376,7 @@ referencing_works <- mc1_edges_clean %>%
   ) %>%
   pull(from_id) %>%
   unique()
-```
 
-```{r}
 # Find people or groups who created those referencing works
 
 direct_influencees <- mc1_edges_clean %>%
@@ -1343,8 +1394,10 @@ direct_influencees <- mc1_edges_clean %>%
 
 ## **7.3 Sailor's influence**
 
+Find how often Sailor’s works were cited. 
 ```{r}
-# Count how often Sailor’s works were cited, by who
+#| code-fold: true
+#| code-summary: "Show code"
 
 direct_influence_counts <- mc1_edges_clean %>%
   filter(
@@ -1358,13 +1411,15 @@ direct_influence_counts <- mc1_edges_clean %>%
 direct_influence_counts
 ```
 
-There was no Sailor's work cited by others.
+We can conclude that there was no Sailor's work cited by others.
 
 ## **7.4 Sailor's influence through Ivy Echos**
 
-Let's check if there was any Ivy Echo's work cited by others.
+Let's check if there was any Ivy Echo's work cited by others using the code below. 
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 
 # Get Ivy Echos' ID and works
 ivy_id <- mc1_nodes_clean %>%
@@ -1402,9 +1457,12 @@ mc1_nodes_clean %>%
 
 There was one album "Embers & Echoes" which was influenced by Ivy Echos' work.
 
-## **7.5 Musicians whom were directly influenced by Sailor/ Ivy Echos**
+## **7.5 Musicians whom were directly influenced by Ivy Echos**
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+
 mc1_edges_clean %>%
   filter(
     to_id == "17112",  # ID of Embers & Echoes
@@ -1419,9 +1477,11 @@ mc1_edges_clean %>%
   distinct()
 ```
 
-Check membership of The Hollow Monarchs musical group.
+Membership of The Hollow Monarchs musical group was checked to include in the plot. 
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 # Get the ID of The Hollow Monarchs
 hollow_monarchs_id <- mc1_nodes_clean %>%
   filter(str_trim(name) == "The Hollow Monarchs") %>%
@@ -1441,13 +1501,13 @@ hollow_monarchs_members <- mc1_edges_clean %>%
 hollow_monarchs_members
 ```
 
-## **7.6 Musicians whom were directly influenced by Sailor/ Ivy Echos**
+## **7.6 Musicians whom were indirectly influenced by Sailor/ Ivy Echos**
 
-Finding works and people which were indirectly influenced by Sailor and Ivy Echos.
-
-This means finding the works that were influenced by Embers & Echoes album first.
+First, we found the works that were influenced by Embers & Echoes album to trace if anyone had cited this work. 
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 # Get the ID of "Embers & Echoes"
 embers_id <- mc1_nodes_clean %>%
   filter(str_trim(name) == "Embers & Echoes") %>%
@@ -1469,14 +1529,15 @@ mc1_nodes_clean %>%
   filter(id %in% works_citing_embers) %>%
   select(id, name, `Node Type`, release_date)
 ```
-
-No other works cited Ember & Echoes.Hence, no one had been indirectly influenced by Sailor / Ivy Echos.
+We confirmed that no other works cited Ember & Echoes.Hence, no one had been indirectly influenced by Sailor / Ivy Echos.
 
 ## **7.7 Plot Preparation**
 
 We begin by filtering Sailor's work that were cited by others and had collaboration:
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 # Identify works of Sailor that were cited
 sailor_works_cited <- mc1_edges_clean %>%
   filter(
@@ -1503,6 +1564,8 @@ sailor_works_filtered <- intersect(sailor_works, union(sailor_works_cited, sailo
 Filter away Ivy Echos' work if it is not cited by others
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 # Ivy Echos works cited by others
 ivy_works_cited <- mc1_edges_clean %>%
   filter(
@@ -1529,6 +1592,8 @@ ivy_works_filtered <- intersect(ivy_works, union(ivy_works_cited, ivy_works_coll
 Add in Ember & Echoes's contributors as they were directly influenced by Ivy Echos:
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 embers_contributors <- mc1_edges_clean %>%
   filter(
     to_id == embers_id,
@@ -1544,6 +1609,8 @@ embers_contributors <- mc1_edges_clean %>%
 ```
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 # Combine node IDs
 all_ids <- unique(c(
   sailor_id,
@@ -1605,8 +1672,131 @@ graph_tbl <- graph_tbl %>%
 
 The visualisation showing who has Sailor collaborated with and directly or indirectly influenced is shown below.
 
-```{r}
-# Add layout and tooltip
+::: panel-tabset
+### The plot
+```{r, echo=FALSE}
+
+set.seed(1111)
+layout_tbl <- create_layout(graph_tbl, layout = "stress")
+
+graph_tbl <- graph_tbl %>%
+  mutate(across(where(is.character), ~ gsub("'", "", .x))) %>%
+  mutate(
+    tooltip = paste0(
+      label, 
+      " (", `Node Type`, ")", 
+      ifelse(!is.na(release_date), paste0("\nRelease Year: ", release_date), ""),
+      ifelse(!is.na(genre), paste0("\nGenre: ", genre), "")
+    )
+  )
+
+# Define graph
+g <- ggraph(layout_tbl) +
+  
+  # Edge rendering
+  geom_edge_fan(
+    aes(color = `Edge Type`),
+    alpha = 0.8,
+    arrow = arrow(length = unit(1.2, 'mm'), type = "closed"),
+    start_cap = circle(1, 'mm'),
+    end_cap = circle(1, 'mm'),
+    lineend = "round",
+    show.legend = TRUE
+  ) +
+  
+  # Nodes with interactivity
+  geom_point_interactive(
+    aes(
+      x = x,
+      y = y,
+      color = category,
+      shape = `Node Type`,
+      tooltip = tooltip,
+      data_id = label
+    ),
+    size = 2
+  ) +
+
+  # Labels for key nodes
+  geom_node_text(
+    aes(label = ifelse(category == "Sailor Shift", label, NA)),
+    size = 5,
+    fontface = "bold",
+    color = "black",
+    repel = TRUE
+  ) +
+  
+  geom_node_text(
+    aes(label = ifelse(category == "Sailor's Work", label, NA)),
+    size = 2,
+    fontface = "italic",
+    color = "blue",
+    repel = TRUE
+  ) +
+
+  geom_node_text(
+    aes(label = ifelse(category == "Collaborator", label, NA)),
+    size = 2,
+    color = "black",
+    repel = TRUE
+  ) +
+
+  geom_node_text(
+    aes(label = ifelse(category == "Direct Influencee", label, NA)),
+    size = 3,
+    color = "black",
+    repel = TRUE
+  ) +
+
+  geom_node_text(
+    aes(label = ifelse(label == "Ivy Echos", label, NA)),
+    size = 3,
+    fontface = "bold.italic",
+    color = "darkgreen",
+    repel = TRUE
+  ) +
+
+  geom_node_text(
+    aes(label = ifelse(category == "Embers Contributor", label, NA)),
+    size = 2.5,
+    fontface = "italic",
+    color = "goldenrod4",
+    repel = TRUE
+  ) +
+
+  # Color and shape scales
+scale_color_manual(
+  values = c(
+    "Sailor Shift" = "red",
+    "Ivy Echos" = "darkgreen",
+    "Sailor's Work" = "blue",
+    "Ivy's Work" = "darkgreen",
+    "Collaborator" = "grey",
+    "Direct Influencee" = "orange",
+    "Embers Contributor" = "gold",       
+    "Other" = "black"
+  ),
+  name = "Node Category"
+) +
+
+  scale_shape_manual(
+    values = c("Person" = 15, "MusicalGroup" = 17, "Album" = 16, "Song" = 3),
+    name = "Node Type"
+  ) +
+
+  theme_void() +
+  theme(
+    plot.margin = margin(30, 30, 30, 30),
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8)
+  )
+
+# Wrap in interactive output
+girafe(ggobj = g, width_svg = 10, height_svg = 6)
+```
+### The code
+```{r, eval=FALSE}
+
 set.seed(1111)
 layout_tbl <- create_layout(graph_tbl, layout = "stress")
 
