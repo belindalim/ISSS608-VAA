@@ -233,7 +233,7 @@ all(mc1_edges_raw$source %in% mc1_nodes_clean$id)
 all(mc1_edges_raw$target %in% mc1_nodes_clean$id)
 ```
 
-### **2.3.6 Mapping from node name to edges indexes
+### **2.3.6** Mapping from node name to edges indexes
 
 Map each node’s ID to its name. This is useful for labeling, joining and plotting later.
 
@@ -246,7 +246,7 @@ id_map <- mc1_nodes_clean %>%
 id_map
 ```
 
-### **2.3.7 Map source and target to node name while keeping the ID
+### **2.3.7** Map source and target to node name while keeping the ID
 
 Join (1) from_name based on source ID and (2) to_name based on target ID.
 
@@ -272,7 +272,7 @@ mc1_edges_clean <- mc1_edges_clean %>%
             by = c("from_id" = "id"))
 ```
 
-### **2.3.8 Filter out any unmatched (invalid) edges
+### **2.3.8** Filter out any unmatched (invalid) edges
 
 ```{r}
 #| code-fold: true
@@ -281,7 +281,7 @@ mc1_edges_clean <- mc1_edges_clean %>%
   filter(!is.na(from_id), !is.na(to_id))
 ```
 
-### **2.3.9 Checking for any missing nodes
+### **2.3.9** Checking for any missing nodes
 
 ```{r}
 #| code-fold: true
@@ -294,7 +294,7 @@ missing_nodes <- setdiff(
 missing_nodes
 ```
 
-### **2.3.10 Check Edges Schema
+### **2.3.10** Check Edges Schema
 
 Define valid source and destination types for each edge type as per the data description file:
 
@@ -437,7 +437,7 @@ Who has Sailor been most influenced by over time?
 
 ## **4.1 Find Sailor's ID and Works**
 
-The code chunks filter to Sailor's ID and her works. Sailor was was listed as a performer and/or lyricist 47 times and was a contributor to 38 unique works. 
+The code chunks filter to Sailor's ID and her works. Sailor was was listed as a performer and/or lyricist 47 times and was a contributor to 38 unique works.
 
 ```{r}
 #| code-fold: true
@@ -471,7 +471,8 @@ mc1_edges_clean %>%
   ) %>%
   summarise(unique_works = n_distinct(to_id))
 ```
-## **4.2 Summary Plot of Sailor's work over years
+
+## 4.2 Summary Plot of Sailor's work over years
 
 ::: panel-tabset
 ### The plot
@@ -500,7 +501,9 @@ ggplot(sailor_works_genre, aes(x = release_date.y, y = n, fill = genre.y)) +
   theme_minimal() +
   theme(legend.position = "bottom")
 ```
+
 ### The code
+
 ```{r, eval=FALSE}
 sailor_works_genre <- mc1_edges_clean %>%
   filter(from_id == sailor_id,
@@ -527,9 +530,9 @@ ggplot(sailor_works_genre, aes(x = release_date.y, y = n, fill = genre.y)) +
 ```
 :::
 
-## **4.3 Find Works that influenced Sailor's works
+## 4.3 Find Works that influenced Sailor's works
 
-Works that influenced Sailor's works is based on what was cited by in her works (InStyleOf", "InterpolatesFrom", "CoverOf", "DirectlySamples", "LyricalReferenceTo"). There were 26 songs/ album cited by Sailor's works. 
+Works that influenced Sailor's works is based on what was cited by in her works (InStyleOf", "InterpolatesFrom", "CoverOf", "DirectlySamples", "LyricalReferenceTo"). There were 26 songs/ album cited by Sailor's works.
 
 ```{r}
 #| code-fold: true
@@ -551,9 +554,9 @@ influences %>%
   count(`Node Type`, sort = TRUE)
 ```
 
-## **4.4 Find Creators of Works that influenced Sailor's works
+## 4.4 Find Creators of Works that influenced Sailor's works
 
-Based on the code chunk below, we linked the work to the influencers to find out who were the influencers influencing Sailor. 
+Based on the code chunk below, we linked the work to the influencers to find out who were the influencers influencing Sailor.
 
 There were 91 persons and 2 musical groups influencing Sailor.
 
@@ -580,9 +583,9 @@ influencer_people %>%
   count(name, sort = TRUE)
 ```
 
-## **4.5 Check Sailor's group membership and ID
+## 4.5 Check Sailor's group membership and ID
 
-A check was done to confirm if Sailor was in any musical group. It is confirmed that she only belonged to Ivy Echos. 
+A check was done to confirm if Sailor was in any musical group. It is confirmed that she only belonged to Ivy Echos.
 
 ```{r}
 #| code-fold: true
@@ -626,7 +629,7 @@ mc1_edges_clean %>%
 
 # **5  Building Subgraphs of Sailor's influencers**
 
-## **5.1 Define IDs to include in the subgraph
+## 5.1 Define IDs to include in the subgraph
 
 ```{r}
 #| code-fold: true
@@ -643,7 +646,7 @@ all_ids <- unique(c(
 ))
 ```
 
-## **5.2 Filter details to form the subgraph
+## 5.2 Filter details to form the subgraph
 
 However, we do not want to include collaborators except for the musical group that she belongs to. This is executed by the codes below.
 
@@ -668,7 +671,7 @@ collaborator_ids <- mc1_edges_clean %>%
   unique()
 ```
 
-We only keep collaborators and Ivy Echos if they influenced Sailor directly. 
+We only keep collaborators and Ivy Echos if they influenced Sailor directly.
 
 ```{r}
 #| code-fold: true
@@ -705,9 +708,10 @@ mini_edges_clean <- mini_edges %>%
 
 # **6  Building Visualisation**
 
-## **6.1 Prepare Visualisation
+## 6.1 Prepare Visualisation
 
-We prepare the visualisation using the codes below. 
+We prepare the visualisation using the codes below.
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show code"
@@ -740,7 +744,7 @@ mini_edges_scored <- mini_edges_clean %>%
   ))
 ```
 
-## **6.2 Remove Sailor's work if not linked to other works
+## 6.2 Remove Sailor's work if not linked to other works
 
 ```{r}
 #| code-fold: true
@@ -800,7 +804,7 @@ sailor_works_to_drop <- node_degrees %>%
   pull(node_index)
 ```
 
-## **6.3 Remove Ivy Echo's work if not linked to other works
+## 6.3 Remove Ivy Echo's work if not linked to other works
 
 ```{r}
 #| code-fold: true
@@ -832,12 +836,13 @@ graph_tbl <- graph_tbl %>%
   filter(!row_index %in% nodes_to_drop)
 ```
 
-## **6.4 Visualising Sailor's Influencers (non-interactive)
+## 6.4 Visualising Sailor's Influencers (non-interactive)
 
-The visualisation is plotted as follows: 
+The visualisation is plotted as follows:
 
 ::: panel-tabset
 ### The plot
+
 ```{r, warning= FALSE, echo =FALSE}
 
 set.seed(12)
@@ -922,7 +927,9 @@ ggraph(graph_tbl, layout = "fr") +
     legend.text = element_text(size = 8)
   )
 ```
+
 ### The code
+
 ```{r, warning= FALSE, eval =FALSE}
 
 set.seed(12)
@@ -1011,10 +1018,11 @@ ggraph(graph_tbl, layout = "fr") +
 
 As there are many influencers and overlaps, it is suggested to do an interactive map instead.
 
-## **6.5 Prepare Interactive Plot
+## 6.5 Prepare Interactive Plot
 
 ::: panel-tabset
 ### The plot
+
 ```{r, echo=FALSE}
 # Identify Sailor node index
 sailor_index <- graph_tbl %>%
@@ -1053,6 +1061,7 @@ graph_tbl <- graph_tbl %>%
 ```
 
 ### The code
+
 ```{r, echo=FALSE}
 # Identify Sailor node index
 sailor_index <- graph_tbl %>%
@@ -1095,6 +1104,7 @@ graph_tbl <- graph_tbl %>%
 
 ::: panel-tabset
 ### The plot
+
 ```{r, echo = FALSE}
 set.seed(12)
 
@@ -1183,7 +1193,9 @@ g <- ggraph(layout_tbl) +
 
 girafe(ggobj = g, width_svg = 10, height_svg = 6)
 ```
+
 ### The code
+
 ```{r, eval = FALSE}
 set.seed(12)
 
@@ -1360,10 +1372,9 @@ total_collaborations <- mc1_edges_clean %>%
 total_collaborations
 ```
 
-
 ## **7.2 Find works and musicians which were directly influenced by Sailor and Ivy Echos**
 
-Filter by works that cited Sailor based on "InStyleOf", "InterpolatesFrom", "CoverOf", "LyricalReferenceTo", "DirectlySamples" 
+Filter by works that cited Sailor based on "InStyleOf", "InterpolatesFrom", "CoverOf", "LyricalReferenceTo", "DirectlySamples"
 
 ```{r}
 #| code-fold: true
@@ -1394,7 +1405,8 @@ direct_influencees <- mc1_edges_clean %>%
 
 ## **7.3 Sailor's influence**
 
-Find how often Sailor’s works were cited. 
+Find how often Sailor’s works were cited.
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show code"
@@ -1415,7 +1427,7 @@ We can conclude that there was no Sailor's work cited by others.
 
 ## **7.4 Sailor's influence through Ivy Echos**
 
-Let's check if there was any Ivy Echo's work cited by others using the code below. 
+Let's check if there was any Ivy Echo's work cited by others using the code below.
 
 ```{r}
 #| code-fold: true
@@ -1477,7 +1489,7 @@ mc1_edges_clean %>%
   distinct()
 ```
 
-Membership of The Hollow Monarchs musical group was checked to include in the plot. 
+Membership of The Hollow Monarchs musical group was checked to include in the plot.
 
 ```{r}
 #| code-fold: true
@@ -1503,7 +1515,7 @@ hollow_monarchs_members
 
 ## **7.6 Musicians whom were indirectly influenced by Sailor/ Ivy Echos**
 
-First, we found the works that were influenced by Embers & Echoes album to trace if anyone had cited this work. 
+First, we found the works that were influenced by Embers & Echoes album to trace if anyone had cited this work.
 
 ```{r}
 #| code-fold: true
@@ -1529,6 +1541,7 @@ mc1_nodes_clean %>%
   filter(id %in% works_citing_embers) %>%
   select(id, name, `Node Type`, release_date)
 ```
+
 We confirmed that no other works cited Ember & Echoes.Hence, no one had been indirectly influenced by Sailor / Ivy Echos.
 
 ## **7.7 Plot Preparation**
@@ -1674,6 +1687,7 @@ The visualisation showing who has Sailor collaborated with and directly or indir
 
 ::: panel-tabset
 ### The plot
+
 ```{r, echo=FALSE}
 
 set.seed(1111)
@@ -1794,7 +1808,9 @@ scale_color_manual(
 # Wrap in interactive output
 girafe(ggobj = g, width_svg = 10, height_svg = 6)
 ```
+
 ### The code
+
 ```{r, eval=FALSE}
 
 set.seed(1111)
@@ -1915,3 +1931,4 @@ scale_color_manual(
 # Wrap in interactive output
 girafe(ggobj = g, width_svg = 10, height_svg = 6)
 ```
+:::
