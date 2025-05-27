@@ -84,7 +84,6 @@ Graphing Tools
 
 ```{r}
 #| code-fold: true
-#| code-summary: "Show code"
 pacman::p_load(jsonlite, tidyverse, ggtext,
                 knitr, lubridate, patchwork,
                 ggraph, tidygraph, igraph,
@@ -112,6 +111,8 @@ glimpse(mc1_data)
 ### Separating into node and edge data
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 mc1_nodes_raw <- as_tibble(mc1_data$nodes)
 
 glimpse(mc1_nodes_raw)
