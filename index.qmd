@@ -1,5 +1,15 @@
 ---
 title: "Belinda's ISSS608-VAA Journey"
+format:
+  html:
+    theme: flatly
+    toc: true
+editor: source
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
 ::::: {.row style="display: flex; align-items: center; justify-content: center;"}
