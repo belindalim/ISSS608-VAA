@@ -108,8 +108,9 @@ glimpse(mc1_data)
 
 ## **2.3 Inspect Data Structure of Nodes and Edges**
 
-### Separating into node and edge data
+### Preview and Separate node and edge data
 
+For Nodes 
 ```{r}
 #| code-fold: true
 #| code-summary: "Show code"
@@ -119,8 +120,10 @@ glimpse(mc1_nodes_raw)
 
 kable(head(mc1_nodes_raw, 5))
 ```
-
+For Edges: 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 mc1_edges_raw <- as_tibble(mc1_data$links)
 
 glimpse(mc1_edges_raw)
@@ -130,11 +133,13 @@ kable(head(mc1_edges_raw, 10))
 
 ## **2.3 Data Pre-processing**
 
-### **2.3.1 New columns created to identify "Sailor" and "Oceanus_folk" related works**
+### **2.3.1 New columns created**
 
-Aids identification and filtering of "Sailor" and "Oceanus_folk" related works for analysis
+New columns created to identify "Sailor" and "Oceanus_folk" related works for subsequent analysis
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 mc1_nodes_raw <- mc1_nodes_raw %>%
   mutate(
     is_sailor = (
@@ -148,31 +153,36 @@ mc1_nodes_raw <- mc1_nodes_raw %>%
 
 ### **2.3.2 Convert date fields**
 
-Convert date fields from "chr" to "int"
+Convert date fields from "chr" to "int" for subsequent analysis across years. 
 
-Note: Dates only appears in Songs and Albums.
+Note: Date fields are only relevant for Songs and Albums.
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 mc1_nodes_raw <- mc1_nodes_raw %>%
   mutate(across(c(release_date, notoriety_date, written_date),
                 ~as.integer(if_else(`Node Type` %in% c("Song", "Album"), ., NA_character_))))
+
+mc1_nodes_raw$release_date %>% unique()
 ```
 
 ### **2.3.3 Check and remove duplicates**
 
-Check and remove duplicates
-
-For Nodes, there are no duplicates:
+For Nodes, there are no duplicates after checking. 
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 mc1_nodes_raw %>%
   count(id) %>%
   filter(n > 1)
 ```
 
-For Edges, there are duplicates as seen below. Only their Keys are different. However, Keys are not used for subsequent data analysis. Hence, these duplicated edges are removed.
-
+For Edges, there are duplicates shown below. The only difference are their Keys. However, Keys are not used for subsequent data analysis.
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 duplicate_summary <- mc1_edges_raw %>%
   count(source, target, `Edge Type`) %>%
   filter(n > 1)
@@ -181,9 +191,11 @@ mc1_edges_raw %>%
   inner_join(duplicate_summary, by = c("source", "target", "Edge Type"))
 ```
 
-All duplicates were removed:
+Hence, we removed all duplicates using the code below:
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
 mc1_edges_raw <- mc1_edges_raw %>%
   distinct(source, target, `Edge Type`, .keep_all = TRUE)
 
@@ -191,47 +203,29 @@ mc1_edges_raw %>%
   count(source, target, `Edge Type`) %>%
   filter(n > 1)
 ```
+### **2.3.4 Remove symbol in text**
 
-# **3  Exploratory Data Analysis**
-
-## **3.1 Explore and Inspect Nodes**
-
-```{r}
-mc1_nodes_raw$release_date %>% unique()
-
-mc1_nodes_raw %>%
-  filter(grepl("Sailor Shift", name))
-```
-
+We remove "'" from name to prevent coding errors subsequently. 
 ```{r}
 mc1_nodes_clean <- mc1_nodes_raw %>%
   mutate(
     name = gsub("'", "", name)
   )
-
-kable(head(mc1_nodes_clean))
 ```
 
-## **3.2 Explore and Inspect Edges**
+### **2.3.5 Explore and Inspect Edges**
 
-Confirm that the IDs used in edges match the range of IDs in nodes
+Confirm that the source and target IDs used in edges match the range of IDs in nodes
 
 ```{r}
-range(mc1_edges_raw$source)
+all(mc1_edges_raw$source %in% mc1_nodes_clean$id)
 
-range(mc1_edges_raw$target) 
+all(mc1_edges_raw$target %in% mc1_nodes_clean$id)
 ```
 
-## **3.3 Mapping from node name to edges indexes**
+### **2.3.6 Mapping from node name to edges indexes**
 
-Name is not an unique identifier.
-
-```{r}
-mc1_nodes_clean %>%
-  count(name) %>%
-  filter(n > 1)
-```
-
+Map each node’s ID to its name. This is useful for labeling, joining and plotting later.
 ```{r}
 id_map <- mc1_nodes_clean %>%
   select(id, name)
@@ -239,8 +233,13 @@ id_map <- mc1_nodes_clean %>%
 id_map
 ```
 
-## \*\* 3.4 Map source and target to node name while keeping the ID\*\*
+### **2.3.7 Map source and target to node name while keeping the ID
 
+Join (1) from_name based on source ID and (2) to_name based on target ID.
+
+The source and target are mapped to "from_id" and "to_id" respectively.
+
+Create cleaned edge and norm columns while tagged to the new "from_id" and "to_id":
 ```{r}
 mc1_edges_clean <- mc1_edges_raw %>%
   left_join(mc1_nodes_clean %>% select(id, from_name = name), by = c("source" = "id")) %>%
@@ -255,20 +254,14 @@ mc1_edges_clean <- mc1_edges_clean %>%
             by = c("from_id" = "id"))
 ```
 
-Removed the below as it is not recommended to drop
-
-mc1_edges_clean \<- mc1_edges_clean %\>% #Drops source and target columns select(from, to, `Edge Type`)
-
-mc1_edges_clean
-
-## \*\* 3.5 Filter out any unmatched (invalid) edges\*\*
+### **2.3.8 Filter out any unmatched (invalid) edges
 
 ```{r}
 mc1_edges_clean <- mc1_edges_clean %>%
   filter(!is.na(from_id), !is.na(to_id))
 ```
 
-## \*\* 3.6 Checking for any missing nodes\*\*
+### **2.3.9 Checking for any missing nodes
 
 ```{r}
 missing_nodes <- setdiff(
@@ -279,7 +272,7 @@ missing_nodes <- setdiff(
 missing_nodes
 ```
 
-## \*\* 3.7 Check Edges Schema\*\*
+### **2.3.10 Check Edges Schema
 
 Define valid source and destination types for each edge type as per the data description file:
 
@@ -351,7 +344,7 @@ print(invalid_edge_summary)
 cat("Total invalid edges:", sum(!mc1_edges_tagged$valid), "\n")
 ```
 
-There were 570 invalid edges.
+There were 570 invalid edges that are not in accordance to the data description file which are suggested to be removed as follows:
 
 ```{r}
 # Keep only valid edges
@@ -359,9 +352,10 @@ mc1_edges_clean <- mc1_edges_tagged %>%
   filter(valid)
 ```
 
-The invalid edges were removed from the dataset as they were not consistent with the data description file.
 
-## **3.8 Visualising Edge Types**
+# **3  Exploratory Data Analysis**
+
+## **3.1 Visualising Edge Types**
 
 ```{r}
 ggplot(data = mc1_edges_clean,
@@ -369,7 +363,7 @@ ggplot(data = mc1_edges_clean,
   geom_bar()
 ```
 
-## **3.9 Visualising Node Types**
+## **3.2 Visualising Node Types**
 
 ```{r}
 ggplot(data = mc1_nodes_clean,
@@ -377,7 +371,7 @@ ggplot(data = mc1_nodes_clean,
   geom_bar()
 ```
 
-## **3.10 Creating the global knowledge graph**
+## **3.3 Creating the global knowledge graph**
 
 `tbl_graph()` is used to create tidygraph's graph object by using the code chunk below
 
