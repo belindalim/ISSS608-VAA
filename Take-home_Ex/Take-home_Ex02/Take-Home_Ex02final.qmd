@@ -79,6 +79,7 @@ Graphing Tools
 -   igraph - Contains functions for network analysis
 -   ggiraph - Interactive plots
 
+
 ::: {.callout-note appearance="minimal" collapse="true"}
 ## Code
 
@@ -223,14 +224,14 @@ range(mc1_edges_raw$target)
 
 ## **3.3 Mapping from node name to edges indexes**
 
-Name is not an unique identifier.
-
+Name is not an unique identifier. 
 ```{r}
 mc1_nodes_clean %>%
   count(name) %>%
   filter(n > 1)
 ```
 
+Belinda amended this: 
 ```{r}
 id_map <- mc1_nodes_clean %>%
   select(id, name)
@@ -238,8 +239,9 @@ id_map <- mc1_nodes_clean %>%
 id_map
 ```
 
-## \*\* 3.4 Map source and target to node name while keeping the ID\*\*
+## ** 3.4 Map source and target to node name while keeping the ID**
 
+Belinda amended the below, as the source name is not an unique identifier and affects code below
 ```{r}
 mc1_edges_clean <- mc1_edges_raw %>%
   left_join(mc1_nodes_clean %>% select(id, from_name = name), by = c("source" = "id")) %>%
@@ -256,18 +258,19 @@ mc1_edges_clean <- mc1_edges_clean %>%
 
 Removed the below as it is not recommended to drop
 
-mc1_edges_clean \<- mc1_edges_clean %\>% #Drops source and target columns select(from, to, `Edge Type`)
+mc1_edges_clean <- mc1_edges_clean %>%  #Drops source and target columns
+  select(from, to, `Edge Type`)
 
 mc1_edges_clean
 
-## \*\* 3.5 Filter out any unmatched (invalid) edges\*\*
+## ** 3.5 Filter out any unmatched (invalid) edges**
 
 ```{r}
 mc1_edges_clean <- mc1_edges_clean %>%
   filter(!is.na(from_id), !is.na(to_id))
 ```
 
-## \*\* 3.6 Checking for any missing nodes\*\*
+## ** 3.6 Checking for any missing nodes**
 
 ```{r}
 missing_nodes <- setdiff(
@@ -278,7 +281,7 @@ missing_nodes <- setdiff(
 missing_nodes
 ```
 
-## \*\* 3.7 Check Edges Schema\*\*
+## ** 3.7 Check Edges Schema**
 
 Define valid source and destination types for each edge type as per the data description file:
 
@@ -349,8 +352,7 @@ print(invalid_edge_summary)
 # Check total invalid edge count
 cat("Total invalid edges:", sum(!mc1_edges_tagged$valid), "\n")
 ```
-
-There were 570 invalid edges.
+There were 570 invalid edges. 
 
 ```{r}
 # Keep only valid edges
@@ -358,7 +360,7 @@ mc1_edges_clean <- mc1_edges_tagged %>%
   filter(valid)
 ```
 
-The invalid edges were removed from the dataset as they were not consistent with the data description file.
+The invalid edges were removed from the dataset as they were not consistent with the data description file. 
 
 ## **3.8 Visualising Edge Types**
 
@@ -380,6 +382,7 @@ ggplot(data = mc1_nodes_clean,
 
 `tbl_graph()` is used to create tidygraph's graph object by using the code chunk below
 
+Belinda amended to retain the original id for subsequent plotting purpose. 
 ```{r}
 
 mc1_nodes_clean <- mc1_nodes_clean %>%
@@ -411,11 +414,13 @@ music %>%
 set.seed(1234)
 ```
 
-# **4  Exploring Sailor's Network**
+## **3.11 Findings on Sailor's network**
 
-Who has Sailor been most influenced by over time?
+Question 1a) Who has Sailor been most influenced by over time?
 
-## **4.1 Find Sailor's ID and Works**
+-----------------------------------------
+
+### **Step 1: Find Sailor's ID and Works**
 
 ```{r}
 sailor_id <- mc1_nodes_clean %>%
@@ -446,40 +451,35 @@ mc1_edges_clean %>%
   ) %>%
   summarise(unique_works = n_distinct(to_id))
 ```
+Sailor was a contributor to 38 unique works. She was listed as a performer and/or lyricist 47 times.   
 
-Sailor was a contributor to 38 unique works. She was listed as a performer and/or lyricist 47 times.
 
-## **4.2 Find Works that influenced Sailor's works**
-
-Works that influenced Sailor's works is based on what was cited by in her works (InStyleOf", "InterpolatesFrom", "CoverOf", "DirectlySamples", "LyricalReferenceTo")\*\*\*
+### ** Step 2: Find Works that influenced Sailor's works based what was cited by in her works (InStyleOf", "InterpolatesFrom", "CoverOf", "DirectlySamples", "LyricalReferenceTo")***
 
 ```{r}
 sailor_referenced_works <- mc1_edges_clean %>%
   filter(
-    from_id %in% sailor_works, 
+    from_id %in% sailor_works,  # Sailor’s own songs/albums
     `Edge Type` %in% c("InStyleOf", "InterpolatesFrom", "CoverOf", 
                        "LyricalReferenceTo", "DirectlySamples")
   ) %>%
   pull(to_id) %>%
   unique()
 
-# Identify those referenced nodes (songs/albums Sailor referenced)
+# Step 2: Identify those referenced nodes (songs/albums Sailor referenced)
 influences <- mc1_nodes_clean %>%
   filter(id %in% sailor_referenced_works)
 
 influences %>%
   count(`Node Type`, sort = TRUE)
 ```
-
 There were 26 songs/ album cited by Sailor's works.
 
-
-## **4.3 Find Creators of Works that influenced Sailor's works**
 ```{r}
-# Extract their IDs to find who made those works
+# Step 3: Extract their IDs to find who made those works
 influencer_work_ids <- influences$id
 
-# Who created those works?
+# Step 4: Who performed/composed/etc. those works?
 influencer_people <- mc1_edges_clean %>%
   filter(
     to_id %in% influencer_work_ids,
@@ -491,22 +491,21 @@ influencer_people <- mc1_edges_clean %>%
   ) %>%
   filter(Node_Type %in% c("Person", "MusicalGroup"))
 
-# Count top contributors who influenced Sailor
+# Step 5: Count top contributors who influenced Sailor
 influencer_people %>%
   count(name, sort = TRUE)
 ```
-
 There were 91 persons and 2 musical groups influencing Sailor.
 
-## **4.3 Check Sailor's group membership and ID**
+### ** Step 3: Check if Sailor is a member of any group and include them in the visualisation
 
 ```{r}
-# Get Sailor's ID
+# Step 1: Get Sailor's ID
 sailor_id <- mc1_nodes_clean %>%
   filter(str_to_lower(name) == "sailor shift") %>%
   pull(id)
 
-# Filter edges where Sailor is a member of a group
+# Step 2: Filter edges where Sailor is a member of a group
 sailor_groups <- mc1_edges_clean %>%
   filter(
     `Edge Type` == "MemberOf",
@@ -517,35 +516,34 @@ sailor_groups <- mc1_edges_clean %>%
     by = c("to_id" = "id")
   )
 
+# Then safely select
 sailor_groups %>% select(group_name, node_type)
 
+# Step 3: View results
 sailor_groups %>% select(group_name, `Node Type`)
 ```
+Sailor is a member of Ivy Echos. 
 
-Sailor is a member of Ivy Echos.
-
-Obtaining the musical group ID:
-
+Obtaining the musical group ID
 ```{r}
 sailor_group_ids <- mc1_edges_clean %>%
   filter(`Edge Type` == "MemberOf", from_id == sailor_id) %>%
   pull(to_id)
 ```
-
+  
 ```{r}
 mc1_edges_clean %>%
   filter(`Edge Type` == "MemberOf", from_id == sailor_id) %>%
   left_join(mc1_nodes_clean, by = c("to_id" = "id")) %>%
   select(to_id, group_name = name, node_type = `Node Type.y`)
 ```
+-------------------
+### ** Step 4: Building the subgraph
 
-# **5  Building Subgraphs of Sailor's influencers**
-
-## **5.1 Define IDs to include in the subgraph** 
-
+Define IDs to include in the subgraph:
 ```{r}
 influencer_people_ids <- influencer_people %>% pull(from_id)
-referenced_work_ids <- sailor_referenced_works  
+referenced_work_ids <- sailor_referenced_works  # works Sailor cited
 
 all_ids <- unique(c(
   sailor_id,
@@ -556,16 +554,15 @@ all_ids <- unique(c(
 ))
 ```
 
-## **5.2 Filter details to form the subgraph** 
 However, we do not want to include collaborators except for the musical group that she belongs to. This is executed by the codes below:
 
 ```{r}
-# Filter nodes for Sailor + her works + influencers + cited works
+# Step 1: Filter nodes for Sailor + her works + influencers + cited works
 mini_nodes <- mc1_nodes_clean %>%
   filter(id %in% all_ids) %>%
   rename(label = name)
 
-# Identify collaborators (people who worked on Sailor's works)
+# Step 2: Identify collaborators (people who worked on Sailor's works)
 collaborator_ids <- mc1_edges_clean %>%
   filter(
     to_id %in% sailor_works,
@@ -577,24 +574,24 @@ collaborator_ids <- mc1_edges_clean %>%
 ```
 
 ```{r}
-# Find Ivy Echos ID
+# Step 3: Find Ivy Echos ID
 ivy_id <- mc1_nodes_clean %>%
   filter(str_trim(name) == "Ivy Echos") %>%
   pull(id)
 
-# Filter out collaborators unless they also influenced Sailor, but keep Ivy Echos
+# Step 4: Filter out collaborators (unless they also influenced Sailor), but keep Ivy Echos
 mini_nodes <- mini_nodes %>%
   filter(!(id %in% collaborator_ids & !(id %in% influencer_people_ids | id == ivy_id)))
 
-# Rebuild edges based on cleaned mini_nodes
+# Step 5: Rebuild edges based on cleaned mini_nodes
 valid_ids <- mini_nodes$id
 
-# Drop edges where the source is a removed collaborator and the target is a Sailor work
 mini_edges <- mc1_edges_clean %>%
   filter(from_id %in% valid_ids & to_id %in% valid_ids) %>%
+  # Drop edges where the source is a removed collaborator and the target is a Sailor work
   filter(!(to_id %in% sailor_works & from_id %in% collaborator_ids & !(from_id %in% influencer_people_ids | from_id == ivy_id)))
 
-# Remap node IDs to row indices for plotting
+# Step 5: Remap node IDs to row indices for plotting
 id_map <- tibble(id = valid_ids, index = seq_len(length(valid_ids)))
 
 mini_edges <- mini_edges %>%
@@ -602,21 +599,21 @@ mini_edges <- mini_edges %>%
   left_join(id_map %>% rename(from = index), by = c("from_id" = "id")) %>%
   left_join(id_map %>% rename(to = index), by = c("to_id" = "id"))
 
-# Drop invalid edges
+# Step 6: Drop invalid edges
 mini_edges_clean <- mini_edges %>%
   filter(!is.na(from) & !is.na(to))
 ```
 
 
 ```{r}
-# Tag Sailor and Ivy Echos
+# Step 7: Tag Sailor and Ivy Echos
 mini_nodes <- mini_nodes %>%
   mutate(
     is_sailor_node = label == "Sailor Shift",
     is_ivy_echos = str_trim(label) == "Ivy Echos",
     is_sailor_work = id %in% sailor_works,
     
-# Define node category
+# Step 8: Define node category
     node_category = case_when(
       is_sailor_node ~ "Sailor Shift",
       is_ivy_echos ~ "Ivy Echos",
@@ -624,11 +621,11 @@ mini_nodes <- mini_nodes %>%
       TRUE ~ "Influencer"
     ),
     
-# Final node color grouping
+# Step 9: Final node color grouping
     node_color_group = node_category
   )
 
-# Filter edges for plotting
+# Step 10: Filter edges for plotting
 mini_edges_scored <- mini_edges_clean %>%
   filter(`Edge Type` %in% c(
     "InStyleOf", "InterpolatesFrom", "CoverOf", 
@@ -638,46 +635,45 @@ mini_edges_scored <- mini_edges_clean %>%
   ))
 ```
 
-
-## **5.2 Remove Sailor's work if not linked to other works**
+Remove Sailor's works that are not linked to other work
 
 ```{r}
-# Add row index to mini_nodes for alignment
+# Step 1: Add row index to mini_nodes for alignment
 mini_nodes <- mini_nodes %>%
   mutate(row_index = row_number())
 
-# Create the graph
+# Step 2: Create the graph
 graph_tbl <- tbl_graph(nodes = mini_nodes, edges = mini_edges_scored, directed = TRUE)
 
-# Identify Sailor's works (by ID)
+# Step 3: Identify Sailor's works (by ID)
 sailor_work_ids <- mini_nodes %>%
   filter(id %in% sailor_works) %>%
   pull(id)
 
-# Get corresponding row indices of Sailor's works
+# Step 4: Get corresponding row indices of Sailor's works
 sailor_work_rows <- mini_nodes %>%
   filter(id %in% sailor_work_ids) %>%
   pull(row_index)
 
-# Get Sailor's works which cite other works 
+# Step 5: Get which of Sailor's works cite other works (via influence edges)
 influence_edge_types <- c("InStyleOf", "CoverOf", "InterpolatesFrom", "DirectlySamples", "LyricalReferenceTo")
 
 referencing_sailor_works <- mini_edges_scored %>%
   filter(
     `Edge Type` %in% influence_edge_types,
-    from %in% sailor_work_rows  
+    from %in% sailor_work_rows  # these are row indices in the graph
   ) %>%
   pull(from) %>%
   unique()
 
-# Compute node degrees
+# Step 6: Compute node degrees
 node_degrees <- graph_tbl %>%
   activate(nodes) %>%
   mutate(degree = centrality_degree(mode = "all"),
          node_index = row_number()) %>%
   as_tibble()
 
-# Identify works only connected to Sailor (no other collaborators)
+# Step 7A: Identify works only connected to Sailor (no other collaborators)
 only_sailor_edges <- mini_edges_scored %>%
   filter(
     to %in% sailor_work_rows,
@@ -686,19 +682,17 @@ only_sailor_edges <- mini_edges_scored %>%
   group_by(to) %>%
   summarise(all_from_sailor = all(from_id == sailor_id), .groups = "drop") %>%
   filter(all_from_sailor) %>%
-  pull(to)  
+  pull(to)  # these are row indices already
 
-# Final filtering
+# Step 7B: Final filtering
 sailor_works_to_drop <- node_degrees %>%
   filter(
     node_index %in% only_sailor_edges,
     !(node_index %in% referencing_sailor_works)
   ) %>%
   pull(node_index)
-```
 
-## **5.2 Remove Ivy Echo's work if not linked to other works**
-```{r}
+# Step 7C: Drop Ivy Echos' works if they aren't connected to others via influence edges
 ivy_work_ids <- mini_edges_scored %>%
   filter(from_id == ivy_id, `Edge Type` %in% c("PerformerOf", "ComposerOf", "LyricistOf", "ProducerOf")) %>%
   pull(to_id) %>%
@@ -719,16 +713,14 @@ ivy_works_to_drop <- setdiff(ivy_work_rows, c(ivy_influential_edges$from, ivy_in
 # Add to removal list
 nodes_to_drop <- unique(c(sailor_works_to_drop, ivy_works_to_drop))
 
-# Drop from graph
+# Step 8: Drop from graph
 graph_tbl <- graph_tbl %>%
   activate(nodes) %>%
   mutate(row_index = row_number()) %>%
   filter(!row_index %in% nodes_to_drop)
 ```
 
-# **6  Building Visualisation**
-
-## **6.1 Visualising Sailor's Influencers (non-interactive)**
+Visualising Sailor's Influencers (non-interactive)
 
 ```{r, warning= FALSE}
 
@@ -764,7 +756,7 @@ ggraph(graph_tbl, layout = "fr") +
     color = "black"
   ) +
 
-  # Sailor
+  # Bold for Sailor
   geom_node_text(
     aes(label = ifelse(is_sailor_node, label, NA)),
     size = 5,
@@ -773,7 +765,7 @@ ggraph(graph_tbl, layout = "fr") +
     repel = TRUE
   ) +
 
-  # Sailor's Works
+  # Italic for Sailor's Works
   geom_node_text(
     aes(label = ifelse(node_category == "Sailor's Work", label, NA)),
     size = 2,
@@ -814,20 +806,17 @@ ggraph(graph_tbl, layout = "fr") +
     legend.text = element_text(size = 8)
   )
 ```
-
-As there are many influencers and overlaps, it is suggested to do an interactive map instead.
-
-## **6.2 Visualising Sailor's Influencers (Interactive)**
-
+As there are many influencers and overlaps, it is suggested to do an interactive map instead. 
+Visualising Sailor's Influencers (Interactive)
 ```{r}
-# Identify Sailor node index
+# Step 1: Identify Sailor node index
 sailor_index <- graph_tbl %>%
   activate(nodes) %>%
   mutate(node_index = row_number()) %>%
   filter(is_sailor_node) %>%
   pull(node_index)
 
-# Pull all edges and check which nodes are only connected to Sailor
+# Step 2: Pull all edges and check which nodes are only connected to Sailor
 edges_tbl <- graph_tbl %>%
   activate(edges) %>%
   as_tibble()
@@ -849,7 +838,7 @@ sailor_solo_works <- node_degrees %>%
   filter(node_index %in% solo_sailor_targets, deg == 1) %>%
   pull(node_index)
 
-# Drop them from the graph
+# Step 3: Drop them from the graph
 graph_tbl <- graph_tbl %>%
   activate(nodes) %>%
   mutate(node_index = row_number()) %>%  # safe if not changed above
@@ -859,98 +848,105 @@ graph_tbl <- graph_tbl %>%
 ```{r}
 set.seed(12)
 
-# Clean characters and create tooltip 
+layout_tbl <- create_layout(graph_tbl, layout = "fr")
+
 graph_tbl <- graph_tbl %>%
   mutate(across(where(is.character), ~ gsub("'", "", .x))) %>%
   mutate(
-    tooltip = paste0(
-      label, 
-      " (", `Node Type`, ")", 
-      ifelse(!is.na(release_date), paste0("\nRelease Year: ", release_date), "")
-    )
+  tooltip = paste0(
+    label, 
+    " (", `Node Type`, ")", 
+    ifelse(!is.na(release_date), paste0("\nRelease Year: ", release_date), "")
   )
+)
 
-# Create layout 
-layout_tbl <- create_layout(graph_tbl, layout = "fr")
-
-# Plot Interactive Graph
+# Interactive plot
 g <- ggraph(layout_tbl) +
-  geom_edge_fan(
-    aes(color = `Edge Type`),
-    alpha = 0.8,
-    arrow = arrow(length = unit(1.2, 'mm'), type = "closed"),
-    start_cap = circle(1, 'mm'),
-    end_cap = circle(1, 'mm'),
-    lineend = "round",
-    show.legend = TRUE
-  ) +
-  geom_point_interactive(
-    aes(
-      x = x,
-      y = y,
-      color = node_category,
-      shape = `Node Type`,
-      tooltip = tooltip,
-      data_id = label
+  
+# Regular edges
+geom_edge_fan(
+  aes(color = `Edge Type`),
+  alpha = 0.8,
+  arrow = arrow(length = unit(1.2, 'mm'), type = "closed"),
+  start_cap = circle(1, 'mm'),  # spacing from source node
+  end_cap = circle(1, 'mm'),    # spacing from target node
+  lineend = "round",
+  show.legend = TRUE
+) +
+
+# Interactive nodes with tooltip
+geom_point_interactive(
+  aes(
+    x = x,
+    y = y,
+    color = node_category,
+    shape = `Node Type`,
+    tooltip = tooltip,
+    data_id = label
     ),
-    size = 2
-  ) +
-  geom_node_text(
-    aes(label = ifelse(id %in% influencer_people_ids, label, NA)),
-    size = 2,
-    repel = TRUE,
-    color = "black"
-  ) +
-  geom_node_text(
-    aes(label = ifelse(is_sailor_node, label, NA)),
-    size = 5,
-    fontface = "bold",
-    color = "black",
-    repel = TRUE
-  ) +
-  geom_node_text(
-    aes(label = ifelse(node_category == "Sailor's Work", label, NA)),
-    size = 2,
-    fontface = "italic",
-    color = "blue",
-    repel = TRUE
-  ) +
-  geom_node_text(
-    aes(label = ifelse(label == "Ivy Echos", label, NA)),
-    size = 3,
-    fontface = "bold.italic",
-    color = "darkgreen",
-    repel = TRUE
-  ) +
-  scale_color_manual(
-    values = c(
-      "Influencer" = "grey50",
-      "Sailor Shift" = "red",
-      "Sailor's Work" = "blue",
-      "Ivy Echos" = "darkgreen"
-    ),
-    name = "Node Category"
-  ) +
-  scale_shape_manual(
-    values = c("Person" = 15, "MusicalGroup" = 17, "Album" = 16, "Song" = 3),
-    name = "Node Type"
-  ) +
-  theme_void() +
+  size = 2
+) +
+
+# Static text layers
+geom_node_text(
+  aes(label = ifelse(id %in% influencer_people_ids, label, NA)),
+  size = 2,
+  repel = TRUE,
+  color = "black" 
+) +
+
+geom_node_text(
+  aes(label = ifelse(is_sailor_node, label, NA)),
+  size = 5,
+  fontface = "bold",
+  color = "black", repel = TRUE
+) +
+
+geom_node_text(
+  aes(label = ifelse(node_category == "Sailor's Work", label, NA)),
+  size = 2,
+  fontface = "italic",
+  color = "blue",
+  repel = TRUE
+) +
+  
+geom_node_text(
+  aes(label = ifelse(label == "Ivy Echos", label, NA)),
+  size = 3,
+  fontface = "bold.italic",
+  color = "darkgreen",
+  repel = TRUE
+) +
+  
+scale_color_manual(
+  values = c(
+    "Influencer" = "grey50",
+    "Sailor Shift" = "red",
+    "Sailor's Work" = "blue",
+    "Ivy Echos" = "darkgreen"
+  ),
+  name = "Node Category"
+) +
+
+scale_shape_manual(
+  values = c("Person" = 15, "MusicalGroup" = 17, "Album" = 16, "Song" = 3),
+  name = "Node Type"
+) +
+
+theme_void() +
   theme(
-    plot.margin = margin(30, 30, 30, 30),
+    plot.margin = margin(30, 30, 30, 30), 
     legend.title = element_text(size = 8),
     legend.text = element_text(size = 8)
-  )
+)
 
+# Wrap in girafe for interactivity
 girafe(ggobj = g, width_svg = 10, height_svg = 6)
 ```
 
-# **7  Sailor's Collaboration and Influence **
-
 Who has Sailor collaborated with and directly or indirectly influenced how has she influenced collaborators of the broader Oceanus Folk community?
 
-## **7.1 Find Sailor's collaborators**
-Find Sailor's collaborators where she is a "PerformerOf", "ComposerOf", "ProducerOf", "LyricistOf" and "Memberof".
+Step 1: Finding Sailor's collaborators where she is a "PerformerOf", "ComposerOf", "ProducerOf", "LyricistOf" and "Memberof".
 
 ```{r}
 sailor_collaborators <- mc1_edges_clean %>%
@@ -986,8 +982,7 @@ sailor_collaborators %>%
   
   sailor_collaborators_roles
 ```
-
-There are 48 persons and musical groups whom collaborated with her.
+There are 48 persons and musical groups whom collaborated with her. 
 
 ```{r}
 sailor_collaborator_role_frequency <- mc1_edges_clean %>%
@@ -1000,7 +995,7 @@ sailor_collaborator_role_frequency <- mc1_edges_clean %>%
     mc1_nodes_clean %>% select(id, name),
     by = c("from_id" = "id")
   ) %>%
-  count(name, `Edge Type`, sort = TRUE)  
+  count(name, `Edge Type`, sort = TRUE)  # shows role and count
 
 sailor_collaborator_role_frequency
 ```
@@ -1016,11 +1011,11 @@ total_collaborations <- mc1_edges_clean %>%
 
 total_collaborations
 ```
+There were 77 collaborations. 
 
-There were 77 collaborations.
 
-## **7.2 Find works and musicians which were directly influenced by Sailor and Ivy Echos**
 
+Step 2: Finding works and people which were directly influenced by Sailor and Ivy Echos
 ```{r}
 referencing_works <- mc1_edges_clean %>%
   filter(
@@ -1048,7 +1043,6 @@ direct_influencees <- mc1_edges_clean %>%
   distinct(from_id, name, node_type)
 ```
 
-## **7.3 Sailor's influence**
 ```{r}
 # Count how often Sailor’s works were cited, by who
 
@@ -1063,12 +1057,9 @@ direct_influence_counts <- mc1_edges_clean %>%
 
 direct_influence_counts
 ```
+There was no Sailor's work cited by others. 
 
-There was no Sailor's work cited by others.
-
-## **7.4 Sailor's influence through Ivy Echos**
-
-Let's check if there was any Ivy Echo's work cited by others.
+Let's check if there was any Ivy Echo's work cited by others. 
 
 ```{r}
 
@@ -1105,10 +1096,7 @@ mc1_nodes_clean %>%
   filter(id %in% referencing_works) %>%
   select(id, name, `Node Type`, release_date)
 ```
-There was one album "Embers & Echoes" which was influenced by Ivy Echos' work. 
 
-
-## **7.5 Musicians whom were directly influenced by Sailor/ Ivy Echos**
 ```{r}
 mc1_edges_clean %>%
   filter(
@@ -1123,14 +1111,14 @@ mc1_edges_clean %>%
   select(from_id, name, node_type) %>%
   distinct()
 ```
-Check membership of The Hollow Monarchs musical group.
+
 ```{r}
-# Get the ID of The Hollow Monarchs
+# Step 1: Get the ID of The Hollow Monarchs
 hollow_monarchs_id <- mc1_nodes_clean %>%
   filter(str_trim(name) == "The Hollow Monarchs") %>%
   pull(id)
 
-# Find people who have a MemberOf edge pointing to the group
+# Step 2: Find people who have a MemberOf edge pointing to the group
 hollow_monarchs_members <- mc1_edges_clean %>%
   filter(
     `Edge Type` == "MemberOf",
@@ -1145,20 +1133,19 @@ hollow_monarchs_members
 ```
 
 
-## **7.6 Musicians whom were directly influenced by Sailor/ Ivy Echos**
+Step 3: Finding works and people which were indirectly influenced by Sailor and Ivy Echos
 
-Finding works and people which were indirectly influenced by Sailor and Ivy Echos.
+This means finding the works that were influenced by Embers & Echoes album first.  
 
-This means finding the works that were influenced by Embers & Echoes album first.
 
 ```{r}
-# Get the ID of "Embers & Echoes"
+# Step 1: Get the ID of "Embers & Echoes"
 embers_id <- mc1_nodes_clean %>%
   filter(str_trim(name) == "Embers & Echoes") %>%
   pull(id) %>%
   as.character()
 
-# Check if any works cited Embers & Echoes using influence-type edges
+# Step 2: Check if any works cited Embers & Echoes using influence-type edges
 works_citing_embers <- mc1_edges_clean %>%
   filter(
     to_id == embers_id,
@@ -1168,21 +1155,19 @@ works_citing_embers <- mc1_edges_clean %>%
   pull(from_id) %>%
   unique()
 
-# Show the works that cited it
+# Step 3: Show the works that cited it
 mc1_nodes_clean %>%
   filter(id %in% works_citing_embers) %>%
   select(id, name, `Node Type`, release_date)
 ```
+No other works cited Ember & Echoes. 
 
-No other works cited Ember & Echoes.Hence, no one had been indirectly influenced by Sailor / Ivy Echos. 
-
-
-## **7.7 Plot Preparation**
+The visualisation showing who has Sailor collaborated with and directly or indirectly influenced is shown below. 
 
 We begin by filtering Sailor's work that were cited by others and had collaboration:
 
 ```{r}
-# Identify works of Sailor that were cited
+# Step A1: Identify works of Sailor that were cited
 sailor_works_cited <- mc1_edges_clean %>%
   filter(
     `Edge Type` %in% c("InStyleOf", "CoverOf", "InterpolatesFrom", "DirectlySamples", "LyricalReferenceTo"),
@@ -1191,7 +1176,7 @@ sailor_works_cited <- mc1_edges_clean %>%
   pull(to_id) %>%
   unique()
 
-# Identify works Sailor collaborated on (other people involved)
+# Step A2: Identify works Sailor collaborated on (other people involved)
 sailor_works_collab <- mc1_edges_clean %>%
   filter(
     `Edge Type` %in% c("PerformerOf", "ComposerOf", "ProducerOf", "LyricistOf"),
@@ -1201,14 +1186,14 @@ sailor_works_collab <- mc1_edges_clean %>%
   pull(to_id) %>%
   unique()
 
-# Filter only the Sailor works that are either cited or collaborations
+# Step A3: Filter only the Sailor works that are either cited or collaborations
 sailor_works_filtered <- intersect(sailor_works, union(sailor_works_cited, sailor_works_collab))
 ```
 
 Filter away Ivy Echos' work if it is not cited by others
 
 ```{r}
-# Ivy Echos works cited by others
+# Step B1: Ivy Echos works cited by others
 ivy_works_cited <- mc1_edges_clean %>%
   filter(
     `Edge Type` %in% c("InStyleOf", "CoverOf", "InterpolatesFrom", "DirectlySamples", "LyricalReferenceTo"),
@@ -1217,7 +1202,7 @@ ivy_works_cited <- mc1_edges_clean %>%
   pull(to_id) %>%
   unique()
 
-# Ivy Echos works with collaboration
+# Step B2: Ivy Echos works with collaboration
 ivy_works_collab <- mc1_edges_clean %>%
   filter(
     `Edge Type` %in% c("PerformerOf", "ComposerOf", "ProducerOf", "LyricistOf"),
@@ -1227,12 +1212,11 @@ ivy_works_collab <- mc1_edges_clean %>%
   pull(to_id) %>%
   unique()
 
-# Filter Ivy Echos works that are either cited or collaborative
+# Step B3: Filter Ivy Echos works that are either cited or collaborative
 ivy_works_filtered <- intersect(ivy_works, union(ivy_works_cited, ivy_works_collab))
 ```
 
-Add in Ember & Echoes's contributors as they were directly influenced by Ivy Echos:
-
+Add in Ember & Echoes's contributors
 ```{r}
 embers_contributors <- mc1_edges_clean %>%
   filter(
@@ -1249,19 +1233,19 @@ embers_contributors <- mc1_edges_clean %>%
 ```
 
 ```{r}
-# Combine node IDs
+# Step 1: Combine node IDs
 all_ids <- unique(c(
   sailor_id,
-  ivy_id,  
+  ivy_id,  # include Ivy Echos node
   sailor_works_filtered,
   ivy_works_filtered,
   sailor_collaborators$from_id,
   referencing_works,
   direct_influencees$from_id,
-  embers_contributors$from_id  
+  embers_contributors$from_id  # NEW LINE to add
 ))
 
-# Filter node table
+# Step 2: Filter node table
 mini_nodes <- mc1_nodes_clean %>%
   filter(id %in% all_ids) %>%
   mutate(
@@ -1272,7 +1256,7 @@ mini_nodes <- mc1_nodes_clean %>%
     is_ivy_work = id %in% ivy_works_filtered,
     is_collaborator = id %in% sailor_collaborators$from_id,
     is_direct_influencee = id %in% direct_influencees$from_id,
-    is_embers_contributor = id %in% embers_contributors$from_id,  
+    is_embers_contributor = id %in% embers_contributors$from_id,  # ✅ new flag
     category = case_when(
       is_sailor ~ "Sailor Shift",
       is_ivy ~ "Ivy Echos",
@@ -1280,20 +1264,20 @@ mini_nodes <- mc1_nodes_clean %>%
       is_ivy_work ~ "Ivy's Work",
       is_collaborator ~ "Collaborator",
       is_direct_influencee ~ "Direct Influencee",
-      is_embers_contributor ~ "Embers Contributor",  
+      is_embers_contributor ~ "Embers Contributor",  # ✅ new category
       TRUE ~ "Other"
     )
   )
 
-# Filter edges between valid nodes
+# Step 3: Filter edges between valid nodes
 mini_edges <- mc1_edges_clean %>%
   filter(from_id %in% all_ids, to_id %in% all_ids) %>%
   select(from = from_id, to = to_id, `Edge Type`) %>%
   mutate(from = as.character(from), to = as.character(to))
 
-# Build tidygraph object
+# Step 4: Build tidygraph object
 graph_tbl <- tbl_graph(
-  nodes = mini_nodes %>% mutate(name = as.character(id)),  
+  nodes = mini_nodes %>% mutate(name = as.character(id)),  # create name column explicitly
   edges = mini_edges %>% mutate(
     from = as.character(from),
     to = as.character(to)
@@ -1301,17 +1285,15 @@ graph_tbl <- tbl_graph(
   directed = TRUE
 )
 
-# Add tooltip
+# Step 5: Add tooltip
 graph_tbl <- graph_tbl %>%
   mutate(tooltip = paste0(label, " (", `Node Type`, ")"))
 ```
 
-## **7.8 Plot interactive graph**
-
-The visualisation showing who has Sailor collaborated with and directly or indirectly influenced is shown below.
+Plot interactive graph
 
 ```{r}
-# Add layout and tooltip
+# Step 6: Add layout and tooltip
 set.seed(1111)
 layout_tbl <- create_layout(graph_tbl, layout = "stress")
 
@@ -1409,7 +1391,7 @@ scale_color_manual(
     "Ivy's Work" = "darkgreen",
     "Collaborator" = "grey",
     "Direct Influencee" = "orange",
-    "Embers Contributor" = "gold",       
+    "Embers Contributor" = "gold",       # ✅ new color
     "Other" = "black"
   ),
   name = "Node Category"

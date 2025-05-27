@@ -1,0 +1,7 @@
+"source","target","description","type","count"
+"Entity","Event","Entity initiates or participates in an event (Note type is only present for Communication events)","sent",748
+"Event","Entity","Event targets or involves an entity (Note type is only present for Communication events)","received",758
+"Entity","Relationship","Entity is a source of relationship",NA,293
+"Relationship","Entity","Entity is a target in a relationship",NA,293
+"Event","Event","Special case for Communication event - provides evidence for or affects another event","evidence_for",275
+"Event","Relationship","Special case for Communication event - provides evidence for or affects another event","evidence_for",585
