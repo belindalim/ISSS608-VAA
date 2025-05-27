@@ -711,7 +711,7 @@
     "href": "Take-home_Ex/Take-home_Ex02/Take-Home_Ex02.html#prepare-interactive-plot",
     "title": "Take-Home Exercise 2",
     "section": "6.5 Prepare Interactive Plot",
-    "text": "6.5 Prepare Interactive Plot\n\nThe plotThe code"
+    "text": "6.5 Prepare Interactive Plot\n\n\nShow code\n# Identify Sailor node index\nsailor_index &lt;- graph_tbl %&gt;%\n  activate(nodes) %&gt;%\n  mutate(node_index = row_number()) %&gt;%\n  filter(is_sailor_node) %&gt;%\n  pull(node_index)\n\n# Pull all edges and check which nodes are only connected to Sailor\nedges_tbl &lt;- graph_tbl %&gt;%\n  activate(edges) %&gt;%\n  as_tibble()\n\n# Count how many unique nodes each target is connected to. We are only keen on degree = 1 and only connected to Sailor.\nsolo_sailor_targets &lt;- edges_tbl %&gt;%\n  filter(from == sailor_index) %&gt;%\n  pull(to)\n\n# Calculate degrees\nnode_degrees &lt;- graph_tbl %&gt;%\n  activate(nodes) %&gt;%\n  mutate(node_index = row_number(),\n         deg = centrality_degree(mode = \"all\")) %&gt;%\n  as_tibble()\n\n# Find target nodes with degree = 1 and only connected to Sailor\nsailor_solo_works &lt;- node_degrees %&gt;%\n  filter(node_index %in% solo_sailor_targets, deg == 1) %&gt;%\n  pull(node_index)\n\n# Drop them from the graph\ngraph_tbl &lt;- graph_tbl %&gt;%\n  activate(nodes) %&gt;%\n  mutate(node_index = row_number()) %&gt;%  # safe if not changed above\n  filter(!row_number() %in% sailor_solo_works)"
   },
   {
     "objectID": "Take-home_Ex/Take-home_Ex02/Take-Home_Ex02.html#frequency-of-collaborations",

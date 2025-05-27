@@ -1020,10 +1020,11 @@ As there are many influencers and overlaps, it is suggested to do an interactive
 
 ## 6.5 Prepare Interactive Plot
 
-::: panel-tabset
-### The plot
 
-```{r, echo=FALSE}
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| 
 # Identify Sailor node index
 sailor_index <- graph_tbl %>%
   activate(nodes) %>%
@@ -1059,46 +1060,6 @@ graph_tbl <- graph_tbl %>%
   mutate(node_index = row_number()) %>%  # safe if not changed above
   filter(!row_number() %in% sailor_solo_works)
 ```
-
-### The code
-
-```{r, echo=FALSE}
-# Identify Sailor node index
-sailor_index <- graph_tbl %>%
-  activate(nodes) %>%
-  mutate(node_index = row_number()) %>%
-  filter(is_sailor_node) %>%
-  pull(node_index)
-
-# Pull all edges and check which nodes are only connected to Sailor
-edges_tbl <- graph_tbl %>%
-  activate(edges) %>%
-  as_tibble()
-
-# Count how many unique nodes each target is connected to. We are only keen on degree = 1 and only connected to Sailor.
-solo_sailor_targets <- edges_tbl %>%
-  filter(from == sailor_index) %>%
-  pull(to)
-
-# Calculate degrees
-node_degrees <- graph_tbl %>%
-  activate(nodes) %>%
-  mutate(node_index = row_number(),
-         deg = centrality_degree(mode = "all")) %>%
-  as_tibble()
-
-# Find target nodes with degree = 1 and only connected to Sailor
-sailor_solo_works <- node_degrees %>%
-  filter(node_index %in% solo_sailor_targets, deg == 1) %>%
-  pull(node_index)
-
-# Drop them from the graph
-graph_tbl <- graph_tbl %>%
-  activate(nodes) %>%
-  mutate(node_index = row_number()) %>%  # safe if not changed above
-  filter(!row_number() %in% sailor_solo_works)
-```
-:::
 
 ## **6.6 Visualising Sailor's Influencers (Interactive)**
 
