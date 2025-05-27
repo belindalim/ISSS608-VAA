@@ -33,9 +33,9 @@ Additionally, because of Sailor’s success, more attention began to be paid ove
 
 Now, as Sailor returns to Oceanus in 2040, a local journalist – Silas Reed – is writing a piece titled Oceanus Folk: Then-and-Now that aims to trace the rise of Sailor and the influence of Oceanus Folk on the rest of the music world. He has collected a large dataset of musical artists, producers, albums, songs, and influences and organized it into a knowledge graph. Your task is to help Silas create beautiful and informative visualizations of this data and uncover new and interesting information about Sailor’s past, her rise to stardom, and her influence.
 
-## 1.2 Tasks and Questions:
+## 1.2 Tasks and Questions
 
-1.  Design and develop visualizations and visual analytic tools that will allow Silas to explore and understand the profile of Sailor Shift’s career
+1.  **Design and develop visualizations and visual analytic tools that will allow Silas to explore and understand the profile of Sailor Shift’s career**
 
     1.  Who has she been most influenced by over time?
 
@@ -43,7 +43,7 @@ Now, as Sailor returns to Oceanus in 2040, a local journalist – Silas Reed –
 
     3.  How has she influenced collaborators of the broader Oceanus Folk community?
 
-2.  Develop visualizations that illustrate how the influence of Oceanus Folk has spread through the musical world.
+2.  **Develop visualizations that illustrate how the influence of Oceanus Folk has spread through the musical world.**
 
     1.  Was this influence intermittent or did it have a gradual rise?
 
@@ -51,7 +51,7 @@ Now, as Sailor returns to Oceanus in 2040, a local journalist – Silas Reed –
 
     3.  On the converse, how has Oceanus Folk changed with the rise of Sailor Shift? From which genres does it draw most of its contemporary inspiration?
 
-3.  Use your visualizations to develop a profile of what it means to be a rising star in the music industry.
+3.  **Use your visualizations to develop a profile of what it means to be a rising star in the music industry.**
 
     1.  Visualize the careers of three artists. Compare and contrast their rise in popularity and influence.
 
@@ -473,8 +473,8 @@ influences %>%
 
 There were 26 songs/ album cited by Sailor's works.
 
-
 ## **4.3 Find Creators of Works that influenced Sailor's works**
+
 ```{r}
 # Extract their IDs to find who made those works
 influencer_work_ids <- influences$id
@@ -541,7 +541,7 @@ mc1_edges_clean %>%
 
 # **5  Building Subgraphs of Sailor's influencers**
 
-## **5.1 Define IDs to include in the subgraph** 
+## **5.1 Define IDs to include in the subgraph**
 
 ```{r}
 influencer_people_ids <- influencer_people %>% pull(from_id)
@@ -556,7 +556,8 @@ all_ids <- unique(c(
 ))
 ```
 
-## **5.2 Filter details to form the subgraph** 
+## **5.2 Filter details to form the subgraph**
+
 However, we do not want to include collaborators except for the musical group that she belongs to. This is executed by the codes below:
 
 ```{r}
@@ -607,7 +608,6 @@ mini_edges_clean <- mini_edges %>%
   filter(!is.na(from) & !is.na(to))
 ```
 
-
 ```{r}
 # Tag Sailor and Ivy Echos
 mini_nodes <- mini_nodes %>%
@@ -637,7 +637,6 @@ mini_edges_scored <- mini_edges_clean %>%
     "MemberOf"
   ))
 ```
-
 
 ## **5.2 Remove Sailor's work if not linked to other works**
 
@@ -698,6 +697,7 @@ sailor_works_to_drop <- node_degrees %>%
 ```
 
 ## **5.2 Remove Ivy Echo's work if not linked to other works**
+
 ```{r}
 ivy_work_ids <- mini_edges_scored %>%
   filter(from_id == ivy_id, `Edge Type` %in% c("PerformerOf", "ComposerOf", "LyricistOf", "ProducerOf")) %>%
@@ -945,11 +945,12 @@ g <- ggraph(layout_tbl) +
 girafe(ggobj = g, width_svg = 10, height_svg = 6)
 ```
 
-# **7  Sailor's Collaboration and Influence **
+# **7  Sailor's Collaboration and Influence**
 
 Who has Sailor collaborated with and directly or indirectly influenced how has she influenced collaborators of the broader Oceanus Folk community?
 
 ## **7.1 Find Sailor's collaborators**
+
 Find Sailor's collaborators where she is a "PerformerOf", "ComposerOf", "ProducerOf", "LyricistOf" and "Memberof".
 
 ```{r}
@@ -1049,6 +1050,7 @@ direct_influencees <- mc1_edges_clean %>%
 ```
 
 ## **7.3 Sailor's influence**
+
 ```{r}
 # Count how often Sailor’s works were cited, by who
 
@@ -1105,10 +1107,11 @@ mc1_nodes_clean %>%
   filter(id %in% referencing_works) %>%
   select(id, name, `Node Type`, release_date)
 ```
-There was one album "Embers & Echoes" which was influenced by Ivy Echos' work. 
 
+There was one album "Embers & Echoes" which was influenced by Ivy Echos' work.
 
 ## **7.5 Musicians whom were directly influenced by Sailor/ Ivy Echos**
+
 ```{r}
 mc1_edges_clean %>%
   filter(
@@ -1123,7 +1126,9 @@ mc1_edges_clean %>%
   select(from_id, name, node_type) %>%
   distinct()
 ```
+
 Check membership of The Hollow Monarchs musical group.
+
 ```{r}
 # Get the ID of The Hollow Monarchs
 hollow_monarchs_id <- mc1_nodes_clean %>%
@@ -1143,7 +1148,6 @@ hollow_monarchs_members <- mc1_edges_clean %>%
 
 hollow_monarchs_members
 ```
-
 
 ## **7.6 Musicians whom were directly influenced by Sailor/ Ivy Echos**
 
@@ -1174,8 +1178,7 @@ mc1_nodes_clean %>%
   select(id, name, `Node Type`, release_date)
 ```
 
-No other works cited Ember & Echoes.Hence, no one had been indirectly influenced by Sailor / Ivy Echos. 
-
+No other works cited Ember & Echoes.Hence, no one had been indirectly influenced by Sailor / Ivy Echos.
 
 ## **7.7 Plot Preparation**
 
