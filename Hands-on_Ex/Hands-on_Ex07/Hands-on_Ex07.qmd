@@ -1,5 +1,18 @@
 ---
-title: "Hands-on_Ex07"
-format: html
+title: "Hands-on Exercise 7"
+author: "Belinda Lim"
+date: Jun 10, 2025
+date-modified: "last-modified"
+format:
+  html:
+    theme: flatly
+    toc: true
+editor: source
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
+No Hands-on exercise during Week 7. Please refer to In-class exercise instead. 

@@ -3,7 +3,7 @@ title: "Take-Home Exercise 2"
 author: "Belinda Lim"
 date: May 19, 2025
 date-modified: "last-modified"
-format:
+format: 
   html:
     theme: flatly
     toc: true

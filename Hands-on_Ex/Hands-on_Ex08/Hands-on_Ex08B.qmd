@@ -1,0 +1,17 @@
+---
+title: "Hands-on Exercise 8B"
+author: "Belinda Lim"
+date: Jun 10, 2025
+date-modified: "last-modified"
+format:
+  html:
+    theme: flatly
+    toc: true
+editor: source
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
