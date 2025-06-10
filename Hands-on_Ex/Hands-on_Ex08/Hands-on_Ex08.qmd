@@ -76,7 +76,9 @@ You can examine the content of mpsz by using the code chunk below.
 mpsz
 ```
 
+::: callout-note
 Notice that only the first ten records will be displayed. This is because mpsz belongs to a sf object under the sf package which defaults the first 10 records to be printed. 
+:::
 
 ### **11.3.3 Importing Attribute Data into R**
 
@@ -90,7 +92,7 @@ popdata <- read_csv("data/aspatial/respopagesextod2011to2020.csv")
 
 ### **11.3.4 Data Preparation**
 
-2Before a thematic map can be prepared, you are required to prepare a data table with year 2020 values. The data table should include the variables PA, SZ, YOUNG, ECONOMY ACTIVE, AGED, TOTAL, DEPENDENCY.
+Before a thematic map can be prepared, you are required to prepare a data table with year 2020 values. The data table should include the variables PA, SZ, YOUNG, ECONOMY ACTIVE, AGED, TOTAL, DEPENDENCY.
 
 -   YOUNG: age group 0 to 4 until age group 20 to 24,
 
@@ -131,6 +133,7 @@ mutate(`DEPENDENCY` = (`YOUNG` + `AGED`)
        `ECONOMY ACTIVE`, `AGED`, 
        `TOTAL`, `DEPENDENCY`)
 ```
+
 #### 11.3.4.2 Joining the attribute data and geospatial data 
 
 Before we can perform the georelational join, one extra step is required to convert the values in PA and SZ fields to uppercase. This is because the values of *PA* and *SZ* fields are made up of upper- and lowercase. On the other, hand the *SUBZONE_N* and *PLN_AREA_N* are in uppercase.
@@ -139,6 +142,12 @@ Before we can perform the georelational join, one extra step is required to conv
 popdata2020 <- popdata2020 %>%
   mutate(across(c(PA, SZ), toupper)) %>%
   filter(`ECONOMY ACTIVE` > 0)
+```
+
+Check the data table after processing
+
+```{r}
+glimpse(popdata2020)
 ```
 
 Next, *left_join()* of **dplyr** is used to join the geographical data and attribute table using planning subzone name e.g. *SUBZONE_N* and *SZ* as the common identifier.
@@ -234,7 +243,7 @@ Things to learn from *tm_polygons()*:
 
 -   By default, Missing value will be shaded in grey.
 
-#### 11.4.2.3 Drawing a choropleth map using *tm_fill()* and \*tm_border()\*\*
+#### 11.4.2.3 Drawing a choropleth map using *tm_fill()* and *tm_border()*
 
 Actually, *tm_polygons()* is a wraper of *tm_fill()* and *tm_border()*. *tm_fill()* shades the polygons by using the default colour scheme and *tm_borders()* adds the borders of the shapefile onto the choropleth map.
 
@@ -444,7 +453,7 @@ In **tmap**, small multiple maps can be plotted in three ways:
 
 #### 11.4.6.1 By assigning multiple values to at least one of the aesthetic arguments
 
-In this example, small multiple choropleth maps are created by defining ***ncols*** in **tm_fill()**
+In this example, small multiple choropleth maps are created by defining ***ncols*** in **tm_fill()**.
 
 ```{r}
 tm_shape(mpsz_pop2020)+
@@ -456,7 +465,7 @@ tm_shape(mpsz_pop2020)+
   tmap_style("white")
 ```
 
-In this example, small multiple choropleth maps are created by assigning multiple values to at least one of the aesthetic arguments
+In this example, small multiple choropleth maps are created by assigning multiple values to at least one of the aesthetic arguments.
 
 ```{r}
 tm_shape(mpsz_pop2020)+ 
