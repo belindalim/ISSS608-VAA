@@ -316,7 +316,83 @@ Notice that the distribution of quantile data classification method are more eve
 
 > DIY: Using what you had learned, prepare choropleth maps by using different classification methods supported by tmap and compare their differences.
 
+A. K-Means clustering Classification
+
+Each subzone is classified into a cluster where the DEPENDENCY value is most similar to others within that cluster, and most dissimilar to other clusters. There are 5 clusters created since n = 5. Each cluster/ class may contain different number of observations.
+
+
+```{r}
+tm_shape(mpsz_pop2020)+
+  tm_polygons("DEPENDENCY",
+      fill.scale = tm_scale_intervals(
+        style = "kmeans",
+        n = 5)) +
+  tm_borders(fill_alpha = 0.5)
+```
+B. Quantile Classification
+
+Each class contains approximately the same number of observations based on the following:
+
+- Class 1 = lowest 20% of DEPENDENCY values
+
+- Class 2 = 20–40%
+
+- Class 3 = 40–60%
+
+- Class 4 = 60–80%
+
+- Class 5 = highest 20%
+
+```{r}
+tm_shape(mpsz_pop2020)+
+  tm_polygons("DEPENDENCY",
+      fill.scale = tm_scale_intervals(
+        style = "quantile",
+        n = 5)) +
+  tm_borders(fill_alpha = 0.5)
+```
+
 > DIY: Preparing choropleth maps by using similar classification method but with different numbers of classes (i.e. 2, 6, 10, 20). Compare the output maps, what observation can you draw?
+
+```{r}
+map2 <- tm_shape(mpsz_pop2020) +
+  tm_polygons("DEPENDENCY", 
+              style = "quantile", 
+              n = 2, 
+              title = "n = 2") +
+  tm_borders()
+
+map6 <- tm_shape(mpsz_pop2020) +
+  tm_polygons("DEPENDENCY", 
+              style = "quantile", 
+              n = 6, 
+              title = "n = 6") +
+  tm_borders()
+
+map10 <- tm_shape(mpsz_pop2020) +
+  tm_polygons("DEPENDENCY", 
+              style = "quantile", 
+              n = 10, 
+              title = "n = 10") +
+  tm_borders()
+
+map20 <- tm_shape(mpsz_pop2020) +
+  tm_polygons("DEPENDENCY", 
+              style = "quantile", 
+              n = 20, 
+              title = "n = 20") +
+  tm_borders()
+
+tmap_arrange(map2, map6, map10, map20, nrow = 2)
+```
+
+When n = 2, we can only identify low and high dependency, which is not very useful in drawing comparison. 
+
+When n = 6, we can now differentiate varying levels of dependency by subzones. 
+
+When n = 10, it provides more resolution as compared to n = 6, but it is hard to compare based on the colour gradient.  
+
+When n = 20, there are too many classes and we are unable to differentiate the difference in dependency values based on the gradient, which is not optimal for a visualisation. 
 
 #### 11.4.3.2 Plotting choropleth map with custom break
 
@@ -530,6 +606,26 @@ tm_shape(mpsz_pop2020[mpsz_pop2020$REGION_N=="CENTRAL REGION", ])+
             frame = FALSE) +
   tm_borders(alpha = 0.5)
 ```
+Adjusted the legend for the above chart to bottom right for visibility. 
+```{r}
+tm_shape(mpsz_pop2020[mpsz_pop2020$REGION_N == "CENTRAL REGION", ]) +
+  tm_fill("DEPENDENCY", 
+          style = "quantile", 
+          palette = "Blues", 
+          legend.hist = TRUE, 
+          legend.is.portrait = TRUE,
+          legend.hist.z = 0.02) +
+  tm_layout(
+    legend.outside = FALSE,                    # move legend inside map
+    legend.position = c("right", "bottom"),       # reposition inside
+    legend.hist.size = 0.5,
+    legend.text.size = 0.5,
+    legend.title.size = 0.5,
+    frame = FALSE
+  ) +
+  tm_borders(alpha = 0.2)
+```
+
 ## **11.5 Reference**
 
 ### **11.5.1 All about tmap package**
