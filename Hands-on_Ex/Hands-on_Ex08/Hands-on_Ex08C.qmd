@@ -173,9 +173,9 @@ var <- NGA_wp["pct_functional"] %>%
 quantile(var[,1], percent)
 ```
 
-:::callout-Important
+:::callout-important
 
-When variables are extracted from an sf data.frame, the geometry is extracted as well. For mapping and spatial manipulation, this is the expected behavior, but many base R functions cannot deal with the geometry. Specifically, the `quantile()` gives an error. As a result `st_set_geomtry(NULL)` is used to drop geomtry field.
+When variables are extracted from an sf data.frame, the geometry is extracted as well. For mapping and spatial manipulation, this is the expected behavior, but many base R functions cannot deal with the geometry. Specifically, the `quantile()` gives an error. As a result `st_set_geomtry(NULL)` is used to drop geometry field.
 :::
 
 #### 13.5.1.2 Why writing functions?
