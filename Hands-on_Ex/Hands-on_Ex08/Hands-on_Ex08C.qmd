@@ -39,7 +39,8 @@ By the end of this in-class exercise, you will be able to use appropriate functi
 
 ### **13.2.1 Installing and loading packages**
 
-::: callout-note title="Your turn"
+::: callout-note
+### Your Turn
 
 Using the steps you learned in previous lesson, install and load **sf**, **tmap** and **tidyverse** packages into R environment.
 :::
@@ -52,7 +53,8 @@ pacman::p_load(tmap, tidyverse, sf)
 
 For the purpose of this hands-on exercise, a prepared data set called *NGA_wp.rds* will be used. The data set is a polygon feature data.frame providing information on water point of Nigeria at the LGA level. You can find the data set in the *rds* sub-direct of the hands-on *data* folder.
 
-:::callout-Do it Yourself
+::: callout-note
+### Do-It-Yourself
 
 Using appropriate sf function import *NGA_wp.rds* into R environment.
 :::
@@ -65,7 +67,8 @@ NGA_wp <- read_rds("data/rds/NGA_wp.rds")
 
 ### **13.3.1 Visualising distribution of non-functional water point**
 
-:::callout-Your Turn
+::: callout-note
+### Your Turn
 
 Plot a choropleth map showing the distribution of non-function water point by LGA.
 :::
@@ -122,7 +125,8 @@ NGA_wp <- NGA_wp %>%
 
 ### **13.4.2 Plotting map of rate**
 
-:::callout-Your Turn
+::: callout-note
+### Your Turn
 
 Plot a choropleth map showing the distribution of percentage functional water point by LGA
 :::
@@ -169,7 +173,7 @@ var <- NGA_wp["pct_functional"] %>%
 quantile(var[,1], percent)
 ```
 
-:::callout -Important
+:::callout-Important
 
 When variables are extracted from an sf data.frame, the geometry is extracted as well. For mapping and spatial manipulation, this is the expected behavior, but many base R functions cannot deal with the geometry. Specifically, the `quantile()` gives an error. As a result `st_set_geomtry(NULL)` is used to drop geomtry field.
 :::

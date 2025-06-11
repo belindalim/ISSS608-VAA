@@ -360,8 +360,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="getting-started"><strong>13.2 Getting Started</strong></h2>
 <section id="installing-and-loading-packages" class="level3">
 <h3 class="anchored" data-anchor-id="installing-and-loading-packages"><strong>13.2.1 Installing and loading packages</strong></h3>
-<p>::: callout-note title=“Your turn”</p>
-<p>Using the steps you learned in previous lesson, install and load <strong>sf</strong>, <strong>tmap</strong> and <strong>tidyverse</strong> packages into R environment. :::</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Your Turn
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Using the steps you learned in previous lesson, install and load <strong>sf</strong>, <strong>tmap</strong> and <strong>tidyverse</strong> packages into R environment.</p>
+</div>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tmap, tidyverse, sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -369,8 +380,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="importing-data" class="level3">
 <h3 class="anchored" data-anchor-id="importing-data"><strong>13.2.2 Importing data</strong></h3>
 <p>For the purpose of this hands-on exercise, a prepared data set called <em>NGA_wp.rds</em> will be used. The data set is a polygon feature data.frame providing information on water point of Nigeria at the LGA level. You can find the data set in the <em>rds</em> sub-direct of the hands-on <em>data</em> folder.</p>
-<p>:::callout-Do it Yourself</p>
-<p>Using appropriate sf function import <em>NGA_wp.rds</em> into R environment. :::</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Do-It-Yourself
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Using appropriate sf function import <em>NGA_wp.rds</em> into R environment.</p>
+</div>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>NGA_wp <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/NGA_wp.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -380,8 +402,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="basic-choropleth-mapping"><strong>13.3 Basic Choropleth Mapping</strong></h2>
 <section id="visualising-distribution-of-non-functional-water-point" class="level3">
 <h3 class="anchored" data-anchor-id="visualising-distribution-of-non-functional-water-point"><strong>13.3.1 Visualising distribution of non-functional water point</strong></h3>
-<p>:::callout-Your Turn</p>
-<p>Plot a choropleth map showing the distribution of non-function water point by LGA. :::</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Your Turn
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Plot a choropleth map showing the distribution of non-function water point by LGA.</p>
+</div>
+</div>
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
@@ -440,8 +473,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="plotting-map-of-rate" class="level3">
 <h3 class="anchored" data-anchor-id="plotting-map-of-rate"><strong>13.4.2 Plotting map of rate</strong></h3>
-<p>:::callout-Your Turn</p>
-<p>Plot a choropleth map showing the distribution of percentage functional water point by LGA :::</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Your Turn
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Plot a choropleth map showing the distribution of percentage functional water point by LGA</p>
+</div>
+</div>
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
@@ -491,8 +535,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 0.0000000 0.0000000 0.2169811 0.4791667 0.8611111 1.0000000 1.0000000 </code></pre>
 </div>
 </div>
-<p>:::callout -Important</p>
-<p>When variables are extracted from an sf data.frame, the geometry is extracted as well. For mapping and spatial manipulation, this is the expected behavior, but many base R functions cannot deal with the geometry. Specifically, the <code>quantile()</code> gives an error. As a result <code>st_set_geomtry(NULL)</code> is used to drop geomtry field. :::</p>
+<div class="callout-Important">
+<p>When variables are extracted from an sf data.frame, the geometry is extracted as well. For mapping and spatial manipulation, this is the expected behavior, but many base R functions cannot deal with the geometry. Specifically, the <code>quantile()</code> gives an error. As a result <code>st_set_geomtry(NULL)</code> is used to drop geomtry field.</p>
+</div>
 </section>
 <section id="why-writing-functions" class="level4">
 <h4 class="anchored" data-anchor-id="why-writing-functions">13.5.1.2 Why writing functions?</h4>
