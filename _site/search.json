@@ -872,7 +872,7 @@
     "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08C.html#getting-started",
     "title": "Hands-on Exercise 8C",
     "section": "13.2 Getting Started",
-    "text": "13.2 Getting Started\n\n13.2.1 Installing and loading packages\n:::callout-Your Turn\nUsing the steps you learned in previous lesson, install and load sf, tmap and tidyverse packages into R environment. :::\n\npacman::p_load(tmap, tidyverse, sf)\n\n\n\n13.2.2 Importing data\nFor the purpose of this hands-on exercise, a prepared data set called NGA_wp.rds will be used. The data set is a polygon feature data.frame providing information on water point of Nigeria at the LGA level. You can find the data set in the rds sub-direct of the hands-on data folder.\n:::callout-Do it Yourself\nUsing appropriate sf function import NGA_wp.rds into R environment. :::\n\nNGA_wp &lt;- read_rds(\"data/rds/NGA_wp.rds\")"
+    "text": "13.2 Getting Started\n\n13.2.1 Installing and loading packages\n\n\n\n\n\n\nNote\n\n\n\nYour Turn\nUsing the steps you learned in previous lesson, install and load sf, tmap and tidyverse packages into R environment.\n\n\n\npacman::p_load(tmap, tidyverse, sf)\n\n\n\n13.2.2 Importing data\nFor the purpose of this hands-on exercise, a prepared data set called NGA_wp.rds will be used. The data set is a polygon feature data.frame providing information on water point of Nigeria at the LGA level. You can find the data set in the rds sub-direct of the hands-on data folder.\n:::callout-Do it Yourself\nUsing appropriate sf function import NGA_wp.rds into R environment. :::\n\nNGA_wp &lt;- read_rds(\"data/rds/NGA_wp.rds\")"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08C.html#basic-choropleth-mapping",
