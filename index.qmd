@@ -61,7 +61,7 @@ Introduce the concepts and components of ggplot2, focusing on the Layered Gramma
 
 :::: g-col-6
 ::: card
-![](images/Upcoming.png){width="100%" height="200px"}
+![](images/TOE1.png){width="100%" height="200px"}
 
 ### Take-home Exercises
 
@@ -72,7 +72,7 @@ Demographic structures and distribution of Singapore in 2024.\
 
 :::: g-col-6
 ::: card
-![](images/TOE1.png){width="100%" height="200px"}
+![](images/clipboard-3627295759.png){width="100%" height="200px"}
 
 ### In-class Exercises
 
