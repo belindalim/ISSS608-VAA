@@ -74,7 +74,9 @@ Notice that the *sgpools* data in tibble data frame and not the common R data fr
 The code chunk below converts sgpools data frame into a simple feature data frame by using *st_as_sf()* of **sf** packages
 
 ```{r}         
-sgpools_sf <- st_as_sf(sgpools,                         coords = c("XCOORD", "YCOORD"),                        crs= 3414)
+sgpools_sf <- st_as_sf(sgpools, 
+                       coords = c("XCOORD", "YCOORD"),
+                       crs= 3414)
 ```
 
 Things to learn from the arguments above:
@@ -112,7 +114,11 @@ tmap_mode("view")
 The code chunks below are used to create an interactive point symbol map.
 
 ```{r}         
-tm_shape(sgpools_sf) +    tm_bubbles(fill = "red",            size = 1,            col = "black",            lwd = 1)
+tm_shape(sgpools_sf) + 
+  tm_bubbles(fill = "red",
+           size = 1,
+           col = "black",
+           lwd = 1)
 ```
 
 ## **12.4.2 Lets make it proportional**
@@ -120,7 +126,11 @@ tm_shape(sgpools_sf) +    tm_bubbles(fill = "red",            size = 1,         
 To draw a proportional symbol map, we need to assign a numerical variable to the size visual attribute. The code chunks below show that the variable *Gp1Gp2Winnings* is assigned to size visual attribute.
 
 ```{r}         
-tm_shape(sgpools_sf) +    tm_bubbles(fill = "red",              size = "Gp1Gp2 Winnings",              col = "black",              lwd = 1)
+tm_shape(sgpools_sf) + 
+  tm_bubbles(fill = "red",
+             size = "Gp1Gp2 Winnings",
+             col = "black",
+             lwd = 1)
 ```
 
 ## **12.4.3 Lets give it a different colour**
@@ -128,10 +138,14 @@ tm_shape(sgpools_sf) +    tm_bubbles(fill = "red",              size = "Gp1Gp2 W
 The proportional symbol map can be further improved by using the colour visual attribute. In the code chunks below, *OUTLET_TYPE* variable is used as the colour attribute variable.
 
 ```{r}         
-tm_shape(sgpools_sf) +    tm_bubbles(fill = "OUTLET TYPE",               size = "Gp1Gp2 Winnings",              col = "black",              lwd = 1)
+tm_shape(sgpools_sf) + 
+  tm_bubbles(fill = "OUTLET TYPE", 
+             size = "Gp1Gp2 Winnings",
+             col = "black",
+             lwd = 1)
 ```
 
-## **12.4.4 I have a twin brothers :)**
+## **12.4.4 I have twin brothers :)**
 
 An impressive and little-know feature of **tmap**’s view mode is that it also works with faceted plots. The argument *sync* in *tm_facets()* can be used in this case to produce multiple maps with synchronised zoom and pan settings.
 
