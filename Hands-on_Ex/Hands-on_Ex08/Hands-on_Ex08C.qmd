@@ -147,6 +147,26 @@ tm_shape(NGA_wp) +
   tm_title("Rate map of functional water point by LGAs")
 ```
 
+We can shift the legend outside of the plot as follows:
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show Code"
+tm_shape(NGA_wp) +
+  tm_polygons("pct_functional",
+              fill.scale = tm_scale_intervals(
+                style = "equal",
+                n = 10,
+                values = "brewer.blues")) +  # Removed fill.legend
+  tm_borders(lwd = 0.1,
+             fill_alpha = 1) +
+  tm_title("Rate map of functional water point by LGAs") +
+  tm_layout(
+    legend.outside = TRUE,
+    legend.outside.position = "right"
+  )
+```
+  
 ## **13.5 Extreme Value Maps**
 
 Extreme value maps are variations of common choropleth maps where the classification is designed to highlight extreme values at the lower and upper end of the scale, with the goal of identifying outliers. These maps were developed in the spirit of spatializing EDA, i.e., adding spatial features to commonly used approaches in non-spatial EDA (Anselin 1994).
@@ -173,7 +193,8 @@ var <- NGA_wp["pct_functional"] %>%
 quantile(var[,1], percent)
 ```
 
-:::callout-important
+:::callout-note
+### Important
 
 When variables are extracted from an sf data.frame, the geometry is extracted as well. For mapping and spatial manipulation, this is the expected behavior, but many base R functions cannot deal with the geometry. Specifically, the `quantile()` gives an error. As a result `st_set_geomtry(NULL)` is used to drop geometry field.
 :::
@@ -231,8 +252,12 @@ percentmap <- function(vnam, df, legtitle=NA, mtitle="Percentile Map"){
              palette="Blues",
           labels=c("< 1%", "1% - 10%", "10% - 50%", "50% - 90%", "90% - 99%", "> 99%"))  +
   tm_borders() +
-  tm_layout(main.title = mtitle, 
-            title.position = c("right","bottom"))
+  tm_layout(
+    main.title = "Percentile Map",
+    main.title.position = "center",
+    main.title.size = 1.2,              
+    outer.margins = c(0.02, 0.02, 0.1, 0.02),  
+)
 }
 ```
 
@@ -362,9 +387,12 @@ boxmap <- function(vnam, df,
                      "> 75%", 
                      "upper outlier"))  +
   tm_borders() +
-  tm_layout(main.title = mtitle, 
-            title.position = c("left",
-                               "top"))
+  tm_layout(
+    main.title = "Box Map",
+    main.title.position = "center",
+    main.title.size = 1.2,              
+    outer.margins = c(0.02, 0.02, 0.1, 0.02),  
+)
 }
 ```
 
