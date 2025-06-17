@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Belinda Lim">
+<meta name="dcterms.date" content="2025-06-16">
 
-<title>Hands-on_Ex09</title>
+<title>Hands-on Exercise 9D</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -246,23 +282,68 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#visual-multivariate-analysis-with-parallel-coordinates-plot" id="toc-visual-multivariate-analysis-with-parallel-coordinates-plot" class="nav-link active" data-scroll-target="#visual-multivariate-analysis-with-parallel-coordinates-plot"><strong>17&nbsp; Visual Multivariate Analysis with Parallel Coordinates Plot</strong></a>
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview"><strong>17.1 Overview</strong></a></li>
+  <li><a href="#installing-and-launching-r-packages" id="toc-installing-and-launching-r-packages" class="nav-link" data-scroll-target="#installing-and-launching-r-packages"><strong>17.2 Installing and Launching R Packages</strong></a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation"><strong>17.3 Data Preparation</strong></a></li>
+  <li><a href="#plotting-static-parallel-coordinates-plot" id="toc-plotting-static-parallel-coordinates-plot" class="nav-link" data-scroll-target="#plotting-static-parallel-coordinates-plot"><strong>17.4 Plotting Static Parallel Coordinates Plot</strong></a>
+  <ul class="collapse">
+  <li><a href="#plotting-a-simple-parallel-coordinates" id="toc-plotting-a-simple-parallel-coordinates" class="nav-link" data-scroll-target="#plotting-a-simple-parallel-coordinates"><strong>17.4.1 Plotting a simple parallel coordinates</strong></a></li>
+  <li><a href="#plotting-a-parallel-coordinates-with-boxplot" id="toc-plotting-a-parallel-coordinates-with-boxplot" class="nav-link" data-scroll-target="#plotting-a-parallel-coordinates-with-boxplot"><strong>17.4.2 Plotting a parallel coordinates with boxplot</strong></a></li>
+  <li><a href="#parallel-coordinates-with-facet" id="toc-parallel-coordinates-with-facet" class="nav-link" data-scroll-target="#parallel-coordinates-with-facet"><strong>17.4.3 Parallel coordinates with facet</strong></a></li>
+  <li><a href="#rotating-x-axis-text-label" id="toc-rotating-x-axis-text-label" class="nav-link" data-scroll-target="#rotating-x-axis-text-label"><strong>17.4.4 Rotating x-axis text label</strong></a></li>
+  <li><a href="#adjusting-the-rotated-x-axis-text-label" id="toc-adjusting-the-rotated-x-axis-text-label" class="nav-link" data-scroll-target="#adjusting-the-rotated-x-axis-text-label"><strong>17.4.5 Adjusting the rotated x-axis text label</strong></a></li>
+  </ul></li>
+  <li><a href="#plotting-interactive-parallel-coordinates-plot-parallelplot-methods" id="toc-plotting-interactive-parallel-coordinates-plot-parallelplot-methods" class="nav-link" data-scroll-target="#plotting-interactive-parallel-coordinates-plot-parallelplot-methods"><strong>17.5 Plotting Interactive Parallel Coordinates Plot: parallelPlot methods</strong></a>
+  <ul class="collapse">
+  <li><a href="#the-basic-plot" id="toc-the-basic-plot" class="nav-link" data-scroll-target="#the-basic-plot"><strong>17.5.1 The basic plot</strong></a></li>
+  <li><a href="#rotate-axis-label" id="toc-rotate-axis-label" class="nav-link" data-scroll-target="#rotate-axis-label"><strong>17.5.2 Rotate axis label</strong></a></li>
+  <li><a href="#changing-the-colour-scheme" id="toc-changing-the-colour-scheme" class="nav-link" data-scroll-target="#changing-the-colour-scheme"><strong>17.5.3 Changing the colour scheme</strong></a></li>
+  <li><a href="#parallel-coordinates-plot-with-histogram" id="toc-parallel-coordinates-plot-with-histogram" class="nav-link" data-scroll-target="#parallel-coordinates-plot-with-histogram"><strong>17.5.4 Parallel coordinates plot with histogram</strong></a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><strong>17.6 References</strong></a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hands-on_Ex09</h1>
+<h1 class="title">Hands-on Exercise 9D</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Belinda Lim </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 16, 2025</p>
+    </div>
+  </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">June 16, 2025</p>
+    </div>
+  </div>
     
   </div>
   
@@ -271,8 +352,171 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="visual-multivariate-analysis-with-parallel-coordinates-plot" class="level1">
+<h1><strong>17&nbsp; Visual Multivariate Analysis with Parallel Coordinates Plot</strong></h1>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview"><strong>17.1 Overview</strong></h2>
+<p>Parallel coordinates plot is a data visualisation specially designed for visualising and analysing multivariate, numerical data. It is ideal for comparing multiple variables together and seeing the relationships between them. For example, the variables contribute to Happiness Index. Parallel coordinates was invented by <a href="http://www.math.tau.ac.il/~aiisreal/">Alfred Inselberg</a> in the 1970s as a way to visualize high-dimensional data. This data visualisation technique is more often found in academic and scientific communities than in business and consumer data visualizations. As pointed out by <a href="https://www.perceptualedge.com/articles/b-eye/parallel_coordinates.pdf">Stephen Few</a>(2006), “This certainly isn’t a chart that you would present to the board of directors or place on your Web site for the general public. In fact, the strength of parallel coordinates isn’t in their ability to communicate some truth in the data to others, but rather in their ability to bring meaningful multivariate patterns and comparisons to light when used interactively for analysis.” For example, parallel coordinates plot can be used to characterise clusters detected during customer segmentation.</p>
+<p>By the end of this hands-on exercise, you will gain hands-on experience on:</p>
+<ul>
+<li><p>plotting statistic parallel coordinates plots by using <a href="https://ggobi.github.io/ggally/reference/ggparcoord.html"><code>ggparcoord()</code></a> of <a href="https://r4va.netlify.app/chap15"><strong>GGally</strong></a> package, and</p></li>
+<li><p>plotting interactive parallel coordinates plots by using <a href="https://cran.r-project.org/web/packages/parallelPlot/"><strong>parallelPlot</strong></a> package.</p></li>
+</ul>
+</section>
+<section id="installing-and-launching-r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="installing-and-launching-r-packages"><strong>17.2 Installing and Launching R Packages</strong></h2>
+<p>For this exercise, the <strong>GGally</strong>, <strong>parallelPlot</strong> and <strong>tidyverse</strong> packages will be used.</p>
+<p>The code chunks below are used to install and load the packages in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(GGally, parallelPlot, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation"><strong>17.3 Data Preparation</strong></h2>
+<p>In this hands-on exercise, the World Happinees 2018 (http://worldhappiness.report/ed/2018/) data will be used. The data set is download at https://s3.amazonaws.com/happiness-report/2018/WHR2018Chapter2OnlineData.xls. The original data set is in Microsoft Excel format. It has been extracted and saved in csv file called <strong>WHData-2018.csv</strong>.</p>
+<p>In the code chunk below, <code>read_csv()</code> of <strong>readr</strong> package is used to import <em>WHData-2018.csv</em> into R and save it into a tibble data frame object called <em>wh</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wh <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/WHData-2018.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="plotting-static-parallel-coordinates-plot" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-static-parallel-coordinates-plot"><strong>17.4 Plotting Static Parallel Coordinates Plot</strong></h2>
+<p>In this section, you will learn how to plot static parallel coordinates plot by using <a href="https://ggobi.github.io/ggally/reference/ggparcoord.html"><code>ggparcoord()</code></a> of <strong>GGally</strong> package. Before getting started, it is a good practice to read the function description in detail.</p>
+<section id="plotting-a-simple-parallel-coordinates" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-a-simple-parallel-coordinates"><strong>17.4.1 Plotting a simple parallel coordinates</strong></h3>
+<p>Code chunk below shows a typical syntax used to plot a basic static parallel coordinates plot by using <code>ggparcoord()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggparcoord</span>(<span class="at">data =</span> wh, </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hands-on_Ex09D_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that only two argument namely <code>data</code> and <code>columns</code> is used. <code>Data</code> argument is used to map the data object (i.e.&nbsp;<em>wh</em>) and <code>columns</code> is used to select the columns for preparing the parallel coordinates plot.</p>
+</section>
+<section id="plotting-a-parallel-coordinates-with-boxplot" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-a-parallel-coordinates-with-boxplot"><strong>17.4.2 Plotting a parallel coordinates with boxplot</strong></h3>
+<p>The basic parallel coordinates failed to reveal any meaning understanding of the World Happiness measures. In this section, you will learn how to makeover the plot by using a collection of arguments provided by <code>ggparcoord()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggparcoord</span>(<span class="at">data =</span> wh, </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>), </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">groupColumn =</span> <span class="dv">2</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">scale =</span> <span class="st">"uniminmax"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">alphaLines =</span> <span class="fl">0.2</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">boxplot =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">title =</span> <span class="st">"Parallel Coordinates Plot of World Happines Variables"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hands-on_Ex09D_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Things to learn from the code chunk above.</p>
+<ul>
+<li><p><code>groupColumn</code> argument is used to group the observations (i.e.&nbsp;parallel lines) by using a single variable (i.e.&nbsp;Region) and colour the parallel coordinates lines by region name.</p></li>
+<li><p><code>scale</code> argument is used to scale the variables in the parallel coordinate plot by using <code>uniminmax</code> method. The method univariately scale each variable so the minimum of the variable is zero and the maximum is one.</p></li>
+<li><p><code>alphaLines</code> argument is used to reduce the intensity of the line colour to 0.2. The permissible value range is between 0 to 1.</p></li>
+<li><p><code>boxplot</code> argument is used to turn on the boxplot by using logical <code>TRUE</code>. The default is <code>FALSE</code>.</p></li>
+<li><p><code>title</code> argument is used to provide the parallel coordinates plot a title.</p></li>
+</ul>
+</section>
+<section id="parallel-coordinates-with-facet" class="level3">
+<h3 class="anchored" data-anchor-id="parallel-coordinates-with-facet"><strong>17.4.3 Parallel coordinates with facet</strong></h3>
+<p>Since <code>ggparcoord()</code> is developed by extending <strong>ggplot2</strong> package, we can combination use some of the ggplot2 function when plotting a parallel coordinates plot.</p>
+<p>In the code chunk below, <code>facet_wrap()</code> of <strong>ggplot2</strong> is used to plot 10 small multiple parallel coordinates plots. Each plot represent one geographical region such as East Asia.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggparcoord</span>(<span class="at">data =</span> wh, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>), </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">groupColumn =</span> <span class="dv">2</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">scale =</span> <span class="st">"uniminmax"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">alphaLines =</span> <span class="fl">0.2</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">boxplot =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">title =</span> <span class="st">"Multiple Parallel Coordinates Plots of World Happines Variables by Region"</span>) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hands-on_Ex09D_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>One of the aesthetic defect of the current design is that some of the variable names overlap on x-axis.</p>
+</section>
+<section id="rotating-x-axis-text-label" class="level3">
+<h3 class="anchored" data-anchor-id="rotating-x-axis-text-label"><strong>17.4.4 Rotating x-axis text label</strong></h3>
+<p>To make the x-axis text label easy to read, let us rotate the labels by 30 degrees. We can rotate axis text labels using <code>theme()</code> function in ggplot2 as shown in the code chunk below</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggparcoord</span>(<span class="at">data =</span> wh, </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>), </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">groupColumn =</span> <span class="dv">2</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">scale =</span> <span class="st">"uniminmax"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">alphaLines =</span> <span class="fl">0.2</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">boxplot =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">title =</span> <span class="st">"Multiple Parallel Coordinates Plots of World Happines Variables by Region"</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Region) <span class="sc">+</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hands-on_Ex09D_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Thing to learn from the code chunk above:</p>
+<ul>
+<li>To rotate x-axis text labels, we use <code>axis.text.x</code> as argument to <code>theme()</code> function. And we specify <code>element_text(angle = 30)</code> to rotate the x-axis text by an angle 30 degree.</li>
+</ul>
+</section>
+<section id="adjusting-the-rotated-x-axis-text-label" class="level3">
+<h3 class="anchored" data-anchor-id="adjusting-the-rotated-x-axis-text-label"><strong>17.4.5 Adjusting the rotated x-axis text label</strong></h3>
+<p>Rotating x-axis text labels to 30 degrees makes the label overlap with the plot and we can avoid this by adjusting the text location using <code>hjust</code> argument to theme’s text element with <code>element_text()</code>. We use <code>axis.text.x</code> as we want to change the look of x-axis text.</p>
+<pre><code>ggparcoord(data = wh,             columns = c(7:12),             groupColumn = 2,            scale = "uniminmax",            alphaLines = 0.2,            boxplot = TRUE,             title = "Multiple Parallel Coordinates Plots of World Happines Variables by Region") +   facet_wrap(~ Region) +    theme(axis.text.x = element_text(angle = 30, hjust=1))</code></pre>
+</section>
+</section>
+<section id="plotting-interactive-parallel-coordinates-plot-parallelplot-methods" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-interactive-parallel-coordinates-plot-parallelplot-methods"><strong>17.5 Plotting Interactive Parallel Coordinates Plot: parallelPlot methods</strong></h2>
+<p><a href="https://cran.r-project.org/web/packages/parallelPlot/"><strong>parallelPlot</strong></a> is an R package specially designed to plot a parallel coordinates plot by using ‘htmlwidgets’ package and <a href="https://d3js.org/">d3.js</a>. In this section, you will learn how to use functions provided in parallelPlot package to build interactive parallel coordinates plot.</p>
+<section id="the-basic-plot" class="level3">
+<h3 class="anchored" data-anchor-id="the-basic-plot"><strong>17.5.1 The basic plot</strong></h3>
+<p>The code chunk below plot an interactive parallel coordinates plot by using <code>parallelPlot()</code>.</p>
+<pre><code>wh &lt;- wh %&gt;%   select("Happiness score", c(7:12)) parallelPlot(wh,              width = 320,              height = 250)</code></pre>
+<p>Notice that some of the axis labels are too long. You will learn how to overcome this problem in the next step.</p>
+</section>
+<section id="rotate-axis-label" class="level3">
+<h3 class="anchored" data-anchor-id="rotate-axis-label"><strong>17.5.2 Rotate axis label</strong></h3>
+<p>In the code chunk below, <code>rotateTitle</code> argument is used to avoid overlapping axis labels.</p>
+<pre><code>parallelPlot(wh,              rotateTitle = TRUE)</code></pre>
+<p>One of the useful interactive feature of parallelPlot is we can click on a variable of interest, for example Happiness score, the monotonous blue colour (default) will change a blues with different intensity colour scheme will be used.</p>
+</section>
+<section id="changing-the-colour-scheme" class="level3">
+<h3 class="anchored" data-anchor-id="changing-the-colour-scheme"><strong>17.5.3 Changing the colour scheme</strong></h3>
+<p>We can change the default blue colour scheme by using <code>continousCS</code> argument as shown in the code chunl below.</p>
+<pre><code>parallelPlot(wh,              continuousCS = "YlOrRd",              rotateTitle = TRUE)</code></pre>
+</section>
+<section id="parallel-coordinates-plot-with-histogram" class="level3">
+<h3 class="anchored" data-anchor-id="parallel-coordinates-plot-with-histogram"><strong>17.5.4 Parallel coordinates plot with histogram</strong></h3>
+<p>In the code chunk below, <code>histoVisibility</code> argument is used to plot histogram along the axis of each variables.</p>
+<pre><code>histoVisibility &lt;- rep(TRUE, ncol(wh)) parallelPlot(wh,              rotateTitle = TRUE,              histoVisibility = histoVisibility)</code></pre>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references"><strong>17.6 References</strong></h2>
+<ul>
+<li><p><a href="http://ggobi.github.io/ggally/reference/ggparcoord.html"><em>ggparcoord()</em></a> of <a href="http://ggobi.github.io/ggally/index.html"><strong>GGally</strong></a> package</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/parallelPlot/parallelPlot.pdf"><strong>parallelPlot</strong></a></p></li>
+</ul>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

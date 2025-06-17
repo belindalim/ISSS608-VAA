@@ -1,7 +1,7 @@
 ---
 title: "Hands-on Exercise 9B"
 author: "Belinda Lim"
-date: June 115, 2025
+date: June 16, 2025
 date-modified: "last-modified"
 format:
   html:
