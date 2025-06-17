@@ -188,7 +188,7 @@ ggplot.component = list(
 
 Since ggstasplot is an extension of ggplot2, it also supports faceting. However the feature is not available in *ggcorrmat()* but in the [*grouped_ggcorrmat()*](https://indrajeetpatil.github.io/ggstatsplot/reference/grouped_ggcorrmat.html) of **ggstatsplot**.
 
-```{r}
+```{r, fig.width=12, fig.height=5}
 grouped_ggcorrmat(
   data = wine,
   cor.vars = 1:11,
@@ -198,7 +198,9 @@ grouped_ggcorrmat(
   plotgrid.args = list(ncol = 2),
   ggcorrplot.args = list(outline.color = "black", 
                          hc.order = TRUE,
-                         tl.cex = 10),
+                         tl.cex = 8,         # axis label font size
+                         lab_size = 3        # correlation coefficient font size inside boxes
+  ),
   annotation.args = list(
     tag_levels = "a",
     title = "Correlogram for wine dataset",
@@ -365,7 +367,7 @@ corrplot(wine.cor,
          addrect = 3)
 ```
 
-# **15 Reference**
+## **15.8 Reordering a correlation matrix using hclust**
 
 Michael Friendly (2002). “Corrgrams: Exploratory displays for correlation matrices”. *The American Statistician*, 56, 316–324.
 
