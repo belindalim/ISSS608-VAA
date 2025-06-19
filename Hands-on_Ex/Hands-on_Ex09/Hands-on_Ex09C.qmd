@@ -90,7 +90,7 @@ In this section, you will learn how to plot static heatmaps by using **heatmap()
 
 In this sub-section, we will plot a heatmap by using *heatmap()* of Base Stats. The code chunk is given below.
 
-```{r}         
+```{r, fig.width=10, fig.height=13}         
 wh_heatmap <- heatmap(wh_matrix,
                       Rowv=NA, Colv=NA)
 ```
@@ -101,7 +101,7 @@ wh_heatmap <- heatmap(wh_matrix,
 
 To plot a cluster heatmap, we just have to use the default as shown in the code chunk below.
 
-```{r}         
+```{r, fig.width=10, fig.height=13}         
 wh_heatmap <- heatmap(wh_matrix)
 ```
 
@@ -134,12 +134,15 @@ In this section, you will gain hands-on experience on using **heatmaply** to des
 ### **16.5.1 Working with heatmaply**
 
 ```{r}         
-heatmaply(mtcars)
+heatmaply(mtcars, 
+          xlab = "Variables", 
+          labCol = colnames(mtcars), 
+          labCol_angle = 45)
 ```
 
 The code chunk below shows the basic syntax needed to create n interactive heatmap by using **heatmaply** package.
 
-```{r}         
+```{r, fig.width=10, fig.height=13}         
 heatmaply(wh_matrix[, -c(1, 2, 4, 5)])
 ```
 
@@ -167,7 +170,7 @@ Three main data transformation methods are supported by *heatmaply()*, namely: s
 
 The code chunk below is used to scale variable values columewise.
 
-```{r}         
+```{r, fig.width=10, fig.height=13}         
 heatmaply(wh_matrix[, -c(1, 2, 4, 5)],
           scale = "column")
 ```

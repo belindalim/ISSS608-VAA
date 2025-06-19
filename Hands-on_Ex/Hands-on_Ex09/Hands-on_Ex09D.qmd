@@ -57,7 +57,8 @@ Code chunk below shows a typical syntax used to plot a basic static parallel coo
 
 ```{r}         
 ggparcoord(data = wh, 
-           columns = c(7:12))
+           columns = 7:12) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 Notice that only two argument namely `data` and `columns` is used. `Data` argument is used to map the data object (i.e. *wh*) and `columns` is used to select the columns for preparing the parallel coordinates plot.
@@ -68,12 +69,13 @@ The basic parallel coordinates failed to reveal any meaning understanding of the
 
 ```{r}         
 ggparcoord(data = wh, 
-           columns = c(7:12), 
+           columns = 7:12, 
            groupColumn = 2,
            scale = "uniminmax",
            alphaLines = 0.2,
            boxplot = TRUE, 
-           title = "Parallel Coordinates Plot of World Happines Variables")
+           title = "Parallel Coordinates Plot of World Happiness Variables") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 Things to learn from the code chunk above.
@@ -131,8 +133,16 @@ Thing to learn from the code chunk above:
 
 Rotating x-axis text labels to 30 degrees makes the label overlap with the plot and we can avoid this by adjusting the text location using `hjust` argument to theme’s text element with `element_text()`. We use `axis.text.x` as we want to change the look of x-axis text.
 
-```         
-ggparcoord(data = wh,             columns = c(7:12),             groupColumn = 2,            scale = "uniminmax",            alphaLines = 0.2,            boxplot = TRUE,             title = "Multiple Parallel Coordinates Plots of World Happines Variables by Region") +   facet_wrap(~ Region) +    theme(axis.text.x = element_text(angle = 30, hjust=1))
+```{r}         
+ggparcoord(data = wh, 
+           columns = c(7:12), 
+           groupColumn = 2,
+           scale = "uniminmax",
+           alphaLines = 0.2,
+           boxplot = TRUE, 
+           title = "Multiple Parallel Coordinates Plots of World Happines Variables by Region") +
+  facet_wrap(~ Region) + 
+  theme(axis.text.x = element_text(angle = 30, hjust=1))
 ```
 
 ## **17.5 Plotting Interactive Parallel Coordinates Plot: parallelPlot methods**
@@ -143,8 +153,12 @@ ggparcoord(data = wh,             columns = c(7:12),             groupColumn = 2
 
 The code chunk below plot an interactive parallel coordinates plot by using `parallelPlot()`.
 
-```         
-wh <- wh %>%   select("Happiness score", c(7:12)) parallelPlot(wh,              width = 320,              height = 250)
+```{r}         
+wh <- wh %>%
+  select("Happiness score", c(7:12))
+parallelPlot(wh,
+             width = 320,
+             height = 250)
 ```
 
 Notice that some of the axis labels are too long. You will learn how to overcome this problem in the next step.
@@ -153,8 +167,9 @@ Notice that some of the axis labels are too long. You will learn how to overcome
 
 In the code chunk below, `rotateTitle` argument is used to avoid overlapping axis labels.
 
-```         
-parallelPlot(wh,              rotateTitle = TRUE)
+```{r}         
+parallelPlot(wh,
+             rotateTitle = TRUE)
 ```
 
 One of the useful interactive feature of parallelPlot is we can click on a variable of interest, for example Happiness score, the monotonous blue colour (default) will change a blues with different intensity colour scheme will be used.
@@ -163,16 +178,21 @@ One of the useful interactive feature of parallelPlot is we can click on a varia
 
 We can change the default blue colour scheme by using `continousCS` argument as shown in the code chunl below.
 
-```         
-parallelPlot(wh,              continuousCS = "YlOrRd",              rotateTitle = TRUE)
+```{r}         
+parallelPlot(wh,
+             continuousCS = "YlOrRd",
+             rotateTitle = TRUE)
 ```
 
 ### **17.5.4 Parallel coordinates plot with histogram**
 
 In the code chunk below, `histoVisibility` argument is used to plot histogram along the axis of each variables.
 
-```         
-histoVisibility <- rep(TRUE, ncol(wh)) parallelPlot(wh,              rotateTitle = TRUE,              histoVisibility = histoVisibility)
+```{r}         
+histoVisibility <- rep(TRUE, ncol(wh))
+parallelPlot(wh,
+             rotateTitle = TRUE,
+             histoVisibility = histoVisibility)
 ```
 
 ## **17.6 References**
