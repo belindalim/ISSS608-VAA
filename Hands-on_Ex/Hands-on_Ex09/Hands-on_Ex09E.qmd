@@ -70,7 +70,6 @@ Grouping affects the verbs as follows:
 In our case, *group_by()* will used together with *summarise()* to derive the summarised data.frame.
 
 ::: {.callout-warning title="Recommendation"}
-**Recommendation**
 
 Students who are new to **dplyr** methods should consult [Introduction to dplyr](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html) before moving on to the next section.
 :::
@@ -89,8 +88,7 @@ realis2018_summarised <- summarise(realis2018_grouped,
                           `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE), 
                           `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))
 ```
-:::callout-important
-**Note**
+::: {.callout-warning title="Note"}
 
 -   Aggregation functions such as *sum()* and *meadian()* obey the usual rule of missing values: if there’s any missing value in the input, the output will be a missing value. The argument *na.rm = TRUE* removes the missing values prior to computation.
 :::
@@ -101,8 +99,7 @@ The code chunk above is not very efficient because we have to give each intermed
 
 The code chunk below shows a more efficient way to tackle the same processes by using the *pipe*, %\>%:
 
-:::callout-important
-**Recommendation**
+::: {.callout-warning title="Recommendation"}*
 
 To learn more about pipe, visit this excellent article: [Pipes in R Tutorial For Beginners](https://www.datacamp.com/community/tutorials/pipe-r-tutorial).
 :::
@@ -159,7 +156,6 @@ Things to learn from the three arguments used:
     -   The column must not contain negative values. This is because it’s vaues will be used to map the sizes of the rectangles of the treemaps.
 
 :::callout-warning
-**Warning**
 
 The treemap above was wrongly coloured. For a correctly designed treemap, the colours of the rectagles should be in different intensity showing, in our case, median unit prices.
 
