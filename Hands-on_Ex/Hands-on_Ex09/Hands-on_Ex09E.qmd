@@ -69,7 +69,7 @@ Grouping affects the verbs as follows:
 
 In our case, *group_by()* will used together with *summarise()* to derive the summarised data.frame.
 
-:::callout-Recommendation
+::: {.callout-warning title="Recommendation"}
 **Recommendation**
 
 Students who are new to **dplyr** methods should consult [Introduction to dplyr](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html) before moving on to the next section.

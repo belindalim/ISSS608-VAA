@@ -142,8 +142,11 @@ heatmaply(mtcars,
 
 The code chunk below shows the basic syntax needed to create n interactive heatmap by using **heatmaply** package.
 
-```{r, fig.width=10, fig.height=13}         
-heatmaply(wh_matrix[, -c(1, 2, 4, 5)])
+```{r, fig.width=10, fig.height=15}         
+heatmaply(wh_matrix[, -c(1, 2, 4, 5)],
+          labRow = rownames(wh_matrix),
+          fontsize_row = 6,           
+          margins = c(60, 150))       
 ```
 
 Note that:
