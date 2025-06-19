@@ -76,7 +76,7 @@ Demographic structures and distribution of Singapore in 2024.\
 
 ### In-class Exercises
 
-Visual analytics done collaboratively during class sessions.\
+Visual analytics done collaboratively during class sessions.The interactive dashboards can be found on my [Tableau Public page](https://public.tableau.com/app/profile/belindalim/vizzes).\
 [View In-class Exercises](In-class_Ex/In-class_Ex01/In-class_Ex01.qmd)
 :::
 ::::
