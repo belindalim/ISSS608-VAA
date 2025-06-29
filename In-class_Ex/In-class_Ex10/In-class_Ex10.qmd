@@ -161,10 +161,386 @@ plot_ly(data = df,
 
 # OCBC
 
+## Row {height="20%"}
+
+```{r}
+daily_summary <- daily_prices %>%
+  filter(Symbol == "O39.SI" & date == end_date)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Opening Price"
+list(color = "primary", value = daily_summary$open)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Closing Price"
+list(color = "primary", value = daily_summary$close)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Daily High"
+list(color = "primary", value = daily_summary$high)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Daily Low"
+list(color = "primary", value = daily_summary$low)
+```
+
+## Row
+
+```{r}
+df <- daily_prices %>% filter(Name == "OCBC Bank")
+
+mean_close <- mean(df$close, na.rm = TRUE)
+sd_close <- sd(df$close, na.rm = TRUE)
+ucl <- mean_close + sd_close
+lcl <- mean_close - sd_close
+
+start_lbl <- format(start_date, "%-d %B %Y")
+end_lbl   <- format(end_date, "%-d %B %Y")
+
+df <- df %>% mutate(flag = case_when(
+  close > ucl ~ "Above UCL",
+  close < lcl ~ "Below LCL",
+  TRUE ~ "Within Limits"))
+
+dynamic_title <- glue("OCBC Stock Prices from {start_lbl} to {end_lbl}")
+```
+
+```{r}
+p <- ggplot(df, aes(date, close)) +
+  geom_line(color = "steelblue") +
+  geom_hline(yintercept = mean_close, linetype = "dashed") +
+  geom_hline(yintercept = ucl, color = "red", linetype = "dotted") +
+  geom_hline(yintercept = lcl, color = "red", linetype = "dotted") +
+  geom_point(aes(color = flag), size = 1) +
+  scale_color_manual(values = c("Above UCL" = "red", "Below LCL" = "red", "Within Limits" = "steelblue")) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  labs(title = dynamic_title, y = "Closing Price", x = "") +
+  theme_classic()
+
+ggplotly(p)
+```
+
+```{r}
+plot_ly(df, x = ~date, type = "candlestick",
+        open = ~open, high = ~high, low = ~low, close = ~close) %>%
+  add_lines(x = ~date, y = ~TTR::SMA(close, 5), name = "SMA 5", line = list(dash = "dot")) %>%
+  add_lines(x = ~date, y = ~TTR::SMA(close, 15), name = "SMA 15", line = list(color = "red")) %>%
+  layout(title = "Technical Analysis of OCBC", yaxis = list(title = "Closing Price"))
+```
+
 # UOB
 
-# SingTel
+## Row {height="20%"}
 
-# SIA
+```{r}
+daily_summary <- daily_prices %>%
+  filter(Symbol == "U11.SI" & date == end_date)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Opening Price"
+list(color = "primary", value = daily_summary$open)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Closing Price"
+list(color = "primary", value = daily_summary$close)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Daily High"
+list(color = "primary", value = daily_summary$high)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Daily Low"
+list(color = "primary", value = daily_summary$low)
+```
+
+## Row
+
+```{r}
+df <- daily_prices %>% filter(Name == "UOB")
+
+mean_close <- mean(df$close, na.rm = TRUE)
+sd_close <- sd(df$close, na.rm = TRUE)
+ucl <- mean_close + sd_close
+lcl <- mean_close - sd_close
+
+start_lbl <- format(start_date, "%-d %B %Y")
+end_lbl   <- format(end_date, "%-d %B %Y")
+
+df <- df %>% mutate(flag = case_when(
+  close > ucl ~ "Above UCL",
+  close < lcl ~ "Below LCL",
+  TRUE ~ "Within Limits"))
+
+dynamic_title <- glue("UOB Stock Prices from {start_lbl} to {end_lbl}")
+```
+
+```{r}
+p <- ggplot(df, aes(date, close)) +
+  geom_line(color = "steelblue") +
+  geom_hline(yintercept = mean_close, linetype = "dashed") +
+  geom_hline(yintercept = ucl, color = "red", linetype = "dotted") +
+  geom_hline(yintercept = lcl, color = "red", linetype = "dotted") +
+  geom_point(aes(color = flag), size = 1) +
+  scale_color_manual(values = c("Above UCL" = "red", "Below LCL" = "red", "Within Limits" = "steelblue")) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  labs(title = dynamic_title, y = "Closing Price", x = "") +
+  theme_classic()
+
+ggplotly(p)
+```
+
+```{r}
+plot_ly(df, x = ~date, type = "candlestick",
+        open = ~open, high = ~high, low = ~low, close = ~close) %>%
+  add_lines(x = ~date, y = ~TTR::SMA(close, 5), name = "SMA 5", line = list(dash = "dot")) %>%
+  add_lines(x = ~date, y = ~TTR::SMA(close, 15), name = "SMA 15", line = list(color = "red")) %>%
+  layout(title = "Technical Analysis of UOB", yaxis = list(title = "Closing Price"))
+```
+
+# Singtel
+
+## Row {height="20%"}
+
+```{r}
+daily_summary <- daily_prices %>%
+  filter(Symbol == "Z74.SI" & date == end_date)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Opening Price"
+list(color = "primary", value = daily_summary$open)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Closing Price"
+list(color = "primary", value = daily_summary$close)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Daily High"
+list(color = "primary", value = daily_summary$high)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Daily Low"
+list(color = "primary", value = daily_summary$low)
+```
+
+## Row
+
+```{r}
+df <- daily_prices %>% filter(Name == "Singtel")
+
+mean_close <- mean(df$close, na.rm = TRUE)
+sd_close <- sd(df$close, na.rm = TRUE)
+ucl <- mean_close + sd_close
+lcl <- mean_close - sd_close
+
+start_lbl <- format(start_date, "%-d %B %Y")
+end_lbl   <- format(end_date, "%-d %B %Y")
+
+df <- df %>% mutate(flag = case_when(
+  close > ucl ~ "Above UCL",
+  close < lcl ~ "Below LCL",
+  TRUE ~ "Within Limits"))
+
+dynamic_title <- glue("Singtel Stock Prices from {start_lbl} to {end_lbl}")
+```
+
+```{r}
+p <- ggplot(df, aes(date, close)) +
+  geom_line(color = "steelblue") +
+  geom_hline(yintercept = mean_close, linetype = "dashed") +
+  geom_hline(yintercept = ucl, color = "red", linetype = "dotted") +
+  geom_hline(yintercept = lcl, color = "red", linetype = "dotted") +
+  geom_point(aes(color = flag), size = 1) +
+  scale_color_manual(values = c("Above UCL" = "red", "Below LCL" = "red", "Within Limits" = "steelblue")) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  labs(title = dynamic_title, y = "Closing Price", x = "") +
+  theme_classic()
+
+ggplotly(p)
+```
+
+```{r}
+plot_ly(df, x = ~date, type = "candlestick",
+        open = ~open, high = ~high, low = ~low, close = ~close) %>%
+  add_lines(x = ~date, y = ~TTR::SMA(close, 5), name = "SMA 5", line = list(dash = "dot")) %>%
+  add_lines(x = ~date, y = ~TTR::SMA(close, 15), name = "SMA 15", line = list(color = "red")) %>%
+  layout(title = "Technical Analysis of Singtel", yaxis = list(title = "Closing Price"))
+```
+
+
+# Singapore Airlines (SIA)
+
+## Row {height="20%"}
+
+```{r}
+daily_summary <- daily_prices %>%
+  filter(Symbol == "C6L.SI" & date == end_date)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Opening Price"
+list(color = "primary", value = daily_summary$open)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Closing Price"
+list(color = "primary", value = daily_summary$close)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Daily High"
+list(color = "primary", value = daily_summary$high)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Daily Low"
+list(color = "primary", value = daily_summary$low)
+```
+
+## Row
+
+```{r}
+df <- daily_prices %>% filter(Name == "Singapore Airlines")
+
+mean_close <- mean(df$close, na.rm = TRUE)
+sd_close <- sd(df$close, na.rm = TRUE)
+ucl <- mean_close + sd_close
+lcl <- mean_close - sd_close
+
+start_lbl <- format(start_date, "%-d %B %Y")
+end_lbl   <- format(end_date, "%-d %B %Y")
+
+df <- df %>% mutate(flag = case_when(
+  close > ucl ~ "Above UCL",
+  close < lcl ~ "Below LCL",
+  TRUE ~ "Within Limits"))
+
+dynamic_title <- glue("SIA Stock Prices from {start_lbl} to {end_lbl}")
+```
+
+```{r}
+p <- ggplot(df, aes(date, close)) +
+  geom_line(color = "steelblue") +
+  geom_hline(yintercept = mean_close, linetype = "dashed") +
+  geom_hline(yintercept = ucl, color = "red", linetype = "dotted") +
+  geom_hline(yintercept = lcl, color = "red", linetype = "dotted") +
+  geom_point(aes(color = flag), size = 1) +
+  scale_color_manual(values = c("Above UCL" = "red", "Below LCL" = "red", "Within Limits" = "steelblue")) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  labs(title = dynamic_title, y = "Closing Price", x = "") +
+  theme_classic()
+
+ggplotly(p)
+```
+
+```{r}
+plot_ly(df, x = ~date, type = "candlestick",
+        open = ~open, high = ~high, low = ~low, close = ~close) %>%
+  add_lines(x = ~date, y = ~TTR::SMA(close, 5), name = "SMA 5", line = list(dash = "dot")) %>%
+  add_lines(x = ~date, y = ~TTR::SMA(close, 15), name = "SMA 15", line = list(color = "red")) %>%
+  layout(title = "Technical Analysis of SIA", yaxis = list(title = "Closing Price"))
+```
 
 # CapitaLand Mall Trust
+
+## Row {height="20%"}
+
+```{r}
+daily_summary <- daily_prices %>%
+  filter(Symbol == "C38U.SI" & date == end_date)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Opening Price"
+list(color = "primary", value = daily_summary$open)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Closing Price"
+list(color = "primary", value = daily_summary$close)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Daily High"
+list(color = "primary", value = daily_summary$high)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Daily Low"
+list(color = "primary", value = daily_summary$low)
+```
+
+## Row
+
+```{r}
+df <- daily_prices %>% filter(Name == "CapitaLand Mall Trust")
+
+mean_close <- mean(df$close, na.rm = TRUE)
+sd_close <- sd(df$close, na.rm = TRUE)
+ucl <- mean_close + sd_close
+lcl <- mean_close - sd_close
+
+start_lbl <- format(start_date, "%-d %B %Y")
+end_lbl   <- format(end_date, "%-d %B %Y")
+
+df <- df %>% mutate(flag = case_when(
+  close > ucl ~ "Above UCL",
+  close < lcl ~ "Below LCL",
+  TRUE ~ "Within Limits"))
+
+dynamic_title <- glue("CMT Stock Prices from {start_lbl} to {end_lbl}")
+```
+
+```{r}
+p <- ggplot(df, aes(date, close)) +
+  geom_line(color = "steelblue") +
+  geom_hline(yintercept = mean_close, linetype = "dashed") +
+  geom_hline(yintercept = ucl, color = "red", linetype = "dotted") +
+  geom_hline(yintercept = lcl, color = "red", linetype = "dotted") +
+  geom_point(aes(color = flag), size = 1) +
+  scale_color_manual(values = c("Above UCL" = "red", "Below LCL" = "red", "Within Limits" = "steelblue")) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  labs(title = dynamic_title, y = "Closing Price", x = "") +
+  theme_classic()
+
+ggplotly(p)
+```
+
+```{r}
+plot_ly(df, x = ~date, type = "candlestick",
+        open = ~open, high = ~high, low = ~low, close = ~close) %>%
+  add_lines(x = ~date, y = ~TTR::SMA(close, 5), name = "SMA 5", line = list(dash = "dot")) %>%
+  add_lines(x = ~date, y = ~TTR::SMA(close, 15), name = "SMA 15", line = list(color = "red")) %>%
+  layout(title = "Technical Analysis of CapitaLand Mall Trust", yaxis = list(title = "Closing Price"))
+```
