@@ -202,8 +202,8 @@ sd_close <- sd(df$close, na.rm = TRUE)
 ucl <- mean_close + sd_close
 lcl <- mean_close - sd_close
 
-start_lbl <- format(start_date, "%-d %B %Y")
-end_lbl   <- format(end_date, "%-d %B %Y")
+start_lbl <- format(start_date, "%d %B %Y")
+end_lbl   <- format(end_date, "%d %B %Y")
 
 df <- df %>% mutate(flag = case_when(
   close > ucl ~ "Above UCL",
@@ -230,7 +230,8 @@ ggplotly(p)
 
 ```{r}
 plot_ly(df, x = ~date, type = "candlestick",
-        open = ~open, high = ~high, low = ~low, close = ~close) %>%
+        open = ~open, high = ~high, low = ~low, close = ~close,
+        name = "Price") %>%
   add_lines(x = ~date, y = ~TTR::SMA(close, 5), name = "SMA 5", line = list(dash = "dot")) %>%
   add_lines(x = ~date, y = ~TTR::SMA(close, 15), name = "SMA 15", line = list(color = "red")) %>%
   layout(title = "Technical Analysis of OCBC", yaxis = list(title = "Closing Price"))
@@ -279,8 +280,8 @@ sd_close <- sd(df$close, na.rm = TRUE)
 ucl <- mean_close + sd_close
 lcl <- mean_close - sd_close
 
-start_lbl <- format(start_date, "%-d %B %Y")
-end_lbl   <- format(end_date, "%-d %B %Y")
+start_lbl <- format(start_date, "%d %B %Y")
+end_lbl   <- format(end_date, "%d %B %Y")
 
 df <- df %>% mutate(flag = case_when(
   close > ucl ~ "Above UCL",
@@ -307,7 +308,8 @@ ggplotly(p)
 
 ```{r}
 plot_ly(df, x = ~date, type = "candlestick",
-        open = ~open, high = ~high, low = ~low, close = ~close) %>%
+        open = ~open, high = ~high, low = ~low, close = ~close,
+        name = "Price") %>%
   add_lines(x = ~date, y = ~TTR::SMA(close, 5), name = "SMA 5", line = list(dash = "dot")) %>%
   add_lines(x = ~date, y = ~TTR::SMA(close, 15), name = "SMA 15", line = list(color = "red")) %>%
   layout(title = "Technical Analysis of UOB", yaxis = list(title = "Closing Price"))
@@ -356,8 +358,8 @@ sd_close <- sd(df$close, na.rm = TRUE)
 ucl <- mean_close + sd_close
 lcl <- mean_close - sd_close
 
-start_lbl <- format(start_date, "%-d %B %Y")
-end_lbl   <- format(end_date, "%-d %B %Y")
+start_lbl <- format(start_date, "%d %B %Y")
+end_lbl   <- format(end_date, "%d %B %Y")
 
 df <- df %>% mutate(flag = case_when(
   close > ucl ~ "Above UCL",
@@ -384,7 +386,8 @@ ggplotly(p)
 
 ```{r}
 plot_ly(df, x = ~date, type = "candlestick",
-        open = ~open, high = ~high, low = ~low, close = ~close) %>%
+        open = ~open, high = ~high, low = ~low, close = ~close,
+        name = "Price") %>%
   add_lines(x = ~date, y = ~TTR::SMA(close, 5), name = "SMA 5", line = list(dash = "dot")) %>%
   add_lines(x = ~date, y = ~TTR::SMA(close, 15), name = "SMA 15", line = list(color = "red")) %>%
   layout(title = "Technical Analysis of Singtel", yaxis = list(title = "Closing Price"))
@@ -434,8 +437,8 @@ sd_close <- sd(df$close, na.rm = TRUE)
 ucl <- mean_close + sd_close
 lcl <- mean_close - sd_close
 
-start_lbl <- format(start_date, "%-d %B %Y")
-end_lbl   <- format(end_date, "%-d %B %Y")
+start_lbl <- format(start_date, "%d %B %Y")
+end_lbl   <- format(end_date, "%d %B %Y")
 
 df <- df %>% mutate(flag = case_when(
   close > ucl ~ "Above UCL",
@@ -462,7 +465,8 @@ ggplotly(p)
 
 ```{r}
 plot_ly(df, x = ~date, type = "candlestick",
-        open = ~open, high = ~high, low = ~low, close = ~close) %>%
+        open = ~open, high = ~high, low = ~low, close = ~close,
+        name = "Price") %>%
   add_lines(x = ~date, y = ~TTR::SMA(close, 5), name = "SMA 5", line = list(dash = "dot")) %>%
   add_lines(x = ~date, y = ~TTR::SMA(close, 15), name = "SMA 15", line = list(color = "red")) %>%
   layout(title = "Technical Analysis of SIA", yaxis = list(title = "Closing Price"))
@@ -511,8 +515,8 @@ sd_close <- sd(df$close, na.rm = TRUE)
 ucl <- mean_close + sd_close
 lcl <- mean_close - sd_close
 
-start_lbl <- format(start_date, "%-d %B %Y")
-end_lbl   <- format(end_date, "%-d %B %Y")
+start_lbl <- format(start_date, "%d %B %Y")
+end_lbl   <- format(end_date, "%d %B %Y")
 
 df <- df %>% mutate(flag = case_when(
   close > ucl ~ "Above UCL",
@@ -539,7 +543,8 @@ ggplotly(p)
 
 ```{r}
 plot_ly(df, x = ~date, type = "candlestick",
-        open = ~open, high = ~high, low = ~low, close = ~close) %>%
+        open = ~open, high = ~high, low = ~low, close = ~close,
+        name = "Price") %>%
   add_lines(x = ~date, y = ~TTR::SMA(close, 5), name = "SMA 5", line = list(dash = "dot")) %>%
   add_lines(x = ~date, y = ~TTR::SMA(close, 15), name = "SMA 15", line = list(color = "red")) %>%
   layout(title = "Technical Analysis of CapitaLand Mall Trust", yaxis = list(title = "Closing Price"))
