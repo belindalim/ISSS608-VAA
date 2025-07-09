@@ -79,7 +79,6 @@ The code chunk:
 GAStech_nodes <- read_csv("data/GAStech_email_node.csv")
 GAStech_edges <- read_csv("data/GAStech_email_edge-v2.csv")
 ```
-:::
 
 ### **9.3.4 Reviewing the imported data**
 
